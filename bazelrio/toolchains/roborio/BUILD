@@ -31,11 +31,12 @@ filegroup(
 cc_toolchain(
     name = "roborio_toolchain_definition",
     all_files = ":toolchains_files",
+    ar_files = ":toolchains_files",
+    as_files = ":toolchains_files",
     compiler_files = ":toolchains_files",
-    strip_files = ":toolchains_files",
-    objcopy_files = ":toolchains_files",
     linker_files = ":toolchains_files",
-    dwp_files = ":toolchains_files",
+    objcopy_files = ":toolchains_files",
+    strip_files = ":toolchains_files",
     toolchain_config = ":roborio_toolchain_config",
 )
 
