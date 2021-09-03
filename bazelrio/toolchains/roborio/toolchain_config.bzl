@@ -34,7 +34,7 @@ def _impl(ctx):
         ctx = ctx,
         toolchain_identifier = "roborio_toolchain",
         host_system_name = "local",
-        target_system_name = "roborio",
+        target_system_name = "arm-frc2021-linux-gnueabi",
         target_cpu = "armv7",
         target_libc = "glibc-2.24",
         cc_target_os = "linux",
@@ -59,7 +59,6 @@ def _impl(ctx):
                             flag_group(
                                 flags = [
                                     "-no-canonical-prefixes",
-                                    "-v",
                                 ],
                             ),
                         ],
@@ -67,6 +66,9 @@ def _impl(ctx):
                     flag_set(
                         actions = [
                             ACTION_NAMES.cpp_link_executable,
+                            ACTION_NAMES.cpp_link_dynamic_library,
+                            ACTION_NAMES.cpp_link_nodeps_dynamic_library,
+                            ACTION_NAMES.cpp_link_static_library,
                         ],
                         flag_groups = [
                             flag_group(
