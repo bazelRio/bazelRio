@@ -10,11 +10,12 @@ register_toolchains("@bazelrio//toolchains/roborio")
 
 load("@rules_python//python:pip.bzl", "pip_parse")
 
-pip_parse(
+pip_install(
     name = "__bazelrio_deploy_pip_deps",
-    requirements_lock = "@bazelrio//deploy:requirements-lock.txt",
+    requirements = "@bazelrio//deploy:requirements.txt",
+#    requirements_lock = "@bazelrio//deploy:requirements-lock.txt",
 )
 
-load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "install_deps")
+#load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "install_deps")
 
-install_deps()
+#install_deps()
