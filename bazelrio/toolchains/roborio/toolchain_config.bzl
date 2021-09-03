@@ -19,6 +19,7 @@ def _impl(ctx):
         )
         for name in [
             "ar",
+            "as",
             "cpp",
             "gcc",
             "gcov",
