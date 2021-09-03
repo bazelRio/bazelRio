@@ -18,7 +18,7 @@ setup_bazelrio_dependencies()
 register_toolchains("@bazelrio//toolchains/roborio")
 ```
 
-You may also need to use the `.bazelrc` configuration in the `example/` directory.
+You **must** copy and edit the `.bazelrc` file in the `example/` directory into your project workspace.
 
 ## Features
 ### Cross compilation

@@ -1,5 +1,7 @@
 build --incompatible_enable_cc_toolchain_resolution
+
 # Uncomment me on macOS and Linux. See https://github.com/bazelbuild/sandboxfs/blob/master/INSTALL.md.
 # build --experimental_use_sandboxfs
-# Uncomment me on Windows if you have spaces in your default output_user_root.
+
+# Uncomment me on Windows if you have spaces in your default output_user_root (very likely).
 # startup --output_user_root=C:\\bazelroot
