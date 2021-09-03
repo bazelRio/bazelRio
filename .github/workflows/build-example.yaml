@@ -6,6 +6,8 @@ jobs:
         strategy:
             matrix:
                 os: [macos-latest, ubuntu-latest, windows-lastest]
+            fail-fast: false
+            max-parallel: 3
         steps:
             - run: "bazel build //:hello --platforms=@bazelrio//platforms/roborio"
               working-directory: example
