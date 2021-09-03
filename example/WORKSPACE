@@ -1,0 +1,9 @@
+local_repository(
+    name = "bazelrio",
+    path = "../bazelrio",
+)
+
+load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
+
+setup_bazelrio_dependencies()
+register_toolchains("@bazelrio//toolchains/roborio")

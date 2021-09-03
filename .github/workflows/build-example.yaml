@@ -1,0 +1,11 @@
+name: Build example project
+on: [pull_request]
+jobs:
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [macos-latest, ubuntu-latest, windows-lastest]
+        steps:
+            - run: "bazel build //:hello --platforms=@bazelrio//platforms/roborio"
+              working-directory: example
