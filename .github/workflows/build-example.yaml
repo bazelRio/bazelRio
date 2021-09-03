@@ -27,5 +27,5 @@ jobs:
             - uses: actions/checkout@v2
             - run: bazel --output_user_root=C:\bazelroot build //:hello --platforms=@bazelrio//platforms/roborio
               working-directory: example
-            - run: bazel --output_user_root=C:\bazelroot build.deploy //:hello --platforms=@bazelrio//platforms/roborio
+            - run: bazel --output_user_root=C:\bazelroot build //:hello.deploy --platforms=@bazelrio//platforms/roborio
               working-directory: example
