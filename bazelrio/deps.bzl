@@ -24,7 +24,7 @@ def setup_bazelrio_dependencies():
         urls = [
             "https://github.com/wpilibsuite/roborio-toolchain/releases/download/v2021-2/FRC-2021-Linux-Toolchain-7.3.0.tar.gz",
         ],
-        # sha256 = "0822ff945ff422b176571cebe7b2dfdc0ef6bf685d3b6f6833db8dc218d992ae",
+        sha256 = "00cc58bf0607d71e725919d28e22714ce1920692c4864bc86353fc8139cbf7b7",
         build_file_content = filegroup_all,
     )
     maybe(
@@ -33,6 +33,6 @@ def setup_bazelrio_dependencies():
         urls = [
             "https://github.com/wpilibsuite/roborio-toolchain/releases/download/v2021-2/FRC-2021-Windows-Toolchain-7.3.0.zip",
         ],
-        # sha256 = "0822ff945ff422b176571cebe7b2dfdc0ef6bf685d3b6f6833db8dc218d992ae",
+        # sha256 = "",
         build_file_content = filegroup_all,
     )
