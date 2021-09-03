@@ -59,6 +59,9 @@ def _impl(ctx):
                             flag_group(
                                 flags = [
                                     "-no-canonical-prefixes",
+                                    "-Bexternal/__bazelrio_roborio_toolchain_{}/frc2021/roborio/bin/arm-frc2021-linux-gnueabi-".format(
+                                        ctx.attr.host_os,
+                                    ),
                                 ],
                             ),
                         ],
