@@ -17,16 +17,12 @@ load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 setup_bazelrio_dependencies()
 register_toolchains("@bazelrio//toolchains/roborio")
 
-load("@rules_python//python:pip.bzl", "pip_parse")
+load("@rules_python//python:pip.bzl", "pip_install")
 
-pip_parse(
+pip_install(
     name = "__bazelrio_deploy_pip_deps",
-    requirements_lock = "@bazelrio//deploy:requirements-lock.txt",
+    requirements = "@bazelrio//deploy:requirements.txt",
 )
-
-load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "install_deps")
-
-install_deps()
 ```
 
 You **must** copy and edit the `.bazelrc` file in the `example/` directory into your project workspace.
