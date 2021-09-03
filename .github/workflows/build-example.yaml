@@ -9,6 +9,8 @@ jobs:
             - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
               working-directory: example
+            - run: bazel build //:hello.deploy --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
+              working-directory: example
     build-linux:
         runs-on: ubuntu-latest
         steps:
@@ -17,9 +19,13 @@ jobs:
             - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | sudo tar zxv -C /usr/local -f -
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
               working-directory: example
+            - run: bazel build //:hello.deploy --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
+              working-directory: example
     build-windows:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v2
             - run: bazel --output_user_root=C:\bazelroot build //:hello --platforms=@bazelrio//platforms/roborio
+              working-directory: example
+            - run: bazel --output_user_root=C:\bazelroot build //:hello.deploy --platforms=@bazelrio//platforms/roborio
               working-directory: example
