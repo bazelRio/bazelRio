@@ -1,14 +1,19 @@
 name: Build example project
 on: [pull_request]
 jobs:
-    build:
+    build-macos-linux:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [macos-latest, ubuntu-latest, windows-latest]
+                os: [macos-latest, ubuntu-latest]
             fail-fast: false
-            max-parallel: 3
         steps:
             - uses: actions/checkout@v2
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio
+              working-directory: example
+    build-windows:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: bazel --output_user_root=C:\bazelroot build //:hello --platforms=@bazelrio//platforms/roborio
               working-directory: example
