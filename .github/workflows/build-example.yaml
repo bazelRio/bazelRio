@@ -1,14 +1,19 @@
 name: Build example project
 on: [pull_request]
 jobs:
-    build-macos-linux:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [macos-latest, ubuntu-latest]
-            fail-fast: false
+    build-macos:
+        runs-on: macos-latest
         steps:
             - uses: actions/checkout@v2
+            - run: brew install osxfuse pkg-config
+            - run: cargo install sandboxfs
+            - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio
+              working-directory: example
+    build-linux:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: sudo apt-get install libfuse-dev pkg-config
             - run: cargo install sandboxfs
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio
               working-directory: example
