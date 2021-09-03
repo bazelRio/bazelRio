@@ -7,3 +7,14 @@ load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 
 setup_bazelrio_dependencies()
 register_toolchains("@bazelrio//toolchains/roborio")
+
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+pip_parse(
+    name = "__bazelrio_deploy_pip_deps",
+    requirements_lock = "@bazelrio//deploy:requirements-lock.txt",
+)
+
+load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "install_deps")
+
+install_deps()
