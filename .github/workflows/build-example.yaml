@@ -6,7 +6,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run: brew install osxfuse pkg-config
-            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg | sudo installer -pkg - -target /
+            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
               working-directory: example
     build-linux:
@@ -14,7 +14,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run: sudo apt-get install libfuse-dev pkg-config
-            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | tar zxv -C /usr/local -f -
+            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | sudo tar zxv -C /usr/local -f -
             - run: bazel build //:hello --platforms=@bazelrio//platforms/roborio --experimental_use_sandboxfs
               working-directory: example
     build-windows:
