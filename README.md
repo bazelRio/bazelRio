@@ -60,3 +60,6 @@ Connected to roborio-1337-frc.local.
 Attempting to deploy bazel-out/darwin-fastbuild/bin/hello...
 Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 ```
+
+### Library targets
+Bazelrio containts library targets for WPILib and (in the future) some vendor libraries. For example, you can dep `@bazelrio//libraries/wpilibc` to include WPILib in your project.
