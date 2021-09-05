@@ -59,6 +59,7 @@ def _impl(ctx):
                             flag_group(
                                 flags = [
                                     "-no-canonical-prefixes",
+                                    "-std=c++17",
                                 ],
                             ),
                         ],
@@ -74,6 +75,7 @@ def _impl(ctx):
                             flag_group(
                                 flags = [
                                     "-lstdc++",
+                                    "-lpthread",
                                 ],
                             ),
                         ],
