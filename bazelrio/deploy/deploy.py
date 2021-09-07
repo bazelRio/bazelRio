@@ -60,9 +60,22 @@ def deploy(argv):
     print(term.bright_yellow(f"Attempting to deploy {args.robot_binary.name}..."))
 
     sftp_client = client.open_sftp()
-    destination_path = f"/home/lvuser/{basename(args.robot_binary.name)}"
+    binary_name = basename(args.robot_binary.name)
+    destination_path = f"/home/lvuser/{binary_name}"
+    # https://github.com/wpilibsuite/GradleRIO/blob/aaf4da44e914a49e0bb956b028130481f538b31c/src/main/groovy/edu/wpi/first/gradlerio/frc/FRCNativeArtifact.groovy#L29
+    client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t")
+    sftp_client.remove(destination_path)
     sftp_client.putfo(args.robot_binary, destination_path)
-    sftp_client.chmod(destination_path, 755)
+    sftp_client.chmod(destination_path, 0o755)
+    with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
+        f.write(f"'{destination_path}'\n")
+    sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
+    sftp_client.chown(destination_path, 500, 500)
+    sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
+    client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
+    client.exec_command("sync")
+    client.exec_command("ldconfig")
+    client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r")
 
     print(term.bright_green(f"Deployed {args.robot_binary.name}. Exiting."))
 
