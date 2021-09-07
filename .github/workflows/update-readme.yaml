@@ -9,7 +9,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - run: |
-                REV=$(git rev-parse HEAD) SHA256=$(curl -sSL https://github.com/connorworley/bazelrio/archive/$REV.zip) envsubst < README.md.template > README.md
+                REV=$(git rev-parse HEAD) SHA256=$(curl -sSL https://github.com/connorworley/bazelrio/archive/$REV.zip | sha256sum) envsubst < README.md.template > README.md
                 git config --global user.name 'Connor Worley'
                 git config --global user.email 'connorworley@users.noreply.github.com'
                 git add README.md
