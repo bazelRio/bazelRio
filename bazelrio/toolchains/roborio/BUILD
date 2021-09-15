@@ -43,7 +43,7 @@ cc_toolchain(
 
 toolchain(
     name = "roborio",
+    target_compatible_with = ["//constraints/is_roborio:true"],
     toolchain = ":roborio_toolchain_definition",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
-    target_compatible_with = ["//constraints/is_roborio:true"],
 )

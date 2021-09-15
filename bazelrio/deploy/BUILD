@@ -4,9 +4,9 @@ load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "requirement")
 py_binary(
     name = "deploy",
     srcs = ["deploy.py"],
+    visibility = ["//visibility:public"],
     deps = [
         requirement("blessings"),
         requirement("paramiko"),
     ],
-    visibility = ["//visibility:public"],
 )
