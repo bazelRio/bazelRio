@@ -151,56 +151,56 @@ def setup_bazelrio_dependencies():
         http_archive,
         "__bazelrio_com_revrobotics_frc_sparkmax-cpp_linuxathena",
         url = "http://www.revrobotics.com/content/sw/max/sdk/maven/com/revrobotics/frc/SparkMax-cpp/1.5.4/SparkMax-cpp-1.5.4-linuxathena.zip",
-        sha256 = "b'df0c97373fa3c033a552cf15d5b9afcd6d9231737f6bca8cf1c4df63c2d30658'",
+        sha256 = "df0c97373fa3c033a552cf15d5b9afcd6d9231737f6bca8cf1c4df63c2d30658",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_sparkmax-driver_linuxathena",
         url = "http://www.revrobotics.com/content/sw/max/sdk/maven/com/revrobotics/frc/SparkMax-driver/1.5.4/SparkMax-driver-1.5.4-linuxathena.zip",
-        sha256 = "b'85f430e7f14635e4556d5e9147d9dda7f0180f6b487f8959c96a635424b8f11a'",
+        sha256 = "85f430e7f14635e4556d5e9147d9dda7f0180f6b487f8959c96a635424b8f11a",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxathena",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxathena.zip",
-        sha256 = "b'2a14d0ab80f42402824b675c94f138b3137745b63770867053154ee1b4ded7bf'",
+        sha256 = "2a14d0ab80f42402824b675c94f138b3137745b63770867053154ee1b4ded7bf",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
         "__bazelrio_com_kauailabs_navx_frc_navx-cpp_linuxathena",
         url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.425/navx-cpp-4.0.425-linuxathena.zip",
-        sha256 = "b'6acf09ae05fe95b11c24370c4cc6a95f0feb65097f25e5c7e39b5d21b775d519'",
+        sha256 = "6acf09ae05fe95b11c24370c4cc6a95f0feb65097f25e5c7e39b5d21b775d519",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_sparkmax-cpp_headers",
         url = "http://www.revrobotics.com/content/sw/max/sdk/maven/com/revrobotics/frc/SparkMax-cpp/1.5.4/SparkMax-cpp-1.5.4-headers.zip",
-        sha256 = "b'e5c5c8c3e72b399101ee1056279d72540554ffb149d9351036f8d977b36e3c1f'",
+        sha256 = "e5c5c8c3e72b399101ee1056279d72540554ffb149d9351036f8d977b36e3c1f",
         build_file_content = cc_library_headers,
     )
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_sparkmax-driver_headers",
         url = "http://www.revrobotics.com/content/sw/max/sdk/maven/com/revrobotics/frc/SparkMax-driver/1.5.4/SparkMax-driver-1.5.4-headers.zip",
-        sha256 = "b'c3984a9c073125bedb1a299c1e8e831b43e728b83dbc10d8e0032cb74186fed2'",
+        sha256 = "c3984a9c073125bedb1a299c1e8e831b43e728b83dbc10d8e0032cb74186fed2",
         build_file_content = cc_library_headers,
     )
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_headers",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-headers.zip",
-        sha256 = "b'bfa7bbfcb32017ed4e4c9b3138eea559f715b7c1fdf8666ed93938cd85787f70'",
+        sha256 = "bfa7bbfcb32017ed4e4c9b3138eea559f715b7c1fdf8666ed93938cd85787f70",
         build_file_content = cc_library_headers,
     )
     maybe(
         http_archive,
         "__bazelrio_com_kauailabs_navx_frc_navx-cpp_headers",
         url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.425/navx-cpp-4.0.425-headers.zip",
-        sha256 = "b'6482edc027dff06570e81747ff87aa8369b302122c38530b0cab0d2c11e83f80'",
+        sha256 = "6482edc027dff06570e81747ff87aa8369b302122c38530b0cab0d2c11e83f80",
         build_file_content = cc_library_headers,
     )
     maybe(

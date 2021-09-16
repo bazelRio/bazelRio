@@ -20,7 +20,7 @@ content = content[
 ]
 
 
-def http_get(url: str) -> str:
+def http_get(url: str) -> bytes:
     with urlopen(url) as response:
         return response.read()
 
@@ -61,7 +61,7 @@ def maven(
 
     if sha256 is None:
         try:
-            sha256 = http_get(url + ".sha256")
+            sha256 = http_get(url + ".sha256").decode("utf-8")
         except:
             print("Downloading this to calculate SHA 256 sum...")
             sha256 = sha256sum(http_get(url)).hexdigest()
