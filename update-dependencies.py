@@ -95,11 +95,11 @@ def wpilib_dependency(project: str, resources=PLATFORMS + ["headers"], language=
         )
 
 
-def ni_dependency(project: str, language="cpp", resources=["linuxathena"]):
+def ni_dependency(project: str, language=None, resources=["linuxathena"]):
     for resource in resources:
         sha256 = loads(
             http_get(
-                f"https://frcmaven.wpi.edu/api/storage/wpilib-mvn-release/{resource_path('edu/wpi/first/ni-libraries', project, None, NI_VERSION, resource)}"
+                f"https://frcmaven.wpi.edu/api/storage/wpilib-mvn-release/{resource_path('edu/wpi/first/ni-libraries', project, language, NI_VERSION, resource)}"
             )
         )["checksums"]["sha256"]
         maven(
