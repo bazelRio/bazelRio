@@ -8,8 +8,9 @@ DEPENDENCIES_PATH = join("bazelrio", "deps.bzl")
 WPILIB_VERSION = "2021.3.1"
 NI_VERSION = "2020.9.2"
 REV_SPARKMAX_VERSION = "1.5.4"
+REV_COLORSENSOR_VERSION = "1.2.0"
 CTRE_PHOENIX_VERSION = "5.19.4"
-KAUAILABS_NAVX_VERSION = "4.0.429"
+KAUAILABS_NAVX_VERSION = "4.0.425"
 
 PLATFORMS = ["linuxathena"]
 
@@ -49,6 +50,8 @@ def maven(
 ):
     global content
 
+    print(f"Adding a dependency on {name} ({resource})")
+
     if build_file_content is None:
         build_file_content = (
             "cc_library_headers" if resource == "headers" else "filegroup_all"
@@ -57,15 +60,18 @@ def maven(
     url = f"{site}/{resource_path(path, name, language, version, resource)}"
 
     if sha256 is None:
-        print(url)
-        sha256 = sha256sum(http_get(url)).hexdigest()
+        try:
+            sha256 = http_get(url + ".sha256")
+        except:
+            print("Downloading this to calculate SHA 256 sum...")
+            sha256 = sha256sum(http_get(url)).hexdigest()
 
     content += f"""
     maybe(
         http_archive,
         "__bazelrio_{path.replace("/", "_")}_{name.lower()}_{resource if resource is not None else language}",
         url = "{url}",
-        sha256 = {sha256},
+        sha256 = "{sha256}",
         build_file_content = {build_file_content},
     )"""
 
@@ -128,6 +134,24 @@ for resource in PLATFORMS + ["headers"]:
     )
 
     maven(
+        "http://www.revrobotics.com/content/sw/max/sdk/maven",
+        "com/revrobotics/frc",
+        "SparkMax-driver",
+        None,
+        REV_SPARKMAX_VERSION,
+        resource,
+    )
+
+    maven(
+        "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven",
+        "com/revrobotics/frc",
+        "ColorSensorV3-cpp",
+        None,
+        REV_COLORSENSOR_VERSION,
+        resource,
+    )
+
+    maven(
         "https://repo1.maven.org/maven2",
         "com/kauailabs/navx/frc",
         "navx-cpp",
@@ -136,15 +160,16 @@ for resource in PLATFORMS + ["headers"]:
         resource,
     )
 
-for project in ["api-cpp", "canutils", "cci", "core", "diagnostics", "wpiapi-cpp"]:
-    maven(
-        "https://devsite.ctr-electronics.com/maven/release",
-        "com/ctre/phoenix",
-        project,
-        None,
-        CTRE_PHOENIX_VERSION,
-        "linuxathenastatic",
-    )
+for resource in ["headers", "linuxathenastatic"]:
+    for project in ["api-cpp", "canutils", "cci", "core", "diagnostics", "wpiapi-cpp"]:
+        maven(
+            "https://devsite.ctr-electronics.com/maven/release",
+            "com/ctre/phoenix",
+            project,
+            None,
+            CTRE_PHOENIX_VERSION,
+            resource,
+        )
 
 with open(DEPENDENCIES_PATH, "w") as dependencies:
     dependencies.write(content)
