@@ -3,12 +3,12 @@ cc_library(
     srcs = [
         "@__bazelrio_edu_wpi_first_wpilibc_shared//:all",
     ],
+    visibility = ["//visibility:public"],
     deps = [
-        "@__bazelrio_edu_wpi_first_wpilibc_headers//:headers",
         "//libraries/hal",
-        "//libraries/wpiutil",
         "//libraries/ntcore",
         "//libraries/wpimath",
+        "//libraries/wpiutil",
+        "@__bazelrio_edu_wpi_first_wpilibc_headers//:headers",
     ],
-    visibility = ["//visibility:public"],
 )

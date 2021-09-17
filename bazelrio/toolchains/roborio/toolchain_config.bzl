@@ -29,7 +29,6 @@ def _impl(ctx):
         ]
     ]
 
-
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
         toolchain_identifier = "roborio_toolchain",
@@ -81,7 +80,7 @@ def _impl(ctx):
                         ],
                     ),
                 ],
-            )
+            ),
         ],
     )
 

@@ -1,7 +1,7 @@
 def robot_cc_binary(name, team_number, **kwargs):
     native.cc_binary(
         name = name,
-        **kwargs,
+        **kwargs
     )
     native.genrule(
         name = "{}.deploy".format(name),
@@ -11,4 +11,5 @@ def robot_cc_binary(name, team_number, **kwargs):
         executable = True,
         cmd = "echo '$(location @bazelrio//deploy)' --robot_binary '$(location {})' --team_number '{}' > $@".format(name, team_number),
     )
+
 2
