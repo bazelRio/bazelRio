@@ -6,6 +6,7 @@ local_repository(
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 
 setup_bazelrio_dependencies()
+
 register_toolchains("@bazelrio//toolchains/roborio")
 
 load("@rules_python//python:pip.bzl", "pip_install")
