@@ -1,4 +1,5 @@
-from os.path import join
+from os import makedirs
+from os.path import join, exists
 from json import loads
 from typing import Union
 from urllib.request import urlopen
@@ -13,11 +14,6 @@ CTRE_PHOENIX_VERSION = "5.19.4"
 KAUAILABS_NAVX_VERSION = "4.0.425"
 
 PLATFORMS = ["linuxathena"]
-
-content = open(DEPENDENCIES_PATH, "r").read()
-content = content[
-    : content.index("# GENERATED DEPENDENCIES") + len("# GENERATED DEPENDENCIES")
-]
 
 
 def http_get(url: str) -> bytes:
@@ -47,9 +43,7 @@ def maven(
     resource: Union[str, None] = None,
     sha256: Union[str, None] = None,
     build_file_content: Union[str, None] = None,
-):
-    global content
-
+) -> str:
     print(f"Adding a dependency on {name} ({resource})")
 
     if build_file_content is None:
@@ -66,7 +60,7 @@ def maven(
             print("Downloading this to calculate SHA 256 sum...")
             sha256 = sha256sum(http_get(url)).hexdigest()
 
-    content += f"""
+    return f"""
     maybe(
         http_archive,
         "__bazelrio_{path.replace("/", "_")}_{name.lower()}_{resource if resource is not None else language}",
@@ -76,7 +70,10 @@ def maven(
     )"""
 
 
-def wpilib_dependency(project: str, resources=PLATFORMS + ["headers"], language="cpp"):
+def wpilib_dependency(
+    project: str, resources=PLATFORMS + ["headers"], language="cpp"
+) -> str:
+    dependencies = ""
     for resource in resources:
         sha256 = loads(
             http_get(
@@ -84,7 +81,7 @@ def wpilib_dependency(project: str, resources=PLATFORMS + ["headers"], language=
             )
         )["checksums"]["sha256"]
 
-        maven(
+        dependencies += maven(
             "https://frcmaven.wpi.edu/release",
             "edu/wpi/first",
             project,
@@ -94,15 +91,18 @@ def wpilib_dependency(project: str, resources=PLATFORMS + ["headers"], language=
             sha256,
         )
 
+    return dependencies
 
-def ni_dependency(project: str, language=None, resources=["linuxathena"]):
+
+def ni_dependency(project: str, language=None, resources=["linuxathena"]) -> str:
+    dependencies = ""
     for resource in resources:
         sha256 = loads(
             http_get(
                 f"https://frcmaven.wpi.edu/api/storage/wpilib-mvn-release/{resource_path('edu/wpi/first/ni-libraries', project, language, NI_VERSION, resource)}"
             )
         )["checksums"]["sha256"]
-        maven(
+        dependencies += maven(
             "https://frcmaven.wpi.edu/release",
             "edu/wpi/first/ni-libraries",
             project,
@@ -112,20 +112,83 @@ def ni_dependency(project: str, language=None, resources=["linuxathena"]):
             sha256,
         )
 
+    return dependencies
 
-wpilib_dependency("wpilibc")
-wpilib_dependency("hal")
-wpilib_dependency("wpiutil")
-wpilib_dependency("ntcore")
-wpilib_dependency("wpimath")
-wpilib_dependency("wpilibNewCommands")
-ni_dependency("chipobject")
-ni_dependency("visa")
-ni_dependency("runtime")
-ni_dependency("netcomm")
+
+def create_dependency(project: str, version: str, dependencies: str):
+    folder = join("bazelrio", "dependencies", project, version.replace(".", "_"))
+    if not exists(folder):
+        makedirs(folder)
+
+    with open(join(folder, "..", "BUILD"), "w") as build:
+        build.write("")
+
+    with open(join(folder, "BUILD"), "w") as build:
+        build.write("")
+
+    method_name = f"setup_{project}_dependencies"
+
+    with open(join(folder, "deps.bzl"), "w") as build:
+        build.write(
+            f"""load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+filegroup_all = \"""filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+\"""
+
+cc_library_headers = \"""cc_library(
+    name = "headers",
+    hdrs = glob(["**"]),
+    includes = ["."],
+    visibility = ["//visibility:public"],
+)
+\"""
+
+def {method_name}():"""
+            + dependencies
+        )
+
+    return (
+        f'load("//dependencies/{project}/{version.replace(".", "_")}:deps.bzl", "{method_name}")',
+        method_name,
+    )
+
+
+dependencies = []
+
+dependencies.append(
+    create_dependency(
+        "wpilib",
+        WPILIB_VERSION,
+        wpilib_dependency("wpilibc")
+        + wpilib_dependency("hal")
+        + wpilib_dependency("wpiutil")
+        + wpilib_dependency("ntcore")
+        + wpilib_dependency("wpimath")
+        + wpilib_dependency("wpilibNewCommands"),
+    )
+)
+dependencies.append(
+    create_dependency(
+        "ni",
+        NI_VERSION,
+        ni_dependency("chipobject")
+        + ni_dependency("visa")
+        + ni_dependency("runtime")
+        + ni_dependency("netcomm"),
+    )
+)
+
+sparkmax_dependencies = ""
+colorsensor_dependencies = ""
+phoenix_dependencies = ""
+navx_dependencies = ""
 
 for resource in PLATFORMS + ["headers"]:
-    maven(
+    sparkmax_dependencies += maven(
         "http://www.revrobotics.com/content/sw/max/sdk/maven",
         "com/revrobotics/frc",
         "SparkMax-cpp",
@@ -134,7 +197,7 @@ for resource in PLATFORMS + ["headers"]:
         resource,
     )
 
-    maven(
+    sparkmax_dependencies += maven(
         "http://www.revrobotics.com/content/sw/max/sdk/maven",
         "com/revrobotics/frc",
         "SparkMax-driver",
@@ -143,7 +206,7 @@ for resource in PLATFORMS + ["headers"]:
         resource,
     )
 
-    maven(
+    colorsensor_dependencies += maven(
         "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven",
         "com/revrobotics/frc",
         "ColorSensorV3-cpp",
@@ -152,7 +215,7 @@ for resource in PLATFORMS + ["headers"]:
         resource,
     )
 
-    maven(
+    navx_dependencies += maven(
         "https://repo1.maven.org/maven2",
         "com/kauailabs/navx/frc",
         "navx-cpp",
@@ -163,7 +226,7 @@ for resource in PLATFORMS + ["headers"]:
 
 for resource in ["headers", "linuxathenastatic"]:
     for project in ["api-cpp", "canutils", "cci", "core", "diagnostics", "wpiapi-cpp"]:
-        maven(
+        phoenix_dependencies += maven(
             "https://devsite.ctr-electronics.com/maven/release",
             "com/ctre/phoenix",
             project,
@@ -172,5 +235,30 @@ for resource in ["headers", "linuxathenastatic"]:
             resource,
         )
 
-with open(DEPENDENCIES_PATH, "w") as dependencies:
-    dependencies.write(content)
+dependencies.append(
+    create_dependency("sparkmax", REV_SPARKMAX_VERSION, sparkmax_dependencies)
+)
+dependencies.append(
+    create_dependency("colorsensor", REV_COLORSENSOR_VERSION, colorsensor_dependencies)
+)
+dependencies.append(
+    create_dependency("phoenix", CTRE_PHOENIX_VERSION, phoenix_dependencies)
+)
+dependencies.append(
+    create_dependency("navx", KAUAILABS_NAVX_VERSION, navx_dependencies)
+)
+
+contents = open(join("bazelrio", "deps.bzl"), "r").read().split("# THE FOLLOWING LINES")
+
+contents[1] = contents[1].split("\n")[0]
+contents[3] = contents[3].split("\n")[0]
+
+contents[1] += (
+    "\n" + "\n".join(map(lambda dependency: dependency[0], dependencies)) + "\n"
+)
+contents[3] += "\n    " + (
+    "\n    ".join(map(lambda dependency: dependency[1] + "()", dependencies)) + "\n    "
+)
+
+with open(join("bazelrio", "deps.bzl"), "w") as deps:
+    deps.write("# THE FOLLOWING LINES".join(contents))
