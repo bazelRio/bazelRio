@@ -132,6 +132,7 @@ def create_dependency(project: str, version: str, dependencies: str):
         build.write(
             f"""load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+
 filegroup_all = \"""filegroup(
     name = "all",
     srcs = glob(["**"]),
@@ -149,6 +150,7 @@ cc_library_headers = \"""cc_library(
 
 def {method_name}():"""
             + dependencies
+            + "\n"
         )
 
     return (
