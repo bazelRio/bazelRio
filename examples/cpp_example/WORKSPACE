@@ -1,6 +1,6 @@
 local_repository(
     name = "bazelrio",
-    path = "../bazelrio",
+    path = "../../bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
