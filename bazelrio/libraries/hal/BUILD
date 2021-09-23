@@ -1,7 +1,7 @@
 cc_library(
     name = "hal",
     srcs = [
-        "@__bazelrio_edu_wpi_first_hal_shared//:all",
+        "@__bazelrio_edu_wpi_first_hal_linuxathena//:all",
     ],
     visibility = ["//visibility:public"],
     deps = [
