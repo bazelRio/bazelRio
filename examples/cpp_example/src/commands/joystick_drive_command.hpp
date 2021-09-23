@@ -9,13 +9,13 @@
 class JoystickDriveCommand
     : public frc2::CommandHelper<frc2::CommandBase, JoystickDriveCommand> {
  public:
-  JoystickDriveCommand(frc::Joystick* joystick, DriveTrain* drivetrain);
+  JoystickDriveCommand(frc::Joystick& joystick, DriveTrain& drivetrain);
 
   void Execute() override;
   bool IsFinished() override;
   void End(bool interrupted) override;
 
  private:
-  frc::Joystick* m_joystick;
-  DriveTrain* m_drivetrain;
+  frc::Joystick& m_joystick;
+  DriveTrain& m_drivetrain;
 };

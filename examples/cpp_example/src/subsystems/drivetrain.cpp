@@ -9,8 +9,6 @@
 
 DriveTrain::DriveTrain()
     : m_gyro(frc::SPI::Port::kMXP),
-      m_simNavx("navX-Sensor[4]"),
-      m_yawSim(m_simNavx.GetDouble("Yaw")),
       m_drivetrainSimulator(
           frc::sim::DifferentialDrivetrainSim::CreateKitbotSim(
               frc::sim::DifferentialDrivetrainSim::KitbotMotor::DualCIMPerSide,
@@ -90,5 +88,5 @@ void DriveTrain::SimulationPeriodic() {
       m_drivetrainSimulator.GetRightPosition().to<double>());
   m_rightEncoderSim.SetRate(
       m_drivetrainSimulator.GetRightVelocity().to<double>());
-  m_yawSim.Set(-m_drivetrainSimulator.GetHeading().Degrees().to<double>());
+  m_gyroSim.SetAngle(-m_drivetrainSimulator.GetHeading().Degrees());
 }

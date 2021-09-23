@@ -8,10 +8,10 @@
 class SetElevatorSetpoint
     : public frc2::CommandHelper<frc2::PIDCommand, SetElevatorSetpoint> {
  public:
-  explicit SetElevatorSetpoint(Elevator* elevator, units::meter_t setpoint);
+  explicit SetElevatorSetpoint(Elevator& elevator, units::meter_t setpoint);
   void End(bool interrupted) override;
 
  private:
   double m_setpoint;
-  Elevator* m_elevator;
+  Elevator& m_elevator;
 };

@@ -13,10 +13,6 @@ robot_cc_binary(
     ]),
     team_number = 1337,
     deps = [
-        "@bazelrio//libraries/ctre/phoenix",
-        "@bazelrio//libraries/kauailabs/navx",
-        "@bazelrio//libraries/rev/colorsensor",
-        "@bazelrio//libraries/rev/sparkmax",
         "@bazelrio//libraries/wpilib/commands",
         "@bazelrio//libraries/wpilibc",
     ],
