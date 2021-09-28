@@ -3,7 +3,8 @@ load("@__bazelrio_wpiformat_pip_deps//:requirements.bzl", "requirement")
 
 py_binary(
     name = "wpiformat",
-    srcs = ["wpiformat.py"],
+    srcs = ["format.py"],
+    main = "format.py",
     visibility = ["//visibility:public"],
     deps = [
         requirement("wpiformat"),

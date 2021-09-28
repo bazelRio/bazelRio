@@ -11,13 +11,3 @@ def robot_cc_binary(name, team_number, **kwargs):
         executable = True,
         cmd = "echo '$(location @bazelrio//scripts/deploy)' --robot_binary '$(location {})' --team_number '{}' > $@".format(name, team_number),
     )
-
-    native.genrule(
-        name = "wpiformat",
-        tools = ["@bazelrio//scripts/wpiformat"],
-        outs = ["wpiformat"],
-        executable = True,
-        cmd = "echo '$(location @bazelrio//scripts/wpiformat)' > $@",
-    )
-
-2
