@@ -20,8 +20,16 @@ CTRE_PHOENIX_VERSION = "5.19.4"
 KAUAILABS_NAVX_VERSION = "4.0.425"
 
 DEFAULT_NATIVE_SHARED_PLATFORMS = ["windowsx86-64", "linuxx86-64", "osxx86-64"]
-DEFAULT_NATIVE_STATIC_PLATFORMS = ["windowsx86-64static", "linuxx86-64static", "osxx86-64static"]
-DEFAULT_PLATFORMS = ["linuxathena", "linuxathenastatic"] + DEFAULT_NATIVE_SHARED_PLATFORMS + DEFAULT_NATIVE_STATIC_PLATFORMS
+DEFAULT_NATIVE_STATIC_PLATFORMS = [
+    "windowsx86-64static",
+    "linuxx86-64static",
+    "osxx86-64static",
+]
+DEFAULT_PLATFORMS = (
+    ["linuxathena", "linuxathenastatic"]
+    + DEFAULT_NATIVE_SHARED_PLATFORMS
+    + DEFAULT_NATIVE_STATIC_PLATFORMS
+)
 
 
 def http_get(url: str) -> bytes:
@@ -82,13 +90,17 @@ def maven(
 
 
 def wpilib_dependency(
-    project: str, resources=DEFAULT_PLATFORMS + ["headers"], language="cpp", path="edu/wpi/first"
+    project: str,
+    resources=DEFAULT_PLATFORMS + ["headers"],
+    version=WPILIB_VERSION,
+    language="cpp",
+    path="edu/wpi/first",
 ) -> str:
     dependencies = ""
     for resource in resources:
         sha256 = loads(
             http_get(
-                f"https://frcmaven.wpi.edu/api/storage/wpilib-mvn-release/{resource_path(path, project, language, WPILIB_VERSION, resource)}"
+                f"https://frcmaven.wpi.edu/api/storage/wpilib-mvn-release/{resource_path(path, project, language, version, resource)}"
             )
         )["checksums"]["sha256"]
 
@@ -97,7 +109,7 @@ def wpilib_dependency(
             path,
             project,
             language,
-            WPILIB_VERSION,
+            version,
             resource,
             sha256,
         )
@@ -106,10 +118,12 @@ def wpilib_dependency(
 
 
 def halsim_dependency(project: str) -> str:
-    return wpilib_dependency(project,
-                             path="edu/wpi/first/halsim",
-                             resources=DEFAULT_NATIVE_SHARED_PLATFORMS,
-                             language=None)
+    return wpilib_dependency(
+        project,
+        path="edu/wpi/first/halsim",
+        resources=DEFAULT_NATIVE_SHARED_PLATFORMS,
+        language=None,
+    )
 
 
 def ni_dependency(project: str, language=None, resources=["linuxathena"]) -> str:
@@ -134,33 +148,35 @@ def ni_dependency(project: str, language=None, resources=["linuxathena"]) -> str
 
 
 def parse_vendor_dep(dependency_name, vendor_dep_file):
-    PLATFORM_BLACKLIST = set([
-        "windowsx86",
-        "linuxaarch64bionic",
-        "linuxraspbian",
-    ])
+    PLATFORM_BLACKLIST = set(
+        [
+            "windowsx86",
+            "linuxaarch64bionic",
+            "linuxraspbian",
+        ]
+    )
 
-    with open(vendor_dep_file, 'r') as f:
+    with open(vendor_dep_file, "r") as f:
         vendor_dep = json.load(f)
 
     header_dependencies = ""
     library_dependencies = ""
 
-    for cpp_dep in sorted(vendor_dep["cppDependencies"], key=lambda x: x['artifactId']):
-        site = vendor_dep['mavenUrls'][0]
+    for cpp_dep in sorted(vendor_dep["cppDependencies"], key=lambda x: x["artifactId"]):
+        site = vendor_dep["mavenUrls"][0]
         if site.endswith("/"):
             site = site[:-1]
 
         common_args = {}
-        common_args['site'] = site
-        common_args['path'] = cpp_dep['groupId'].replace(".", "/")
-        common_args['name'] = cpp_dep['artifactId']
-        common_args['language'] = None
-        common_args['version'] = vendor_dep['version']
+        common_args["site"] = site
+        common_args["path"] = cpp_dep["groupId"].replace(".", "/")
+        common_args["name"] = cpp_dep["artifactId"]
+        common_args["language"] = None
+        common_args["version"] = vendor_dep["version"]
 
         # Header
         header_dependencies += maven(
-            resource=cpp_dep['headerClassifier'],
+            resource=cpp_dep["headerClassifier"],
             **common_args,
         )
 
@@ -189,11 +205,21 @@ def parse_vendor_dep(dependency_name, vendor_dep_file):
             except HTTPError:
                 print(f"No static library for {cpp_dep['artifactId']}")
 
-    return create_dependency(dependency_name, vendor_dep['version'], header_dependencies + library_dependencies)
+    return create_dependency(
+        dependency_name,
+        vendor_dep["version"],
+        header_dependencies + library_dependencies,
+    )
 
 
 def create_dependency(project: str, version: str, dependencies: str):
-    folder = join(OUTPUT_DIRECTORY_BASE, "bazelrio", "dependencies", project, version.replace(".", "_"))
+    folder = join(
+        OUTPUT_DIRECTORY_BASE,
+        "bazelrio",
+        "dependencies",
+        project,
+        version.replace(".", "_"),
+    )
     if not exists(folder):
         makedirs(folder)
 
@@ -237,6 +263,9 @@ def main():
             + wpilib_dependency("cameraserver")
             + wpilib_dependency("cscore")
             + wpilib_dependency("wpilibNewCommands")
+            + wpilib_dependency(
+                "opencv", path="edu/wpi/first/thirdparty/frc2021", version="3.4.7-5"
+            )
             + halsim_dependency("halsim_ds_socket")
             + halsim_dependency("halsim_gui")
             + halsim_dependency("halsim_ws_client")
@@ -254,11 +283,27 @@ def main():
         )
     )
 
-    dependencies.append(parse_vendor_dep("sparkmax", f"{SCRIPT_DIR}/vendordeps/sparkmax/{REV_SPARKMAX_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("colorsensor", f"{SCRIPT_DIR}/vendordeps/colorsensor/{REV_COLORSENSOR_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("phoenix", f"{SCRIPT_DIR}/vendordeps/phoenix/{CTRE_PHOENIX_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("navx", f"{SCRIPT_DIR}/vendordeps/navx/{KAUAILABS_NAVX_VERSION}.json"))
-
+    dependencies.append(
+        parse_vendor_dep(
+            "sparkmax", f"{SCRIPT_DIR}/vendordeps/sparkmax/{REV_SPARKMAX_VERSION}.json"
+        )
+    )
+    dependencies.append(
+        parse_vendor_dep(
+            "colorsensor",
+            f"{SCRIPT_DIR}/vendordeps/colorsensor/{REV_COLORSENSOR_VERSION}.json",
+        )
+    )
+    dependencies.append(
+        parse_vendor_dep(
+            "phoenix", f"{SCRIPT_DIR}/vendordeps/phoenix/{CTRE_PHOENIX_VERSION}.json"
+        )
+    )
+    dependencies.append(
+        parse_vendor_dep(
+            "navx", f"{SCRIPT_DIR}/vendordeps/navx/{KAUAILABS_NAVX_VERSION}.json"
+        )
+    )
 
     main_dep_file = join(OUTPUT_DIRECTORY_BASE, "bazelrio", "deps.bzl")
     contents = open(main_dep_file, "r").read().split("# THE FOLLOWING LINES")
@@ -270,7 +315,8 @@ def main():
         "\n" + "\n".join(map(lambda dependency: dependency[0], dependencies)) + "\n"
     )
     contents[3] += "\n    " + (
-        "\n    ".join(map(lambda dependency: dependency[1] + "()", dependencies)) + "\n    "
+        "\n    ".join(map(lambda dependency: dependency[1] + "()", dependencies))
+        + "\n    "
     )
 
     with open(main_dep_file, "w") as deps:
