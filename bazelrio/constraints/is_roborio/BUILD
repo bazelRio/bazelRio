@@ -13,3 +13,9 @@ constraint_value(
     name = "false",
     constraint_setting = ":is_roborio",
 )
+
+config_setting(
+    name = "roborio",
+    constraint_values = [":true"],
+    visibility = ["//visibility:public"],
+)

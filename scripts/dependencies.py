@@ -20,7 +20,8 @@ CTRE_PHOENIX_VERSION = "5.19.4"
 KAUAILABS_NAVX_VERSION = "4.0.425"
 
 DEFAULT_NATIVE_SHARED_PLATFORMS = ["windowsx86-64", "linuxx86-64", "osxx86-64"]
-DEFAULT_PLATFORMS = ["linuxathena"] + DEFAULT_NATIVE_SHARED_PLATFORMS
+DEFAULT_NATIVE_STATIC_PLATFORMS = ["windowsx86-64static", "linuxx86-64static", "osxx86-64static"]
+DEFAULT_PLATFORMS = ["linuxathena", "linuxathenastatic"] + DEFAULT_NATIVE_SHARED_PLATFORMS + DEFAULT_NATIVE_STATIC_PLATFORMS
 
 
 def http_get(url: str) -> bytes:
@@ -54,9 +55,12 @@ def maven(
     print(f"Adding a dependency on {name} ({resource})")
 
     if build_file_content is None:
-        build_file_content = (
-            "cc_library_headers" if resource == "headers" else "filegroup_all"
-        )
+        if resource == "headers":
+            build_file_content = "cc_library_headers"
+        elif resource.endswith("static"):
+            build_file_content = "cc_library_static"
+        else:
+            build_file_content = "cc_library_shared"
 
     url = f"{site}/{resource_path(path, name, language, version, resource)}"
 
@@ -205,21 +209,7 @@ def create_dependency(project: str, version: str, dependencies: str):
         build.write(
             f"""load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-
-filegroup_all = \"""filegroup(
-    name = "all",
-    srcs = glob(["**"]),
-    visibility = ["//visibility:public"],
-)
-\"""
-
-cc_library_headers = \"""cc_library(
-    name = "headers",
-    hdrs = glob(["**"]),
-    includes = ["."],
-    visibility = ["//visibility:public"],
-)
-\"""
+load("@bazelrio//:deps_utils.bzl", "filegroup_all", "cc_library_headers", "cc_library_static", "cc_library_shared")
 
 def {method_name}():"""
             + dependencies
@@ -264,10 +254,10 @@ def main():
         )
     )
 
-    dependencies.append(parse_vendor_dep("sparkmax", f"vendordeps/sparkmax/{REV_SPARKMAX_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("colorsensor", f"vendordeps/colorsensor/{REV_COLORSENSOR_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("phoenix", f"vendordeps/phoenix/{CTRE_PHOENIX_VERSION}.json"))
-    dependencies.append(parse_vendor_dep("navx", f"vendordeps/navx/{KAUAILABS_NAVX_VERSION}.json"))
+    dependencies.append(parse_vendor_dep("sparkmax", f"{SCRIPT_DIR}/vendordeps/sparkmax/{REV_SPARKMAX_VERSION}.json"))
+    dependencies.append(parse_vendor_dep("colorsensor", f"{SCRIPT_DIR}/vendordeps/colorsensor/{REV_COLORSENSOR_VERSION}.json"))
+    dependencies.append(parse_vendor_dep("phoenix", f"{SCRIPT_DIR}/vendordeps/phoenix/{CTRE_PHOENIX_VERSION}.json"))
+    dependencies.append(parse_vendor_dep("navx", f"{SCRIPT_DIR}/vendordeps/navx/{KAUAILABS_NAVX_VERSION}.json"))
 
 
     main_dep_file = join(OUTPUT_DIRECTORY_BASE, "bazelrio", "deps.bzl")
