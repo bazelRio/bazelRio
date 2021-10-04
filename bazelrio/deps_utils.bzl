@@ -24,7 +24,7 @@ cc_library(
 
 cc_library_shared = """
 static_srcs = glob(["**/*.lib", "**/*.a"], exclude=["**/*jni.lib"])
-shared_srcs = glob(["**/*.dll", "**/*.so*", "**/*.dylib"], exclude=["**/*jni.dll", "**/*jni.so", "**/*.so.debug"])
+shared_srcs = glob(["**/*.dll", "**/*.so*", "**/*.dylib"], exclude=["**/*jni.dll", "**/*jni.so", "**/*.so.debug", "**/libopencv_java*.dylib"])
 
 cc_library(
     name = "static_libs",
