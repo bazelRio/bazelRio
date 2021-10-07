@@ -24,6 +24,7 @@ DEFAULT_PLATFORMS = ["linuxathena"] + DEFAULT_NATIVE_SHARED_PLATFORMS
 
 
 def http_get(url: str) -> bytes:
+    print(url)
     with urlopen(url) as response:
         return response.read()
 
@@ -35,6 +36,9 @@ def resource_path(
     version: str,
     resource: Union[str, None] = None,
 ):
+    if language == "java" or language == "jni":
+        return f"""{path}/{name}/{name}-{language}/{version}/{name}-{language}-{version}{f"-{resource}" if resource is not None else ""}.jar"""
+
     if language is not None:
         return f"""{path}/{name}/{name}-{language}/{version}/{name}-{language}-{version}{f"-{resource}" if resource is not None else ""}.zip"""
 
@@ -67,10 +71,20 @@ def maven(
             print("Downloading this to calculate SHA 256 sum...")
             sha256 = sha256sum(http_get(url)).hexdigest()
 
-    return f"""
+    if language == "java" or language == "jni":
+        return f"""
+    maybe(
+        http_file,
+        "__bazelrio_{path.replace("/", "_")}_{name.lower()}_{language if language is not None else "none"}{f"_{resource}" if resource is not None else ""}",
+        urls = ["{url}"],
+        sha256 = "{sha256}",
+        downloaded_file_path = "{name}-{language}-{version}.jar",
+    )"""
+    else:
+        return f"""
     maybe(
         http_archive,
-        "__bazelrio_{path.replace("/", "_")}_{name.lower()}_{resource if resource is not None else language}",
+        "__bazelrio_{path.replace("/", "_")}_{name.lower()}_{language if language is not None else "none"}{f"_{resource}" if resource is not None else ""}",
         url = "{url}",
         sha256 = "{sha256}",
         build_file_content = {build_file_content},
@@ -204,6 +218,7 @@ def create_dependency(project: str, version: str, dependencies: str):
     with open(join(folder, "deps.bzl"), "w") as build:
         build.write(
             f"""load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
 filegroup_all = \"""filegroup(
@@ -240,11 +255,17 @@ def main():
             "wpilib",
             WPILIB_VERSION,
             wpilib_dependency("wpilibc")
+            + wpilib_dependency("wpilibj", language="java", resources=[None])
             + wpilib_dependency("hal")
+            + wpilib_dependency("hal", language="java", resources=[None])
+            + wpilib_dependency("hal", language="jni", resources=["linuxathena"])
             + wpilib_dependency("wpiutil")
+            + wpilib_dependency("wpiutil", language="java", resources=[None])
             + wpilib_dependency("ntcore")
             + wpilib_dependency("wpimath")
+            + wpilib_dependency("wpimath", language="java", resources=[None])
             + wpilib_dependency("cameraserver")
+            + wpilib_dependency("cameraserver", language="java", resources=[None])
             + wpilib_dependency("cscore")
             + wpilib_dependency("wpilibNewCommands")
             + halsim_dependency("halsim_ds_socket")

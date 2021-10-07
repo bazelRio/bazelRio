@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
 filegroup_all = """filegroup(
@@ -19,49 +20,49 @@ cc_library_headers = """cc_library(
 def setup_colorsensor_dependencies():
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_headers",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_headers",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-headers.zip",
         sha256 = "bfa7bbfcb32017ed4e4c9b3138eea559f715b7c1fdf8666ed93938cd85787f70",
         build_file_content = cc_library_headers,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_windowsx86-64",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_windowsx86-64",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-windowsx86-64.zip",
         sha256 = "27c8a3b83c200fcf429b0f7f3466c59ab33db59a7dcaf2321f6a5a7a43914a74",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_windowsx86-64static",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_windowsx86-64static",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-windowsx86-64static.zip",
         sha256 = "432587b2ceda321a23ffb8949b7d1ea1807fa525d0965797ec2ad9cfb410f491",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxx86-64",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_linuxx86-64",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxx86-64.zip",
         sha256 = "5539001938d3cab8e114c468dc6cc1cfcb87b5a1e34903839de21200f41fc80e",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxx86-64static",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_linuxx86-64static",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxx86-64static.zip",
         sha256 = "fcbcde37d8f27e579d3274ca1a28a7c93841855885f8a22026f5438c685a1d6c",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxathena",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_linuxathena",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxathena.zip",
         sha256 = "2a14d0ab80f42402824b675c94f138b3137745b63770867053154ee1b4ded7bf",
         build_file_content = filegroup_all,
     )
     maybe(
         http_archive,
-        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxathenastatic",
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_none_linuxathenastatic",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxathenastatic.zip",
         sha256 = "a5a2fa49786450c0a1049bb8485d12f9355242049db8fefc9e38423e91dec33c",
         build_file_content = filegroup_all,

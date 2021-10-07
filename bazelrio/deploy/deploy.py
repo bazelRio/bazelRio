@@ -1,6 +1,7 @@
 import argparse
 import sys
 from os.path import basename
+from shlex import quote
 
 from blessings import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
@@ -52,6 +53,7 @@ def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
     parser.add_argument("--team_number", type=int, required=True)
+    parser.add_argument("--robot_command", type=str, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
     args = parser.parse_args(argv)
 
@@ -68,7 +70,7 @@ def deploy(argv):
     sftp_client.putfo(args.robot_binary, destination_path)
     sftp_client.chmod(destination_path, 0o755)
     with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
-        f.write(f"'{destination_path}'\n")
+        f.write(f"{args.robot_command.format(quote(destination_path))}\n")
     sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
     sftp_client.chown(destination_path, 500, 500)
     sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
