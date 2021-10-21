@@ -7,6 +7,7 @@ cc_library(
         "//libraries/ntcore",
         "//libraries/wpimath",
         "//libraries/wpiutil",
+        "//libraries/cscore",
         "@__bazelrio_edu_wpi_first_wpilibc_headers//:headers",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_wpilibc_windowsx86-64//:shared_libs"],
