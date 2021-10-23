@@ -1,4 +1,4 @@
-from deps import *
+from deps import MavenDependencyGroup
 
 MAVEN_URL = "https://frcmaven.wpi.edu/release"
 

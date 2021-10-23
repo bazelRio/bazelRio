@@ -1,6 +1,6 @@
 import json
 import os
-from deps import *
+from deps import MavenDependencyGroup
 import collections
 
 

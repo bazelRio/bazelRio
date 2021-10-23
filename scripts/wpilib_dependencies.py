@@ -1,17 +1,5 @@
-from deps import *
-
-
-DEFAULT_NATIVE_SHARED_PLATFORMS = ["windowsx86-64", "linuxx86-64", "osxx86-64"]
-DEFAULT_NATIVE_STATIC_PLATFORMS = [
-    "windowsx86-64static",
-    "linuxx86-64static",
-    "osxx86-64static",
-]
-DEFAULT_PLATFORMS = (
-    ["linuxathena", "linuxathenastatic"]
-    + DEFAULT_NATIVE_SHARED_PLATFORMS
-    + DEFAULT_NATIVE_STATIC_PLATFORMS
-)
+from deps import MavenDependencyGroup
+from platforms import default_all_platforms, default_native_shared_platforms
 
 
 def _cpp_dependency(maven_dep, artifact_name):
@@ -19,7 +7,7 @@ def _cpp_dependency(maven_dep, artifact_name):
     maven_dep.add_cpp_dep(
         artifact_name=artifact_name + "-cpp",
         group_id=group_id,
-        resources=DEFAULT_PLATFORMS + ["headers"],
+        resources=default_all_platforms() + ["headers"],
     )
 
 
@@ -33,7 +21,7 @@ def _halsim_dependency(maven_dep, artifact_name):
     maven_dep.add_cpp_dep(
         artifact_name=artifact_name,
         group_id=group_id,
-        resources=DEFAULT_NATIVE_SHARED_PLATFORMS,
+        resources=default_native_shared_platforms(),
     )
 
 
@@ -71,17 +59,6 @@ def get_wpilib_dependencies():
         for artifact in dual_language:
             _cpp_dependency(maven_dep, artifact)
             _java_dependency(maven_dep, artifact)
-
-        # TODO move to own folder
-        maven_dep._cpp_deps.append(
-            CppDependency(
-                resources=DEFAULT_PLATFORMS + ["headers"],
-                group_id="edu.wpi.first.thirdparty.frc2021.opencv",
-                artifact_name="opencv-cpp",
-                maven_url=maven_dep.maven_url,
-                version="3.4.7-5",
-            )
-        )
 
         for artifact in halsim_deps:
             _halsim_dependency(maven_dep, artifact)

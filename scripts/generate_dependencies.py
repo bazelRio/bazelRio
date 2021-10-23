@@ -61,10 +61,12 @@ def generate_dependencies():
     from ni_dependencies import get_ni_dependencies
     from wpilib_dependencies import get_wpilib_dependencies
     from vendordep_dependency import vendordep_dependencies
+    from opencv_dependencies import opencv_dependencies
 
     dependencies = {}
     dependencies.update(get_wpilib_dependencies())
     dependencies.update(get_ni_dependencies())
+    dependencies.update(opencv_dependencies())
     dependencies.update(vendordep_dependencies(os.path.join(SCRIPT_DIR, "vendordeps")))
 
     for maven_dependencies in dependencies.values():
