@@ -1,0 +1,13 @@
+# TODO update to use aliases when they exist
+java_binary(
+    name = "robot",
+    srcs = glob(["*.java"]),
+    main_class = "frc.robot.Main",
+    deps = [
+        "//src/main/java/frc/robot/commands",
+        "//src/main/java/frc/robot/subsystems",
+        "@__bazelrio_edu_wpi_first_wpilibj_wpilibj-java//jar",
+        "@__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-java//jar",
+        "@__bazelrio_edu_wpi_first_wpimath_wpimath-java//jar",
+    ],
+)
