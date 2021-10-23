@@ -51,7 +51,7 @@ class BaseDependency:
         return archive_name
 
     def _get_url(self, file_extension, suffix):
-        group_as_folder = self.group_id.replace(".", "/").lower()
+        group_as_folder = self.group_id.replace(".", "/")
         url = f"{self.maven_url}/{group_as_folder}/{self.artifact_name}/{self.version}/{self.artifact_name}-{self.version}"
         if suffix:
             url += f"-{suffix}"
