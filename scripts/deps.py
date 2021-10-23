@@ -1,4 +1,5 @@
 import os
+import re
 import tempfile
 import hashlib
 from urllib.request import urlopen
@@ -61,6 +62,12 @@ class BaseDependency:
 
     def get_archive_name(self, suffix=""):
         group_underscore = self.group_id.replace(".", "_").lower()
+
+        # Having a year in the bazel name makes things tricky downstream. Remove it.
+        year_search = re.findall("20[0-9]{2}", group_underscore)
+        if year_search:
+            group_underscore = group_underscore.replace(year_search[0], "")
+
         archive_name = f"__bazelrio_{group_underscore}_{self.artifact_name.lower()}"
         if suffix:
             archive_name += f"_{suffix}"
