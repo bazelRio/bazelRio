@@ -24,7 +24,7 @@ def setup_bazelrio_dependencies(
         sha256 = "934c9ceb552e84577b0faf1e5a2f0450314985b4d8712b2b70717dc679fdc01b",
     )
 
-    setup_toolchains_dependencies(version=toolchain_versions)
+    setup_toolchains_dependencies(version = toolchain_versions)
     setup_wpilib_dependencies(version = wpilib_version)
     setup_ni_dependencies(version = ni_version)
     setup_sparkmax_dependencies(version = sparkmax_version)
