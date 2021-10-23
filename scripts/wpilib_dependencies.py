@@ -53,6 +53,10 @@ def get_wpilib_dependencies():
         maven_dep = MavenDependencyGroup(DEP_NAME, MAVEN_URL, version)
         dependencies[DEP_NAME].append(maven_dep)
 
+        maven_dep.add_java_dep(
+            artifact_name="api", group_id="edu.wpi.first.shuffleboard"
+        )
+
         _cpp_dependency(maven_dep, "wpilibc")
         _java_dependency(maven_dep, "wpilibj")
 

@@ -6,41 +6,58 @@ from urllib.request import urlopen
 CACHE_DIRECTORY = os.path.join(tempfile.gettempdir(), "bazelrio_cache")
 
 
-def _get_hash(url, fail_on_miss=False):
-    cached_file = os.path.join(CACHE_DIRECTORY, os.path.basename(url) + ".sha256")
+def _download_and_cache(cached_file, url, fail_on_miss):
+    if not os.path.exists(CACHE_DIRECTORY):
+        os.mkdir(CACHE_DIRECTORY)
 
-    if not os.path.exists(cached_file):
+    print(f"Cache miss for {url}")
+    try:
+        url_result = urlopen(url)
+    except:
+        if fail_on_miss:
+            raise
+        return None
 
-        if not os.path.exists(CACHE_DIRECTORY):
-            os.mkdir(CACHE_DIRECTORY)
+    if url_result.getcode() != 200:
+        raise Exception(f"Could not grab '{url}'")
 
-        print(f"Cache miss for {url}")
-        try:
-            url_result = urlopen(url)
-            if url_result.getcode() != 200:
-                raise Exception(f"Could not grab '{url}'")
-            data = url_result.read()
-            sha256 = hashlib.sha256(data).hexdigest()
-            with open(cached_file, "wb") as f:
-                f.write(data)
+    data = url_result.read()
 
-            return sha256
-        except:
-            if fail_on_miss:
-                raise
-            return None
+    # CTRE does a fake 404 page, that makes it seem like a valid 200 response. Treat this like a 404
+    if b"html>" in data:
+        message = f"Looks like a fake 404 happened for '{url}'"
+        if fail_on_miss:
+            raise Exception(message)
+        print("  " + message)
+        data = b""  # Cache an empty file, so we don't try to download it everytime
+        sha256 = None
     else:
-        with open(cached_file, "rb") as f:
-            data = f.read()
+        sha256 = hashlib.sha256(data).hexdigest()
+
+    with open(cached_file, "wb") as f:
+        f.write(data)
+
+    return sha256
+
+
+def _get_hash(url, fail_on_miss):
+    cached_file = os.path.join(CACHE_DIRECTORY, os.path.basename(url) + ".sha256")
+    if not os.path.exists(cached_file):
+        return _download_and_cache(cached_file, url, fail_on_miss)
+
+    with open(cached_file, "rb") as f:
+        data = f.read()
+    if data:
         return hashlib.sha256(data).hexdigest()
 
 
 class BaseDependency:
-    def __init__(self, maven_url, group_id, artifact_name, version):
+    def __init__(self, maven_url, group_id, artifact_name, version, fail_on_hash_miss):
         self.maven_url = maven_url
         self.group_id = group_id
         self.artifact_name = artifact_name
         self.version = version
+        self.fail_on_hash_miss = fail_on_hash_miss
 
     def get_archive_name(self, suffix=""):
         group_underscore = self.group_id.replace(".", "_").lower()
@@ -70,7 +87,7 @@ class CppDependency(BaseDependency):
         return self._get_url(".zip", resource)
 
     def get_sha256(self, resource):
-        return _get_hash(self.get_url(resource))
+        return _get_hash(self.get_url(resource), self.fail_on_hash_miss)
 
     def get_build_file_content(self, resource):
         if resource == "headers":
@@ -86,16 +103,17 @@ class JavaDependency(BaseDependency):
         return self._get_url(".jar", "")
 
     def get_sha256(self):
-        return _get_hash(self.get_url())
+        return _get_hash(self.get_url(), self.fail_on_hash_miss)
 
 
 class MavenDependencyGroup:
-    def __init__(self, name, maven_url, version):
+    def __init__(self, name, maven_url, version, fail_on_hash_miss=True):
         self.version = version
         self.name = name
         self.maven_url = maven_url
         self._cpp_deps = []
         self._java_deps = []
+        self.fail_on_hash_miss = fail_on_hash_miss
 
         self.underscore_version = version.replace(".", "_").replace("-", "_")
 
@@ -107,6 +125,7 @@ class MavenDependencyGroup:
                 artifact_name=artifact_name,
                 maven_url=self.maven_url,
                 version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
             )
         )
 
@@ -117,5 +136,6 @@ class MavenDependencyGroup:
                 artifact_name=artifact_name,
                 maven_url=self.maven_url,
                 version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
             )
         )

@@ -35,7 +35,9 @@ def vendordep_dependency(vendor_file):
             maven_url = maven_url[:-1]
         version = vendor_dep["version"]
 
-        maven_dep = MavenDependencyGroup(vendor_name, maven_url, version)
+        maven_dep = MavenDependencyGroup(
+            vendor_name, maven_url, version, fail_on_hash_miss=False
+        )
 
         for cpp_dep in sorted(
             vendor_dep["cppDependencies"], key=lambda x: x["artifactId"]
