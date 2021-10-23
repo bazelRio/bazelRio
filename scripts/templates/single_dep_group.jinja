@@ -1,10 +1,13 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
 def setup_{{maven_dependency.name}}_{{maven_dependency.underscore_version}}_dependencies():
     {%- for cpp_dep in maven_dependency._cpp_deps %}
     {%- for resource in cpp_dep.resources %}
+    {%- set sha256 = cpp_dep.get_sha256(resource) %}
+    {%- if sha256 %}
     maybe(
         http_archive,
         "{{cpp_dep.get_archive_name(resource)}}",
@@ -12,6 +15,17 @@ def setup_{{maven_dependency.name}}_{{maven_dependency.underscore_version}}_depe
         sha256 = "{{cpp_dep.get_sha256(resource)}}",
         build_file_content = {{cpp_dep.get_build_file_content(resource)}},
     )
+    {%- endif %}
     {%- endfor %}
+    {%- endfor %}
+    
+    {%- for java_dep in maven_dependency._java_deps %}
+    maybe(
+        jvm_maven_import_external,
+        name = "{{java_dep.get_archive_name()}}",
+        artifact = "{{java_dep.group_id}}:{{java_dep.artifact_name}}:{{java_dep.version}}",
+        artifact_sha256 = "{{java_dep.get_sha256()}}",
+        server_urls = ["{{maven_dependency.maven_url}}"],
+    )
     {%- endfor %}
 

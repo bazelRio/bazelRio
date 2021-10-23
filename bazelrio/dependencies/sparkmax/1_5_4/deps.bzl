@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
@@ -128,4 +129,11 @@ def setup_sparkmax_1_5_4_dependencies():
         url = "http://www.revrobotics.com/content/sw/max/sdk/maven/com/revrobotics/frc/SparkMax-driver/1.5.4/SparkMax-driver-1.5.4-osxx86-64static.zip",
         sha256 = "13c0e148bfccea862476c6c32aad878d021fb907d723fc7093e816dc0ecf5c05",
         build_file_content = cc_library_static,
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_com_revrobotics_frc_sparkmax-java",
+        artifact = "com.revrobotics.frc:SparkMax-java:1.5.4",
+        artifact_sha256 = "223945424413414a207b1cab295ee20d88bd9fbde87ceed0c2b258188984070f",
+        server_urls = ["http://www.revrobotics.com/content/sw/max/sdk/maven"],
     )
