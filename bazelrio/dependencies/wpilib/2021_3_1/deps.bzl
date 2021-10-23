@@ -2,7 +2,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
-def setup_wpilib_dependencies():
+def setup_wpilib_2021_3_1_dependencies():
     maybe(
         http_archive,
         "__bazelrio_edu_wpi_first_wpilibc_linuxathena",

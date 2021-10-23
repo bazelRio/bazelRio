@@ -2,7 +2,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
-def setup_phoenix_dependencies():
+def setup_phoenix_5_19_4_dependencies():
     maybe(
         http_archive,
         "__bazelrio_com_ctre_phoenix_api-cpp_headers",
