@@ -8,7 +8,7 @@ def setup_{{maven_dependencies[0].name}}_dependencies(version):
     if version == "{{maven_dependency.version}}":
         setup_{{maven_dependencies[0].name}}_{{maven_dependency.underscore_version}}_dependencies()
     {%- else %}
-    elif version == "{{maven_dependency.underscore_version}}":
+    elif version == "{{maven_dependency.version}}":
         setup_{{maven_dependencies[0].name}}_{{maven_dependency.underscore_version}}_dependencies()
     {%- endif %}
     {%- endfor %}
