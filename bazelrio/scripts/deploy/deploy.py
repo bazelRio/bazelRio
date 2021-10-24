@@ -64,7 +64,10 @@ def deploy(argv):
     destination_path = f"/home/lvuser/{binary_name}"
     # https://github.com/wpilibsuite/GradleRIO/blob/aaf4da44e914a49e0bb956b028130481f538b31c/src/main/groovy/edu/wpi/first/gradlerio/frc/FRCNativeArtifact.groovy#L29
     client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t")
-    sftp_client.remove(destination_path)
+    try:
+        sftp_client.remove(destination_path)
+    except FileNotFoundError:
+        pass
     sftp_client.putfo(args.robot_binary, destination_path)
     sftp_client.chmod(destination_path, 0o755)
     with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
