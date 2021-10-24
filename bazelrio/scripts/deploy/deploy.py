@@ -7,7 +7,6 @@ from paramiko.client import MissingHostKeyPolicy, SSHClient
 
 term = Terminal()
 
-
 class SilentAllowPolicy(MissingHostKeyPolicy):
     def missing_host_key(self, client, hostname, key):
         return
@@ -67,7 +66,7 @@ def deploy(argv):
     try:
         sftp_client.remove(destination_path)
     except FileNotFoundError:
-        pass
+        print(term.bright_white("Previous robot executable not found so not deleted."))
     sftp_client.putfo(args.robot_binary, destination_path)
     sftp_client.chmod(destination_path, 0o755)
     with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
