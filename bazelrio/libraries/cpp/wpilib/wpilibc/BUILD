@@ -3,11 +3,11 @@ cc_library(
     linkstatic = 1,
     visibility = ["//visibility:public"],
     deps = [
-        "//libraries/hal",
-        "//libraries/ntcore",
-        "//libraries/wpimath",
-        "//libraries/wpiutil",
-        "//libraries/cscore",
+        "//libraries/cpp/wpilib/hal",
+        "//libraries/cpp/wpilib/ntcore",
+        "//libraries/cpp/wpilib/wpimath",
+        "//libraries/cpp/wpilib/wpiutil",
+        "//libraries/cpp/wpilib/cscore",
         "@__bazelrio_edu_wpi_first_wpilibc_wpilibc-cpp_headers//:headers",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_wpilibc_wpilibc-cpp_windowsx86-64//:shared_libs"],

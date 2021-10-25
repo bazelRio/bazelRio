@@ -4,7 +4,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_headers//:headers",
-        "@bazelrio//libraries/wpilibc",
+        "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_windowsx86-64static//:static_libs"],
         "@bazel_tools//src/conditions:linux_x86_64": ["@__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_linuxx86-64static//:static_libs"],
