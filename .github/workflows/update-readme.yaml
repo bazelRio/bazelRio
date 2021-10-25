@@ -1,17 +1,22 @@
 name: Update README
 on:
-    push:
-        branches:
-            - main
+  push:
+    tags:
+    - '*'
 jobs:
     update-readme:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
+              with:
+                ref: main
             - run: |
                 REF=$(git rev-parse HEAD) SHA256=$(curl -sSL https://github.com/connorworley/bazelrio/archive/$REF.zip | sha256sum | cut -d' ' -f1) envsubst < README.md.template > README.md
                 git config --global user.name 'Connor Worley'
                 git config --global user.email 'connorworley@users.noreply.github.com'
                 git add README.md
                 git commit -m 'Update README http_archive'
-                git push
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v3
+              with:
+                base: main
