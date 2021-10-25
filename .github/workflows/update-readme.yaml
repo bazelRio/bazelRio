@@ -16,8 +16,10 @@ jobs:
                 git config --global user.email 'connorworley@users.noreply.github.com'
                 git add README.md
                 git commit -m 'Update README http_archive'
+            - name: Set title name
+              run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v3
               with:
                 base: main
-                title: Update README for tag ${GITHUB_REF#refs/*/}
+                title: Update README for tag ${{ env.RELEASE_VERSION }}
