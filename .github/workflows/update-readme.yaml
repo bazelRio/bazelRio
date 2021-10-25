@@ -20,3 +20,4 @@ jobs:
               uses: peter-evans/create-pull-request@v3
               with:
                 base: main
+                title: Update README for tag ${GITHUB_REF#refs/*/}
