@@ -4,7 +4,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_headers//:headers",
-        "@bazelrio//libraries/wpilibc",
+        "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": [
             "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_windowsx86-64static//:static_libs",

@@ -10,10 +10,10 @@ cc_library(
         "@bazel_tools//src/conditions:darwin": ["@__bazelrio_edu_wpi_first_hal_hal-cpp_osxx86-64//:shared_libs"],
         "@bazelrio//constraints/is_roborio:roborio": [
             "@__bazelrio_edu_wpi_first_hal_hal-cpp_linuxathena//:shared_libs",
-            "//libraries/ni-libraries/chipobject",
-            "//libraries/ni-libraries/netcomm",
-            "//libraries/ni-libraries/runtime",
-            "//libraries/ni-libraries/visa",
+            "//libraries/cpp/ni/chipobject",
+            "//libraries/cpp/ni/netcomm",
+            "//libraries/cpp/ni/runtime",
+            "//libraries/cpp/ni/visa",
         ],
     }),
 )

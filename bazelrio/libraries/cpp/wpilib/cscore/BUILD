@@ -4,7 +4,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@__bazelrio_edu_wpi_first_cscore_cscore-cpp_headers//:headers",
-        "//libraries/opencv",
+        "//libraries/cpp/opencv",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_cscore_cscore-cpp_windowsx86-64//:shared_libs"],
         "@bazel_tools//src/conditions:linux_x86_64": ["@__bazelrio_edu_wpi_first_cscore_cscore-cpp_linuxx86-64//:shared_libs"],

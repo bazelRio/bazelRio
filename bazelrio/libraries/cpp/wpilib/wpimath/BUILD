@@ -3,7 +3,7 @@ cc_library(
     linkstatic = 1,
     visibility = ["//visibility:public"],
     deps = [
-        "//libraries/wpiutil",
+        "//libraries/cpp/wpilib/wpiutil",
         "@__bazelrio_edu_wpi_first_wpimath_wpimath-cpp_headers//:headers",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_wpimath_wpimath-cpp_windowsx86-64//:shared_libs"],

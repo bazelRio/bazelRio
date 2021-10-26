@@ -1,10 +1,10 @@
 cc_library(
-    name = "commands",
+    name = "new_commands",
     linkstatic = 1,
     visibility = ["//visibility:public"],
     deps = [
         "@__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_headers//:headers",
-        "@bazelrio//libraries/wpilibc",
+        "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_windowsx86-64//:shared_libs"],
         "@bazel_tools//src/conditions:linux_x86_64": ["@__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_linuxx86-64//:shared_libs"],

@@ -8,7 +8,7 @@ cc_library(
         "@__bazelrio_com_ctre_phoenix_cci_headers//:headers",
         "@__bazelrio_com_ctre_phoenix_core_headers//:headers",
         "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_headers//:headers",
-        "@bazelrio//libraries/wpilibc",
+        "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": [
             "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_windowsx86-64static//:static_libs",
