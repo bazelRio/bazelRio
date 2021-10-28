@@ -7,6 +7,7 @@ jobs:
             - uses: actions/checkout@v2
             - run: brew install osxfuse
             - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
+            
             - name: Build Roborio
               run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
               working-directory: examples/cpp_example
@@ -19,6 +20,19 @@ jobs:
             - name: TEMP FAKE DEPLOY
               run: bazel run //:robot.deploy --config=osx --experimental_use_sandboxfs
               working-directory: examples/cpp_example
+              
+            - name: Build Roborio (Java)
+              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY (Java)
+              run: bazel run //:robot.deploy --config=roborio --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: Build Native (Java)
+              run: bazel build //...:* --config=osx --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY (Java)
+              run: bazel run //:robot.deploy --config=osx --experimental_use_sandboxfs
+              working-directory: examples/java_example
     build-linux:
         runs-on: ubuntu-latest
         steps:
@@ -37,6 +51,19 @@ jobs:
             - name: TEMP FAKE DEPLOY
               run: bazel run //:robot.deploy --config=linux --experimental_use_sandboxfs
               working-directory: examples/cpp_example
+
+            - name: Build Roborio
+              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY
+              run: bazel run //:robot.deploy --config=roborio --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: Build Native
+              run: bazel build //...:* --config=linux --experimental_use_sandboxfs
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY
+              run: bazel run //:robot.deploy --config=linux --experimental_use_sandboxfs
+              working-directory: examples/java_example
     build-windows:
         runs-on: windows-latest
         steps:
@@ -53,3 +80,17 @@ jobs:
             - name: TEMP FAKE DEPLOY
               run: bazel --output_user_root=C:\bazelroot run //:robot.deploy --config=windows
               working-directory: examples/cpp_example
+
+              
+            - name: Build Roborio
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=roborio
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY
+              run: bazel --output_user_root=C:\bazelroot run //:robot.deploy --config=roborio
+              working-directory: examples/java_example
+            - name: Build Native
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=windows
+              working-directory: examples/java_example
+            - name: TEMP FAKE DEPLOY
+              run: bazel --output_user_root=C:\bazelroot run //:robot.deploy --config=windows
+              working-directory: examples/java_example

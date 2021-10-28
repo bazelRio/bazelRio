@@ -1,0 +1,24 @@
+try-import user.bazelrc
+
+build --incompatible_enable_cc_toolchain_resolution
+
+# Uncomment me on macOS and Linux. See https://github.com/bazelbuild/sandboxfs/blob/master/INSTALL.md.
+# build --experimental_use_sandboxfs
+
+# Uncomment me on Windows if you have spaces in your default output_user_root (very likely).
+# startup --output_user_root=C:\\bazelroot
+
+
+# Roborio
+build:roborio --platforms=@bazelrio//platforms/roborio
+
+# Windows
+build:windows --copt=/std:c++17
+
+# Linux
+build:linux --copt=-std=c++17
+build:linux --linkopt=-pthread
+
+# OSX
+build:osx --copt=-std=c++17
+
