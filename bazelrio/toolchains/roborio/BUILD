@@ -6,9 +6,11 @@ cc_toolchain_config(
         "@bazel_tools//src/conditions:darwin_x86_64": "macos",
         "@bazel_tools//src/conditions:linux_x86_64": "linux",
         "@bazel_tools//src/conditions:windows": "windows",
+        "//conditions:default": "unknown",
     }),
     script_suffix = select({
         "@bazel_tools//src/conditions:windows": ".bat",
+        "@bazel_tools//src/conditions:host_windows": ".bat",
         "//conditions:default": "",
     }),
 )
