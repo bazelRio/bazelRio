@@ -25,13 +25,13 @@ jobs:
               run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY (Java)
-              run: bazel run //:robot.deploy --config=roborio --experimental_use_sandboxfs
+              run: bazel run //src/main/java/frc/robot:robot.deploy --config=roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build Native (Java)
               run: bazel build //...:* --config=osx --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY (Java)
-              run: bazel run //:robot.deploy --config=osx --experimental_use_sandboxfs
+              run: bazel run //src/main/java/frc/robot:robot.deploy --config=osx --experimental_use_sandboxfs
               working-directory: examples/java_example
     build-linux:
         runs-on: ubuntu-latest
@@ -56,13 +56,13 @@ jobs:
               run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY
-              run: bazel run //:robot.deploy --config=roborio --experimental_use_sandboxfs
+              run: bazel run //src/main/java/frc/robot:robot.deploy --config=roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build Native
               run: bazel build //...:* --config=linux --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY
-              run: bazel run //:robot.deploy --config=linux --experimental_use_sandboxfs
+              run: bazel run //src/main/java/frc/robot:robot.deploy --config=linux --experimental_use_sandboxfs
               working-directory: examples/java_example
     build-windows:
         runs-on: windows-latest
@@ -86,11 +86,11 @@ jobs:
               run: bazel --output_user_root=C:\bazelroot build //...:* --config=roborio
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY
-              run: bazel --output_user_root=C:\bazelroot run //:robot.deploy --config=roborio
+              run: bazel --output_user_root=C:\bazelroot run //src/main/java/frc/robot:robot.deploy --config=roborio
               working-directory: examples/java_example
             - name: Build Native
               run: bazel --output_user_root=C:\bazelroot build //...:* --config=windows
               working-directory: examples/java_example
             - name: TEMP FAKE DEPLOY
-              run: bazel --output_user_root=C:\bazelroot run //:robot.deploy --config=windows
+              run: bazel --output_user_root=C:\bazelroot run //src/main/java/frc/robot:robot.deploy --config=windows
               working-directory: examples/java_example
