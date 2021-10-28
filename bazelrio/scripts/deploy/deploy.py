@@ -2,10 +2,10 @@ import argparse
 import sys
 from os.path import basename
 
-from blessings import Terminal
+# from blessings import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
 
-term = Terminal()
+# term = Terminal()
 
 class SilentAllowPolicy(MissingHostKeyPolicy):
     def missing_host_key(self, client, hostname, key):
@@ -52,7 +52,17 @@ def deploy(argv):
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
+    parser.add_argument("--dynamic_libraries", nargs='*')
     args = parser.parse_args(argv)
+
+    import os
+    import sys
+    print(args.robot_binary)
+    for dynamic in args.dynamic_libraries:
+        print(os.path.exists(dynamic), dynamic)
+        if not os.path.exists(dynamic):
+            sys.exit(-1)
+    return
 
     client = establish_connection(args.team_number, args.verbose)
 
