@@ -1,3 +1,4 @@
+
 load("//dependencies/colorsensor/1_2_0:deps.bzl", "setup_colorsensor_1_2_0_dependencies")
 
 def setup_colorsensor_dependencies(version):
