@@ -40,6 +40,7 @@ def get_wpilib_dependencies():
         "wpimath",
         "cameraserver",
         "cscore",
+        "wpilibOldCommands",
         "wpilibNewCommands",
     ]
     halsim_deps = [

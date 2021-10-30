@@ -1,4 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
@@ -65,4 +66,11 @@ def setup_opencv_3_4_7_5_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/thirdparty/frc2021/opencv/opencv-cpp/3.4.7-5/opencv-cpp-3.4.7-5-headers.zip",
         sha256 = "48852219062e2f9f4b348996d4e23bda3cad6a777a97ee9efa33031115780c44",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_edu_wpi_first_thirdparty_frc_opencv_opencv-java",
+        artifact = "edu.wpi.first.thirdparty.frc2021.opencv:opencv-java:3.4.7-5",
+        artifact_sha256 = "d193e758106595371cc3572b0f05a991cc4f95d9e277b7825ab867c9d1de7e58",
+        server_urls = ["https://frcmaven.wpi.edu/release"],
     )

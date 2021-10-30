@@ -18,4 +18,9 @@ def opencv_dependencies():
             group_id=f"edu.wpi.first.thirdparty.{subpackage}.opencv",
             artifact_name="opencv-cpp",
         )
+        
+        maven_dep.add_java_dep(
+            group_id=f"edu.wpi.first.thirdparty.{subpackage}.opencv",
+            artifact_name="opencv-java",
+        )
     return dependencies

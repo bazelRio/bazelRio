@@ -447,6 +447,69 @@ def setup_wpilib_2022_1_1_beta_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxathena",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-linuxathena.zip",
+        sha256 = "475483064284e6922327b0d58bf3511ca4671f7b527d37a014217c995516d12c",
+        build_file_content = cc_library_shared,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxathenastatic",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-linuxathenastatic.zip",
+        sha256 = "a70860defafb87cf2f09fe5a2495ae5d7332fe5de1a46c4832e06febfca3e3b1",
+        build_file_content = cc_library_static,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_windowsx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-windowsx86-64.zip",
+        sha256 = "ed3a372a0ee57db77f9021f3494e52fdd36afeeb076211d37a4df438a299b3c9",
+        build_file_content = cc_library_shared,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-linuxx86-64.zip",
+        sha256 = "4f60f242a3fc52aa409266ba9590c61bf6e4f52c88d2da863ef0d69fa0144de4",
+        build_file_content = cc_library_shared,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_osxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-osxx86-64.zip",
+        sha256 = "66ee7560050f7fd4465642da518d3e05088e5417b3d0fa4f715f14ec25b3b4f1",
+        build_file_content = cc_library_shared,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_windowsx86-64static",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-windowsx86-64static.zip",
+        sha256 = "4257f7c892132c3253a3dc35afbf12323cd1fc715537278276e1a6db12b1c002",
+        build_file_content = cc_library_static,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxx86-64static",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-linuxx86-64static.zip",
+        sha256 = "70276571e289259ebe07fbc68e1747f0623b86770bf847c6af3cdfc71b297478",
+        build_file_content = cc_library_static,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_osxx86-64static",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-osxx86-64static.zip",
+        sha256 = "60246184ac373a5d377008f80f9a49f1a1dd973cc7ca820b09af9dad80731d24",
+        build_file_content = cc_library_static,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_headers",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-1/wpilibOldCommands-cpp-2022.1.1-beta-1-headers.zip",
+        sha256 = "9d5ab40d7dce760faaad3798c00844a1d2f1235695266edd5445934a8c3ecf7f",
+        build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2022.1.1-beta-1/wpilibNewCommands-cpp-2022.1.1-beta-1-linuxathena.zip",
         sha256 = "25f8e6c5eeaff7b8131d26b82fb6b7d790e1c69d794bd73397611f575decd9fe",
@@ -646,6 +709,13 @@ def setup_wpilib_2022_1_1_beta_1_dependencies():
         name = "__bazelrio_edu_wpi_first_cscore_cscore-java",
         artifact = "edu.wpi.first.cscore:cscore-java:2022.1.1-beta-1",
         artifact_sha256 = "23a0c922dbd6e3a5a7af528afa13d19419aa1d47b808a3ea3b101a1030ad0073",
+        server_urls = ["https://frcmaven.wpi.edu/release"],
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-java",
+        artifact = "edu.wpi.first.wpilibOldCommands:wpilibOldCommands-java:2022.1.1-beta-1",
+        artifact_sha256 = "81dea5a894326acca1891473dbc1adec0b66ef94e45778799a566bfe9b7c7f6d",
         server_urls = ["https://frcmaven.wpi.edu/release"],
     )
     maybe(
