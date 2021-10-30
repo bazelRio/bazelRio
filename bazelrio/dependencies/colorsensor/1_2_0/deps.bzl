@@ -1,8 +1,9 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
-def setup_colorsensor_dependencies():
+def setup_colorsensor_1_2_0_dependencies():
     maybe(
         http_archive,
         "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_headers",
@@ -51,4 +52,11 @@ def setup_colorsensor_dependencies():
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-linuxathenastatic.zip",
         sha256 = "a5a2fa49786450c0a1049bb8485d12f9355242049db8fefc9e38423e91dec33c",
         build_file_content = cc_library_static,
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_com_revrobotics_frc_colorsensorv3-java",
+        artifact = "com.revrobotics.frc:ColorSensorV3-java:1.2.0",
+        artifact_sha256 = "dbd618cf9261ab87fabb6842e4abf9cd70cef7ca665213c742e75712ca94e5ca",
+        server_urls = ["http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven"],
     )

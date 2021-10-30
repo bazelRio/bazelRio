@@ -1,0 +1,148 @@
+import os
+import re
+import tempfile
+import hashlib
+from urllib.request import urlopen
+
+CACHE_DIRECTORY = os.path.join(tempfile.gettempdir(), "bazelrio_cache")
+
+
+def _download_and_cache(cached_file, url, fail_on_miss):
+    if not os.path.exists(CACHE_DIRECTORY):
+        os.mkdir(CACHE_DIRECTORY)
+
+    print(f"Cache miss for {url}")
+    try:
+        url_result = urlopen(url)
+    except:
+        if fail_on_miss:
+            raise
+        return None
+
+    if url_result.getcode() != 200:
+        raise Exception(f"Could not grab '{url}'")
+
+    data = url_result.read()
+
+    # CTRE does a fake 404 page, that makes it seem like a valid 200 response. Treat this like a 404
+    if b"html>" in data:
+        message = f"Looks like a fake 404 happened for '{url}'"
+        if fail_on_miss:
+            raise Exception(message)
+        print("  " + message)
+        data = b""  # Cache an empty file, so we don't try to download it everytime
+        sha256 = None
+    else:
+        sha256 = hashlib.sha256(data).hexdigest()
+
+    with open(cached_file, "wb") as f:
+        f.write(data)
+
+    return sha256
+
+
+def _get_hash(url, fail_on_miss):
+    cached_file = os.path.join(CACHE_DIRECTORY, os.path.basename(url) + ".sha256")
+    if not os.path.exists(cached_file):
+        return _download_and_cache(cached_file, url, fail_on_miss)
+
+    with open(cached_file, "rb") as f:
+        data = f.read()
+    if data:
+        return hashlib.sha256(data).hexdigest()
+
+
+class BaseDependency:
+    def __init__(self, maven_url, group_id, artifact_name, version, fail_on_hash_miss):
+        self.maven_url = maven_url
+        self.group_id = group_id
+        self.artifact_name = artifact_name
+        self.version = version
+        self.fail_on_hash_miss = fail_on_hash_miss
+
+    def get_archive_name(self, suffix=""):
+        group_underscore = self.group_id.replace(".", "_").lower()
+
+        # Having a year in the bazel name makes things tricky downstream. Remove it.
+        year_search = re.findall("20[0-9]{2}", group_underscore)
+        if year_search:
+            group_underscore = group_underscore.replace(year_search[0], "")
+
+        archive_name = f"__bazelrio_{group_underscore}_{self.artifact_name.lower()}"
+        if suffix:
+            archive_name += f"_{suffix}"
+
+        return archive_name
+
+    def _get_url(self, file_extension, suffix):
+        group_as_folder = self.group_id.replace(".", "/")
+        url = f"{self.maven_url}/{group_as_folder}/{self.artifact_name}/{self.version}/{self.artifact_name}-{self.version}"
+        if suffix:
+            url += f"-{suffix}"
+        url += f"{file_extension}"
+
+        return url
+
+
+class CppDependency(BaseDependency):
+    def __init__(self, resources, suffix="", **kwargs):
+        BaseDependency.__init__(self, **kwargs)
+        self.resources = resources
+        self.suffix = suffix
+
+    def get_url(self, resource):
+        return self._get_url(".zip", resource)
+
+    def get_sha256(self, resource):
+        return _get_hash(self.get_url(resource), self.fail_on_hash_miss)
+
+    def get_build_file_content(self, resource):
+        if resource == "headers":
+            return "cc_library_headers"
+        elif "static" not in resource:
+            return "cc_library_shared"
+        else:
+            return "cc_library_static"
+
+
+class JavaDependency(BaseDependency):
+    def get_url(self):
+        return self._get_url(".jar", "")
+
+    def get_sha256(self):
+        return _get_hash(self.get_url(), self.fail_on_hash_miss)
+
+
+class MavenDependencyGroup:
+    def __init__(self, name, maven_url, version, fail_on_hash_miss=True):
+        self.version = version
+        self.name = name
+        self.maven_url = maven_url
+        self._cpp_deps = []
+        self._java_deps = []
+        self.fail_on_hash_miss = fail_on_hash_miss
+
+        self.underscore_version = version.replace(".", "_").replace("-", "_")
+
+    def add_cpp_dep(self, group_id, artifact_name, resources):
+        self._cpp_deps.append(
+            CppDependency(
+                resources=resources,
+                group_id=group_id,
+                artifact_name=artifact_name,
+                maven_url=self.maven_url,
+                version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
+            )
+        )
+
+    def add_java_dep(self, group_id, artifact_name):
+        self._java_deps.append(
+            JavaDependency(
+                group_id=group_id,
+                artifact_name=artifact_name,
+                maven_url=self.maven_url,
+                version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
+            )
+        )

@@ -21,7 +21,7 @@ load("@rules_python//python:pip.bzl", "pip_install")
 
 pip_install(
     name = "__bazelrio_deploy_pip_deps",
-    requirements = "@bazelrio//deploy:requirements.txt",
+    requirements = "@bazelrio//scripts/deploy:requirements.txt",
 )
 ```
 

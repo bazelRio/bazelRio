@@ -1,8 +1,9 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
 
-def setup_phoenix_dependencies():
+def setup_phoenix_5_19_4_dependencies():
     maybe(
         http_archive,
         "__bazelrio_com_ctre_phoenix_api-cpp_headers",
@@ -436,4 +437,18 @@ def setup_phoenix_dependencies():
         url = "https://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/wpiapi-cpp/5.19.4/wpiapi-cpp-5.19.4-osxx86-64static.zip",
         sha256 = "827867aaf3f6f0f2454a4b540413581ddd62916647f9ea92fd54071d63313555",
         build_file_content = cc_library_static,
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_com_ctre_phoenix_api-java",
+        artifact = "com.ctre.phoenix:api-java:5.19.4",
+        artifact_sha256 = "ae736a606b804f95b04cb4ef10f5272265b1a1e88986506f1354ba8781ded900",
+        server_urls = ["https://devsite.ctr-electronics.com/maven/release"],
+    )
+    maybe(
+        jvm_maven_import_external,
+        name = "__bazelrio_com_ctre_phoenix_wpiapi-java",
+        artifact = "com.ctre.phoenix:wpiapi-java:5.19.4",
+        artifact_sha256 = "ee9f9d0269ed50e531ff3b1455ca0d9e3cda3604f7ddaff8e80fe68ead259340",
+        server_urls = ["https://devsite.ctr-electronics.com/maven/release"],
     )
