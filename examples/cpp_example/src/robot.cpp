@@ -1,15 +1,17 @@
-
-
 #include "src/robot.hpp"
 
 #include <frc2/command/CommandScheduler.h>
 #include <frc2/command/button/JoystickButton.h>
+
+#include "cameraserver/CameraServer.h"
 
 #include "src/commands/elevator_setpoint_command.hpp"
 #include "src/commands/joystick_drive_command.hpp"
 #include "src/commands/shooter_rpm_command.hpp"
 
 void Robot::RobotInit() {
+  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+
   m_drivetrain.SetDefaultCommand(
       JoystickDriveCommand{m_joystick, m_drivetrain});
 
