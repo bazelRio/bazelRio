@@ -2,10 +2,10 @@ import argparse
 import sys
 from os.path import basename
 
-# from blessings import Terminal
+from blessings import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
 
-# term = Terminal()
+term = Terminal()
 
 class SilentAllowPolicy(MissingHostKeyPolicy):
     def missing_host_key(self, client, hostname, key):
@@ -55,15 +55,6 @@ def deploy(argv):
     parser.add_argument("--dynamic_libraries", nargs='*')
     args = parser.parse_args(argv)
 
-    import os
-    import sys
-    print(args.robot_binary)
-    for dynamic in args.dynamic_libraries:
-        print(os.path.exists(dynamic), dynamic)
-        if not os.path.exists(dynamic):
-            sys.exit(-1)
-    return
-
     client = establish_connection(args.team_number, args.verbose)
 
     print(term.bright_yellow(f"Attempting to deploy {args.robot_binary.name}..."))
@@ -84,6 +75,9 @@ def deploy(argv):
     sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
     sftp_client.chown(destination_path, 500, 500)
     sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
+    for dylib_path in args.dynamic_libraries:
+        dylib_name = basename(dylib_path)
+        sftp_client.put(dylib_path, f"/usr/local/frc/third-party//{dylib_name}")
     client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
     client.exec_command("sync")
     client.exec_command("ldconfig")
