@@ -30,8 +30,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Build Roborio
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=roborio
+              run: bazel --output_user_root=C:\bazelroot build //...:* --features=compiler_param_file --config=roborio
               working-directory: examples/cpp_example
             - name: Build Native
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=windows
+              run: bazel --output_user_root=C:\bazelroot build //...:* --features=compiler_param_file --config=windows
               working-directory: examples/cpp_example

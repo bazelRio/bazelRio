@@ -7,5 +7,7 @@ cc_library(
         "//src/subsystems",
         "@bazelrio//libraries/cpp/wpilib/new_commands",
         "@bazelrio//libraries/cpp/wpilib/wpilibc",
+        "@bazelrio//libraries/cpp/ctre/phoenix",
+        "@bazelrio//libraries/cpp/rev/sparkmax",
     ],
 )
