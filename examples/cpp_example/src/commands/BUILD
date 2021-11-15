@@ -5,8 +5,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/subsystems",
-        "@bazelrio//libraries/cpp/ctre/phoenix",
-        "@bazelrio//libraries/cpp/rev/sparkmax",
         "@bazelrio//libraries/cpp/wpilib/new_commands",
         "@bazelrio//libraries/cpp/wpilib/wpilibc",
     ],
