@@ -154,7 +154,7 @@ def deploy(argv):
         try:
             sftp_client.mkdir(DYLIB_DIR)
         except IOError as e:
-            if verbose:
+            if args.verbose:
                 print(e)
         for dylib_path in args.dynamic_libraries:
             dylib_name = basename(dylib_path)
