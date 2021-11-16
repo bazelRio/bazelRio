@@ -138,7 +138,7 @@ def deploy(argv):
         progress_bar()
 
         # write new robotCommand
-        with sftp_client.open("/home/lvuser/robotCommand", "w") as fo:
+        with sftp_client.open(ROBOTCOMAND_PATH, "w") as fo:
             # we take a robotCommand format string as a argument to make it easier for different languages (ie java) to
             # describe how their binaries should be executed on the rio.
             # the remote location of the robot binary is substituted into the format string, and the whole thing is
