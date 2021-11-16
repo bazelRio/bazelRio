@@ -1,9 +1,19 @@
 import argparse
+import hashlib
+import os
 import sys
 from os.path import basename
+from shlex import quote
 
+from alive_progress import alive_bar
 from blessings import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
+
+DEPLOYED_FILE_PERMS = 0o755
+DYLIB_DIR = "/usr/local/frc/third-party/lib/"
+LVUSER_UID = 500
+LVUSER_GID = 500
+ROBOTCOMAND_PATH = "/home/lvuser/robotCommand"
 
 term = Terminal()
 
@@ -13,6 +23,7 @@ class SilentAllowPolicy(MissingHostKeyPolicy):
 
 
 def establish_connection(team_number, verbose):
+    # addresses supplied from
     # https://github.com/wpilibsuite/GradleRIO/blob/aaf4da44e914a49e0bb956b028130481f538b31c/src/main/groovy/edu/wpi/first/gradlerio/frc/RoboRIO.groovy#L40
     addresses = [
         f"roborio-{team_number}-frc.local",
@@ -47,43 +58,117 @@ def establish_connection(team_number, verbose):
     sys.exit(1)
 
 
+def transfer_file(ssh_client, sftp_client, local_fo, remote_path, verbose):
+    local_size = os.fstat(local_fo.fileno()).st_size
+
+    if verbose:
+        print(f"checking {remote_path}")
+
+    try:
+        remote_fo = sftp_client.open(remote_path)
+        remote_size = remote_fo.stat().st_size
+
+        if verbose:
+            print(f"local size: {local_size}, remote size: {remote_size}")
+
+        if remote_size == local_size:
+            local_hash = hashlib.md5(local_fo.read()).hexdigest()
+            _, remote_hash_stdout_fo, _ = ssh_client.exec_command(f"md5sum {quote(remote_path)}")
+            remote_hash = remote_hash_stdout_fo.read().split()[0].decode()
+
+            if verbose:
+                print(f"local hash: {local_hash}, remote hash: {remote_hash}")
+
+            if remote_hash == local_hash:
+                return
+    except Exception as e:
+        # could fail due to misisng file, misisng md5sum, etc.
+        if verbose:
+            print(e)
+        pass
+
+    if verbose:
+        print(f"copying {local_fo.name} -> {remote_path}")
+
+    sftp_client.putfo(local_fo, remote_path)
+
+
 def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
+    parser.add_argument("--robot_command", type=str, default="{}")
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
     parser.add_argument("--dynamic_libraries", nargs='*')
     args = parser.parse_args(argv)
 
-    client = establish_connection(args.team_number, args.verbose)
+    with alive_bar(
+            len(args.dynamic_libraries) + 1,
+            enrich_print=False,
+            monitor=False,
+            stats=False,
+            theme="classic",
+    ) as progress_bar:
+        client = establish_connection(args.team_number, args.verbose)
+        sftp_client = client.open_sftp()
 
-    print(term.bright_yellow(f"Attempting to deploy {args.robot_binary.name}..."))
+        binary_name = basename(args.robot_binary.name)
+        destination_path = f"/home/lvuser/{binary_name}"
+        quoted_destination_path = quote(destination_path)
 
-    sftp_client = client.open_sftp()
-    binary_name = basename(args.robot_binary.name)
-    destination_path = f"/home/lvuser/{binary_name}"
-    # https://github.com/wpilibsuite/GradleRIO/blob/aaf4da44e914a49e0bb956b028130481f538b31c/src/main/groovy/edu/wpi/first/gradlerio/frc/FRCNativeArtifact.groovy#L29
-    client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t")
-    try:
-        sftp_client.remove(destination_path)
-    except FileNotFoundError:
-        print(term.bright_white("Previous robot executable not found so not deleted."))
-    sftp_client.putfo(args.robot_binary, destination_path)
-    sftp_client.chmod(destination_path, 0o755)
-    with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
-        f.write(f"'{destination_path}'\n")
-    sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
-    sftp_client.chown(destination_path, 500, 500)
-    sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
-    for dylib_path in args.dynamic_libraries:
-        dylib_name = basename(dylib_path)
-        sftp_client.put(dylib_path, f"/usr/local/frc/third-party/{dylib_name}")
-    client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
-    client.exec_command("sync")
-    client.exec_command("ldconfig")
-    client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r")
+        print(term.bright_yellow(f"Attempting to deploy {binary_name}..."))
 
-    print(term.bright_green(f"Deployed {args.robot_binary.name}. Exiting."))
+        # deploy process adapted from
+        # https://github.com/wpilibsuite/GradleRIO/blob/aaf4da44e914a49e0bb956b028130481f538b31c/src/main/groovy/edu/wpi/first/gradlerio/frc/FRCNativeArtifact.groovy#L29
+
+        # stop and remove existing robot binary
+        client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t")
+        try:
+            sftp_client.remove(destination_path)
+        except FileNotFoundError as e:
+            if args.verbose:
+                print(e)
+
+        # copy new robot binary
+        progress_bar.text(binary_name)
+        transfer_file(client, sftp_client,args.robot_binary, destination_path, args.verbose)
+        sftp_client.chmod(destination_path, DEPLOYED_FILE_PERMS)
+        sftp_client.chown(destination_path, LVUSER_UID, LVUSER_GID)
+        client.exec_command(f"setcap cap_sys_nice+eip {quoted_destination_path}")
+        progress_bar()
+
+        # write new robotCommand
+        with sftp_client.open(ROBOTCOMAND_PATH, "w") as fo:
+            # we take a robotCommand format string as a argument to make it easier for different languages (ie java) to
+            # describe how their binaries should be executed on the rio.
+            # the remote location of the robot binary is substituted into the format string, and the whole thing is
+            # wrapped in a bash command that sets -x before execing into the formatted string.
+            # this is done as a convenience so that the user can see exactly what is running in FRC_UserProgram.log.
+            inner_robot_command = args.robot_command.format(quoted_destination_path)
+            bash_command = f"set -euxo pipefail; exec {inner_robot_command}"
+            fo.write(f"bash -c {quote(bash_command)}\n")
+        sftp_client.chmod(ROBOTCOMAND_PATH, DEPLOYED_FILE_PERMS)
+        sftp_client.chown(ROBOTCOMAND_PATH, LVUSER_UID, LVUSER_GID)
+
+        # copy shared libraries
+        try:
+            sftp_client.mkdir(DYLIB_DIR)
+        except IOError as e:
+            if args.verbose:
+                print(e)
+        for dylib_path in args.dynamic_libraries:
+            dylib_name = basename(dylib_path)
+            progress_bar.text(dylib_name)
+            with open(dylib_path, "rb") as dylib_fo:
+                transfer_file(client, sftp_client, dylib_fo, f"{DYLIB_DIR}{dylib_name}", args.verbose)
+            progress_bar()
+
+        # restart robot code
+        client.exec_command("sync")
+        client.exec_command("ldconfig")
+        client.exec_command(". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r")
+
+        print(term.bright_green(f"Deployed {binary_name}. Exiting."))
 
 
 if __name__ == "__main__":
