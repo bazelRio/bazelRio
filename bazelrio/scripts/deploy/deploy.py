@@ -143,7 +143,7 @@ def deploy(argv):
             # describe how their binaries should be executed on the rio.
             # the remote location of the robot binary is substituted into the format string, and the whole thing is
             # wrapped in a bash command that sets -x before execing into the formatted string.
-            # this is done as a convenience so that the user can see exactly what is running in FRC_UserProgram.log/
+            # this is done as a convenience so that the user can see exactly what is running in FRC_UserProgram.log.
             inner_robot_command = args.robot_command.format(quoted_destination_path)
             bash_command = f"set -euxo pipefail; exec {inner_robot_command}"
             fo.write(f"bash -c {quote(bash_command)}\n")
@@ -153,8 +153,9 @@ def deploy(argv):
         # copy shared libraries
         try:
             sftp_client.mkdir(DYLIB_DIR)
-        except IOError:
-            pass
+        except IOError as e:
+            if verbose:
+                print(e)
         for dylib_path in args.dynamic_libraries:
             dylib_name = basename(dylib_path)
             progress_bar.text(dylib_name)
