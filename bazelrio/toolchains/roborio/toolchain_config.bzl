@@ -81,6 +81,9 @@ def _impl(ctx):
                     ),
                 ],
             ),
+            feature(
+                name = "compiler_param_file",
+            ),
         ],
     )
 
