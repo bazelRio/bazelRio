@@ -28,7 +28,7 @@ def _halsim_dependency(maven_dep, artifact_name):
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2021.3.1"]
+    VERSIONS = ["2021.3.1", "2022.1.1-beta-1"]
     DEP_NAME = "wpilib"
 
     dependencies = {DEP_NAME: []}
@@ -40,6 +40,7 @@ def get_wpilib_dependencies():
         "wpimath",
         "cameraserver",
         "cscore",
+        "wpilibOldCommands",
         "wpilibNewCommands",
     ]
     halsim_deps = [

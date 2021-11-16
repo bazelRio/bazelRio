@@ -3,12 +3,18 @@ import os
 from deps import MavenDependencyGroup
 import collections
 
+FILE_BLACKLIST = [".DS_Store"]
+
 
 def vendordep_dependencies(vendor_folder):
     dependencies = collections.defaultdict(list)
 
     for root, _, files in os.walk(vendor_folder):
         for f in files:
+
+            if f in FILE_BLACKLIST:
+                continue
+
             full_file = os.path.join(root, f)
             vendor_name, maven_dep = vendordep_dependency(full_file)
             dependencies[vendor_name].append(maven_dep)

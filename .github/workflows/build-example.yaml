@@ -8,10 +8,10 @@ jobs:
             - run: brew install osxfuse
             - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
             - name: Build Roborio
-              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
               working-directory: examples/cpp_example
             - name: Build Native
-              run: bazel build //...:* --config=osx --experimental_use_sandboxfs
+              run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/cpp_example
     build-linux:
         runs-on: ubuntu-latest
@@ -20,18 +20,18 @@ jobs:
             - run: sudo apt-get install libfuse-dev
             - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | sudo tar zxv -C /usr/local -f -
             - name: Build Roborio
-              run: bazel build //...:* --config=roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
               working-directory: examples/cpp_example
             - name: Build Native
-              run: bazel build //...:* --config=linux --experimental_use_sandboxfs
+              run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/cpp_example
     build-windows:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v2
             - name: Build Roborio
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=roborio
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
               working-directory: examples/cpp_example
             - name: Build Native
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=windows
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
               working-directory: examples/cpp_example
