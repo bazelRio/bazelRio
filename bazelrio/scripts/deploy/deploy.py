@@ -52,6 +52,7 @@ def deploy(argv):
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
+    parser.add_argument("--dynamic_libraries", nargs='*')
     args = parser.parse_args(argv)
 
     client = establish_connection(args.team_number, args.verbose)
@@ -74,6 +75,9 @@ def deploy(argv):
     sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
     sftp_client.chown(destination_path, 500, 500)
     sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
+    for dylib_path in args.dynamic_libraries:
+        dylib_name = basename(dylib_path)
+        sftp_client.put(dylib_path, f"/usr/local/frc/third-party/{dylib_name}")
     client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
     client.exec_command("sync")
     client.exec_command("ldconfig")
