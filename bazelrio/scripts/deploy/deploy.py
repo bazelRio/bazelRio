@@ -1,7 +1,10 @@
 import argparse
+import hashlib
+import os
 import sys
 from os.path import basename
 
+from alive_progress import alive_bar
 from blessings import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
 
@@ -47,6 +50,27 @@ def establish_connection(team_number, verbose):
     sys.exit(1)
 
 
+def transfer_file(ssh_client, sftp_client, local_path, remote_path):
+    with open(local_path, "rb") as local_fo:
+        local_size = os.fstat(local_fo.fileno()).st_size
+
+        try:
+            remote_fo = sftp_client.open(remote_path)
+            if remote_fo.stat().st_size == local_size:
+                _, remote_hash_stdout_fo, _ = ssh_client.exec_command(f"md5sum {remote_path}")
+                remote_hash = remote_hash_stdout_fo.read().split()[0].decode()
+                local_hash = hashlib.md5(local_fo.read()).hexdigest()
+
+                if remote_hash == local_hash:
+                    print(f"{basename(local_path)} already exists on remote host")
+                    return
+        except IOError as e:
+            pass
+
+        with alive_bar(local_size, manual=True, title=basename(local_path), theme="classic") as bar:
+            sftp_client.putfo(local_fo, remote_path, 0, lambda pos, _: bar(pos / local_size))
+
+
 def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
@@ -68,16 +92,16 @@ def deploy(argv):
         sftp_client.remove(destination_path)
     except FileNotFoundError:
         print(term.bright_white("Previous robot executable not found so not deleted."))
-    sftp_client.putfo(args.robot_binary, destination_path)
+    transfer_file(client, sftp_client, args.robot_binary.name, destination_path)
     sftp_client.chmod(destination_path, 0o755)
     with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
-        f.write(f"'{destination_path}'\n")
+        f.write(f"LD_LIBRARY_PATH=/usr/local/frc/third-party/ '{destination_path}'\n")
     sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
     sftp_client.chown(destination_path, 500, 500)
     sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
     for dylib_path in args.dynamic_libraries:
         dylib_name = basename(dylib_path)
-        sftp_client.put(dylib_path, f"/usr/local/frc/third-party/{dylib_name}")
+        transfer_file(client, sftp_client, dylib_path, f"/usr/local/frc/third-party/{dylib_name}")
     client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
     client.exec_command("sync")
     client.exec_command("ldconfig")

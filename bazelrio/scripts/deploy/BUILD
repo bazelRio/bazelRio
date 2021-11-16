@@ -6,6 +6,7 @@ py_binary(
     srcs = ["deploy.py"],
     visibility = ["//visibility:public"],
     deps = [
+        requirement("alive-progress"),
         requirement("blessings"),
         requirement("paramiko"),
     ],
