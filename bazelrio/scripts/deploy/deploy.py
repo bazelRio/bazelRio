@@ -95,13 +95,18 @@ def deploy(argv):
     transfer_file(client, sftp_client, args.robot_binary.name, destination_path)
     sftp_client.chmod(destination_path, 0o755)
     with sftp_client.open("/home/lvuser/robotCommand", "w") as f:
-        f.write(f"LD_LIBRARY_PATH=/usr/local/frc/third-party/ '{destination_path}'\n")
+        f.write(f"'{destination_path}'\n")
     sftp_client.chmod("/home/lvuser/robotCommand", 0o755)
     sftp_client.chown(destination_path, 500, 500)
     sftp_client.chown("/home/lvuser/robotCommand", 500, 500)
+    try:
+        sftp_client.mkdir("/usr/local/frc/third-party/lib/")
+    except IOError:
+        pass
     for dylib_path in args.dynamic_libraries:
         dylib_name = basename(dylib_path)
-        transfer_file(client, sftp_client, dylib_path, f"/usr/local/frc/third-party/{dylib_name}")
+        transfer_file(client, sftp_client, dylib_path, f"/usr/local/frc/third-party/lib/{dylib_name}")
+
     client.exec_command(f"setcap cap_sys_nice+eip '{destination_path}'")
     client.exec_command("sync")
     client.exec_command("ldconfig")
