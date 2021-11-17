@@ -17,7 +17,7 @@ def _get_dynamic_dependencies(target):
     if JavaInfo in target:
         for library in target[JavaInfo].transitive_native_libraries.to_list():
             if library.dynamic_library and not library.static_library:
-                    shared_lib_native_deps.append(library.dynamic_library)
+                shared_lib_native_deps.append(library.dynamic_library)
 
     return shared_lib_native_deps
 
@@ -33,14 +33,14 @@ def _roborio_deploy_impl(ctx):
         " ".join([dylib.short_path for dylib in dynamic_libraries]),
     )
 
-    ctx.actions.write(executable, deploy_command, is_executable=True)
+    ctx.actions.write(executable, deploy_command, is_executable = True)
 
     return [
         DefaultInfo(
             executable = executable,
             runfiles = ctx.attr.deploy_tool[DefaultInfo].default_runfiles.merge(
                 ctx.runfiles(
-                    files=[ctx.executable.src] + dynamic_libraries,
+                    files = [ctx.executable.src] + dynamic_libraries,
                 ),
             ),
         ),

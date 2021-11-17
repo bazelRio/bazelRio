@@ -3,7 +3,7 @@ java_import(
     jars = ["@__bazelrio_edu_wpi_first_wpimath_wpimath-java//jar:file"],
     visibility = ["//visibility:public"],
     deps = [
-        "//libraries/java/wpilib/wpiutil",
         "//libraries/cpp/wpilib/wpimath:jni",
+        "//libraries/java/wpilib/wpiutil",
     ],
 )
