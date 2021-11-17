@@ -97,8 +97,8 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
             })
 
             native.cc_binary(
-                name = name + "-sim-" + sim_name,
-                deps = [name + "-lib"] + halsim_deps,
+                name = name + ".simulation." + sim_name,
+                deps = [name + ".lib"] + halsim_deps,
                 env = env,
                 **kwargs
             )
@@ -116,6 +116,8 @@ def robot_java_binary(name, team_number, **kwargs):
         name = name,
         **kwargs
     )
+
+    # TODO: add simulation
 
     _roborio_deploy(
         name = name + ".deploy",
