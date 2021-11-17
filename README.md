@@ -110,4 +110,4 @@ BazelRIO containts library targets for WPILib and some vendor libraries:
 
 ## Simulations
 
-Simulations (alongside halsim extensions) are supported! Take a look at the [C++ example](./examples/cpp-example) to get started.
+Simulations (alongside halsim extensions) are supported! Take a look at the [C++ example](./examples/cpp_example) to get started.
