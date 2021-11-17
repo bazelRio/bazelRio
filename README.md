@@ -11,7 +11,7 @@
 
 <p align="center">
   <b>
-    A collection of <a href="http://bazel.build">bazel</a> utilities for FRC
+    A collection of <a href="https://bazel.build">bazel</a> utilities for FRC
   </b>
 </p>
 
