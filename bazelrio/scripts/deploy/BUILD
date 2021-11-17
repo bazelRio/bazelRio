@@ -7,7 +7,7 @@ py_binary(
     visibility = ["//visibility:public"],
     deps = [
         requirement("alive-progress"),
-        requirement("blessings"),
+        requirement("blessed"),
         requirement("paramiko"),
     ],
 )

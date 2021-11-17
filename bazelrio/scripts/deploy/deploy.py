@@ -2,11 +2,12 @@ import argparse
 import hashlib
 import os
 import sys
+from contextlib import contextmanager
 from os.path import basename
 from shlex import quote
 
 from alive_progress import alive_bar
-from blessings import Terminal
+from blessed import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
 
 DEPLOYED_FILE_PERMS = 0o755
@@ -93,6 +94,34 @@ def transfer_file(ssh_client, sftp_client, local_fo, remote_path, verbose):
     sftp_client.putfo(local_fo, remote_path)
 
 
+class WindowsProgressBar:
+    def __init__(self, total):
+        self.total = total
+        self.current = 1
+
+    def __call__(self):
+        self.current += 1
+        pass
+
+    def text(self, msg):
+        print(f"({self.current}/{self.total}) {msg}")
+
+
+@contextmanager
+def get_progress_bar(total):
+    if os.name != "nt":
+        with alive_bar(
+            total,
+            enrich_print=False,
+            monitor=False,
+            stats=False,
+            theme="classic",
+        ) as progress_bar:
+            yield progress_bar
+    else:
+        yield WindowsProgressBar(total)
+
+
 def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
@@ -102,13 +131,7 @@ def deploy(argv):
     parser.add_argument("--dynamic_libraries", nargs='*', default=[])
     args = parser.parse_args(argv)
 
-    with alive_bar(
-            len(args.dynamic_libraries) + 1,
-            enrich_print=False,
-            monitor=False,
-            stats=False,
-            theme="classic",
-    ) as progress_bar:
+    with get_progress_bar(len(args.dynamic_libraries) + 1) as progress_bar:
         client = establish_connection(args.team_number, args.verbose)
         sftp_client = client.open_sftp()
 

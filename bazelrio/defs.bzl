@@ -25,13 +25,18 @@ def _roborio_deploy_impl(ctx):
     executable = ctx.actions.declare_file(ctx.label.name + ".bat")
     dynamic_libraries = _get_dynamic_dependencies(ctx.attr.lib)
 
-    deploy_command = "{} --robot_binary {} --team_number {} --robot_command '{}' --dynamic_libraries {} $@".format(
+    deploy_command = "{} --robot_binary {} --team_number {} --robot_command '{}' --dynamic_libraries {}".format(
         ctx.executable.deploy_tool.short_path,
         ctx.executable.src.short_path,
         ctx.attr.team_number,
         ctx.attr.robot_command,
         " ".join([dylib.short_path for dylib in dynamic_libraries]),
     )
+    if ctx.host_configuration.host_path_separator == ";":
+        # TODO: find a better way to detect if we're on windows
+        deploy_command = "@echo off\r\n" + deploy_command.replace("/", "\\") + " %*"
+    else:
+        deploy_command = deploy_command + " $@"
 
     ctx.actions.write(executable, deploy_command, is_executable = True)
 
