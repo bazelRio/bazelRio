@@ -18,7 +18,7 @@
 ## Installation
 You can include BazelRIO in your project like so:
 
-```
+```bazel
 http_archive(
     name = "bazelrio",
     url = "https://github.com/bazelRio/bazelRio/archive/4ba18926e3af806926acf54136f1ccff19804c60.zip",
@@ -51,7 +51,7 @@ You **must** copy the `.bazelrc` file in the `example/` directory into your proj
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
 
-```
+```sh
 bazel build <target> --platforms=@bazelrio//platforms/roborio
 ```
 
@@ -62,7 +62,7 @@ BazelRIO provides rules for robot code targets of multiple languages.
 
 #### C++
 
-```
+```bazel
 load("@bazelrio//:defs.bzl", "robot_cc_binary")
 
 robot_cc_binary(
@@ -85,7 +85,7 @@ Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 
 #### Java
 
-```
+```bazel
 robot_java_binary(
     name = "hello",
     main_class = "frc.robot.Main",
