@@ -45,7 +45,7 @@ pip_install(
 )
 ```
 
-You **must** copy the `.bazelrc` file in the `example/` directory into your project workspace.
+You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or [Java](./examples/java_example) example into your project workspace and update your `BUILD` and `WORKSPACE` files in the same fashion.
 
 ## Features
 ### Cross compilation
