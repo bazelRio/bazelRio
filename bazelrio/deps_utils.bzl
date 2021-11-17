@@ -25,6 +25,7 @@ cc_library(
 cc_library_shared = """
 static_srcs = glob(["**/*.lib", "**/*.a"], exclude=["**/*jni.lib"])
 shared_srcs = glob(["**/*.dll", "**/*.so*", "**/*.dylib"], exclude=["**/*jni.dll", "**/*jni.so", "**/*.so.debug", "**/libopencv_java*.dylib"])
+shared_jni_srcs = glob(["**/*jni.dll", "**/*jni.so*", "**/*.jni.dylib", "**/libopencv_java*.dylib"], exclude=["**/*.so.debug"])
 
 cc_library(
     name = "static_libs",
@@ -39,5 +40,11 @@ cc_library(
     deps = [
         ":static_libs",
     ]
+)
+
+cc_library(
+    name = "shared_jni_libs",
+    srcs = shared_jni_srcs,
+    visibility = ["//visibility:public"],
 )
 """

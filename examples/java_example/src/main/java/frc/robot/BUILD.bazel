@@ -1,13 +1,15 @@
-# TODO update to use aliases when they exist
-java_binary(
+load("@bazelrio//:defs.bzl", "robot_java_binary")
+
+robot_java_binary(
     name = "robot",
     srcs = glob(["*.java"]),
     main_class = "frc.robot.Main",
     deps = [
         "//src/main/java/frc/robot/commands",
         "//src/main/java/frc/robot/subsystems",
-        "@__bazelrio_edu_wpi_first_wpilibj_wpilibj-java//jar",
-        "@__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-java//jar",
-        "@__bazelrio_edu_wpi_first_wpimath_wpimath-java//jar",
+        "@bazelrio//libraries/java/wpilib/wpilibj",
+        "@bazelrio//libraries/java/wpilib/new_commands",
+        "@bazelrio//libraries/java/wpilib/wpimath",
     ],
+    team_number = 1337,
 )

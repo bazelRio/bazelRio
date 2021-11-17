@@ -4,6 +4,6 @@ java_import(
     visibility = ["//visibility:public"],
     deps = [
         "//libraries/java/wpilib/wpiutil",
-        "@bazelrio//libraries/cpp/wpilib/wpimath",
+        "//libraries/cpp/wpilib/wpimath:jni",
     ],
 )

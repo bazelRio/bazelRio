@@ -13,7 +13,7 @@ DEPLOYED_FILE_PERMS = 0o755
 DYLIB_DIR = "/usr/local/frc/third-party/lib/"
 LVUSER_UID = 500
 LVUSER_GID = 500
-ROBOTCOMAND_PATH = "/home/lvuser/robotCommand"
+ROBOT_COMMAND_PATH = "/home/lvuser/robotCommand"
 
 term = Terminal()
 
@@ -99,7 +99,7 @@ def deploy(argv):
     parser.add_argument("--robot_command", type=str, default="{}")
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
-    parser.add_argument("--dynamic_libraries", nargs='*')
+    parser.add_argument("--dynamic_libraries", nargs='*', default=[])
     args = parser.parse_args(argv)
 
     with alive_bar(
@@ -138,7 +138,7 @@ def deploy(argv):
         progress_bar()
 
         # write new robotCommand
-        with sftp_client.open(ROBOTCOMAND_PATH, "w") as fo:
+        with sftp_client.open(ROBOT_COMMAND_PATH, "w") as fo:
             # we take a robotCommand format string as a argument to make it easier for different languages (ie java) to
             # describe how their binaries should be executed on the rio.
             # the remote location of the robot binary is substituted into the format string, and the whole thing is
@@ -147,8 +147,8 @@ def deploy(argv):
             inner_robot_command = args.robot_command.format(quoted_destination_path)
             bash_command = f"set -euxo pipefail; exec {inner_robot_command}"
             fo.write(f"bash -c {quote(bash_command)}\n")
-        sftp_client.chmod(ROBOTCOMAND_PATH, DEPLOYED_FILE_PERMS)
-        sftp_client.chown(ROBOTCOMAND_PATH, LVUSER_UID, LVUSER_GID)
+        sftp_client.chmod(ROBOT_COMMAND_PATH, DEPLOYED_FILE_PERMS)
+        sftp_client.chown(ROBOT_COMMAND_PATH, LVUSER_UID, LVUSER_GID)
 
         # copy shared libraries
         try:

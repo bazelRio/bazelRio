@@ -3,6 +3,6 @@ java_import(
     jars = ["@__bazelrio_edu_wpi_first_hal_hal-java//jar:file"],
     visibility = ["//visibility:public"],
     deps = [
-        "@bazelrio//libraries/cpp/wpilib/hal",
+        "//libraries/cpp/wpilib/hal:jni",
     ],
 )
