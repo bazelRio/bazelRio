@@ -1,10 +1,7 @@
-load("@bazelrio//:defs.bzl", "robot_java_binary")
-
-robot_java_binary(
+java_library(
     name = "robot",
     srcs = glob(["*.java"]),
-    main_class = "frc.robot.Main",
-    team_number = 1337,
+    visibility = ["//visibility:public"],
     deps = [
         "//src/main/java/frc/robot/commands",
         "//src/main/java/frc/robot/subsystems",
