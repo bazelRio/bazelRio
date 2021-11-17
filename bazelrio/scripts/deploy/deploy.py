@@ -2,18 +2,19 @@ import argparse
 import hashlib
 import os
 import sys
+from contextlib import contextmanager
 from os.path import basename
 from shlex import quote
 
 from alive_progress import alive_bar
-from blessings import Terminal
+from blessed import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
 
 DEPLOYED_FILE_PERMS = 0o755
 DYLIB_DIR = "/usr/local/frc/third-party/lib/"
 LVUSER_UID = 500
 LVUSER_GID = 500
-ROBOTCOMAND_PATH = "/home/lvuser/robotCommand"
+ROBOT_COMMAND_PATH = "/home/lvuser/robotCommand"
 
 term = Terminal()
 
@@ -93,22 +94,44 @@ def transfer_file(ssh_client, sftp_client, local_fo, remote_path, verbose):
     sftp_client.putfo(local_fo, remote_path)
 
 
+class WindowsProgressBar:
+    def __init__(self, total):
+        self.total = total
+        self.current = 1
+
+    def __call__(self):
+        self.current += 1
+        pass
+
+    def text(self, msg):
+        print(f"({self.current}/{self.total}) {msg}")
+
+
+@contextmanager
+def get_progress_bar(total):
+    if os.name != "nt":
+        with alive_bar(
+            total,
+            enrich_print=False,
+            monitor=False,
+            stats=False,
+            theme="classic",
+        ) as progress_bar:
+            yield progress_bar
+    else:
+        yield WindowsProgressBar(total)
+
+
 def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
     parser.add_argument("--robot_command", type=str, default="{}")
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
-    parser.add_argument("--dynamic_libraries", nargs='*')
+    parser.add_argument("--dynamic_libraries", nargs='*', default=[])
     args = parser.parse_args(argv)
 
-    with alive_bar(
-            len(args.dynamic_libraries) + 1,
-            enrich_print=False,
-            monitor=False,
-            stats=False,
-            theme="classic",
-    ) as progress_bar:
+    with get_progress_bar(len(args.dynamic_libraries) + 1) as progress_bar:
         client = establish_connection(args.team_number, args.verbose)
         sftp_client = client.open_sftp()
 
@@ -138,7 +161,7 @@ def deploy(argv):
         progress_bar()
 
         # write new robotCommand
-        with sftp_client.open(ROBOTCOMAND_PATH, "w") as fo:
+        with sftp_client.open(ROBOT_COMMAND_PATH, "w") as fo:
             # we take a robotCommand format string as a argument to make it easier for different languages (ie java) to
             # describe how their binaries should be executed on the rio.
             # the remote location of the robot binary is substituted into the format string, and the whole thing is
@@ -147,8 +170,8 @@ def deploy(argv):
             inner_robot_command = args.robot_command.format(quoted_destination_path)
             bash_command = f"set -euxo pipefail; exec {inner_robot_command}"
             fo.write(f"bash -c {quote(bash_command)}\n")
-        sftp_client.chmod(ROBOTCOMAND_PATH, DEPLOYED_FILE_PERMS)
-        sftp_client.chown(ROBOTCOMAND_PATH, LVUSER_UID, LVUSER_GID)
+        sftp_client.chmod(ROBOT_COMMAND_PATH, DEPLOYED_FILE_PERMS)
+        sftp_client.chown(ROBOT_COMMAND_PATH, LVUSER_UID, LVUSER_GID)
 
         # copy shared libraries
         try:

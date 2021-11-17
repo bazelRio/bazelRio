@@ -8,7 +8,7 @@ cc_library(
         "@__bazelrio_com_ctre_phoenix_cci_headers//:headers",
         "@__bazelrio_com_ctre_phoenix_core_headers//:headers",
         "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_headers//:headers",
-        "@bazelrio//libraries/cpp/wpilib/wpilibc",
+        "//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": [
             "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_windowsx86-64static//:static_libs",
@@ -43,7 +43,7 @@ cc_library(
             "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_osxx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_osxx86-64//:shared_libs",
         ],
-        "@bazelrio//constraints/is_roborio:roborio": [
+        "//constraints/is_roborio:roborio": [
             "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_linuxathenastatic//:static_libs",
             "@__bazelrio_com_ctre_phoenix_api-cpp_linuxathenastatic//:static_libs",
             "@__bazelrio_com_ctre_phoenix_cci_linuxathenastatic//:static_libs",
