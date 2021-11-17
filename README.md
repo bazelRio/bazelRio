@@ -9,9 +9,11 @@
     <img src="https://github.com/bazelRio/bazelRio/actions/workflows/build-example.yaml/badge.svg">
 </h1>
 
-<h4 align="center">
+<p align="center">
+  <b>
     A collection of <a href="http://bazel.build">bazel</a> utilities for FRC
-</h4>
+  </b>
+</p>
 
 ## Installation
 You can include BazelRIO in your project like so:
