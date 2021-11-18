@@ -21,7 +21,7 @@ You can include BazelRIO in your project like so:
 ```bazel
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tag/$TAG.zip",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/$TAG.zip",
     sha256 = "$SHA256",
     strip_prefix = "bazelRio-$TAG/bazelrio",
 )
