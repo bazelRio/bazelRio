@@ -19,6 +19,9 @@ jobs:
             - name: Build Native (java)
               run: bazel build //...:* --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
               working-directory: examples/java_example
+            - name: Build tools
+              run: bazel build @bazelrio//libraries/tools/...
+              working-directory: examples/java_example
     build-linux:
         runs-on: ubuntu-latest
         steps:
@@ -37,6 +40,9 @@ jobs:
             - name: Build Native (java)
               run: bazel build //...:* --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
               working-directory: examples/java_example
+            - name: Build tools
+              run: bazel build @bazelrio//libraries/tools/...
+              working-directory: examples/java_example
     build-windows:
         runs-on: windows-latest
         steps:
@@ -52,4 +58,7 @@ jobs:
               working-directory: examples/java_example
             - name: Build Native (java)
               run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows --java_runtime_version=remotejdk_11
+              working-directory: examples/java_example
+            - name: Build tools
+              run: bazel build @bazelrio//libraries/tools/...
               working-directory: examples/java_example
