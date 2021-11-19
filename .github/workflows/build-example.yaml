@@ -14,10 +14,10 @@ jobs:
               run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/cpp_example
             - name: Build Roborio (java))
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build Native (java)
-              run: bazel build //...:* --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
+              run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
@@ -35,10 +35,10 @@ jobs:
               run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/cpp_example
             - name: Build Roborio (java)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build Native (java)
-              run: bazel build //...:* --experimental_use_sandboxfs --java_runtime_version=remotejdk_11
+              run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
@@ -54,10 +54,10 @@ jobs:
               run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
               working-directory: examples/cpp_example
             - name: Build Roborio (java)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio --java_runtime_version=remotejdk_11
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
               working-directory: examples/java_example
             - name: Build Native (java)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows --java_runtime_version=remotejdk_11
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
               working-directory: examples/java_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...

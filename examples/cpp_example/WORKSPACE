@@ -20,8 +20,3 @@ pip_install(
     name = "__bazelrio_wpiformat_pip_deps",
     requirements = "@bazelrio//scripts/wpiformat:requirements.txt",
 )
-
-# Necessary if you want to run things that need java, like the wpi tools (shuffleboard, pathweaver, etc)
-load("@bazelrio//toolchains/jdk:toolchain_config.bzl", "configure_java_toolchain")
-
-configure_java_toolchain()
