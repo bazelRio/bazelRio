@@ -39,5 +39,5 @@ def configure_java_toolchain():
         ],
         urls = [URL.format("x64_mac", "tar.gz")],
         sha256 = "13d056ee9a57bf2d5b3af4504c8f8cf7a246c4dff78f96b70dd05dad98075855",
-        strip_prefix = "jdk-" + VERSION,
+        strip_prefix = "jdk-" + VERSION + "/Contents/Home",
     )
