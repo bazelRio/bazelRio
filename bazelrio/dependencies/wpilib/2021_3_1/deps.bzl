@@ -1,4 +1,4 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
@@ -724,4 +724,103 @@ def setup_wpilib_2021_3_1_dependencies():
         artifact = "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:2021.3.1",
         artifact_sha256 = "fbd0cf5269ef2f265ac1898aed87c075f7ba0ceef2de297c092d7870da8f757d",
         server_urls = ["https://frcmaven.wpi.edu/release"],
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2021.3.1/SmartDashboard-2021.3.1-linux64.jar",
+        sha256 = "b885e855f3a7ece1edd3039d777748b88c65142e362afdf758e6c984b51e6538",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2021.3.1/SmartDashboard-2021.3.1-mac64.jar",
+        sha256 = "0d339363d212f8e76ea3ef3f85bd2dff06898d738f858c0234298dd09f7365c9",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2021.3.1/SmartDashboard-2021.3.1-win64.jar",
+        sha256 = "b4f868f10d4c348d58d5f5ed1c01fb1e35808e16da7a398960f235db43f42ea5",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2021.3.1/PathWeaver-2021.3.1-linux64.jar",
+        sha256 = "70955d07a4a084aaeaee62f522763c2c5502d4151489343bb7f40f9970a7ced5",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2021.3.1/PathWeaver-2021.3.1-mac64.jar",
+        sha256 = "df296767ad1d2f628605ec3a1cfc521a5918c283bfe696f179334779d77b97bd",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2021.3.1/PathWeaver-2021.3.1-win64.jar",
+        sha256 = "c5d94daa925e589501a8060682f2e732ec685020812b9c73dd817057446552d1",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_robotbuilder",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/RobotBuilder/2021.3.1/RobotBuilder-2021.3.1.jar",
+        sha256 = "b8209714298037dd52c89d63eafb9deb547f834e78bd05d72a4933b920312d3f",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2021.3.1/shuffleboard-2021.3.1-linux64.jar",
+        sha256 = "705ed0e31a207e2b764a4ba597dcefc1073a11fe85df0bd97c56849f5e8ee7a8",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2021.3.1/shuffleboard-2021.3.1-mac64.jar",
+        sha256 = "f329a2d9f0ba1ca7cacc9103a48f549eee53ec6fbd8fd970769ad8d535ac5bf9",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2021.3.1/shuffleboard-2021.3.1-win64.jar",
+        sha256 = "bff617803c0ae78bebdaccf0ccfdf0761b1e077952469307bc73011e394ac8c2",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2021.3.1/OutlineViewer-2021.3.1-linux64.jar",
+        sha256 = "7954ea574d765fbbee52d69f6dfca27285c53b95cc9fd88e43000a398b07eeb4",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2021.3.1/OutlineViewer-2021.3.1-mac64.jar",
+        sha256 = "deead63d1a8fcc8c024dbc682056929da5b729981bbbbe620d03b1ea997f3e63",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2021.3.1/OutlineViewer-2021.3.1-win64.jar",
+        sha256 = "cc4299a4369acf03670c8d7785ee89a42f45532b69a679c6fe66f518207628ca",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_windowsx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2021.3.1/Glass-2021.3.1-windowsx86-64.zip",
+        sha256 = "5ed54addfecccbd5fa1d190b15ad6fc7c29d34d3084201f5390c676d6352102e",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_linuxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2021.3.1/Glass-2021.3.1-linuxx86-64.zip",
+        sha256 = "7d4fb06ee9ee5b0479f940dd01268a04667cb176aeec15183042fa404f8efc1d",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_osxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2021.3.1/Glass-2021.3.1-osxx86-64.zip",
+        sha256 = "b111497f49f8cef4f2189ecf34e5dc08f9558fbaa197c5ea7b6f842fe00e6d71",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
     )
