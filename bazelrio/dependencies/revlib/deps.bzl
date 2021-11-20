@@ -1,4 +1,3 @@
-
 load("//dependencies/revlib/2022_0_0:deps.bzl", "setup_revlib_2022_0_0_dependencies")
 
 def setup_revlib_dependencies(version):

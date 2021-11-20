@@ -1,4 +1,3 @@
-
 load("//dependencies/opencv/3_4_7_5:deps.bzl", "setup_opencv_3_4_7_5_dependencies")
 load("//dependencies/opencv/4_5_2_1:deps.bzl", "setup_opencv_4_5_2_1_dependencies")
 

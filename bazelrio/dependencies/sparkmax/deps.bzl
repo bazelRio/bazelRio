@@ -1,4 +1,3 @@
-
 load("//dependencies/sparkmax/1_5_4:deps.bzl", "setup_sparkmax_1_5_4_dependencies")
 
 def setup_sparkmax_dependencies(version):

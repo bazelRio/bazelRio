@@ -26,6 +26,7 @@ robot_cc_binary(
     deps = [
         "//src/commands",
         "//src/subsystems",
+        "@bazelrio//libraries/cpp/rev/revlib",
         "@bazelrio//libraries/cpp/wpilib/cameraserver",
     ],
 )
