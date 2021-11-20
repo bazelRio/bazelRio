@@ -83,7 +83,7 @@ Attempting to deploy bazel-out/darwin-fastbuild/bin/hello...
 Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 ```
 
-#### Java
+#### Java / Kotlin
 
 ```bazel
 robot_jvm_binary(
