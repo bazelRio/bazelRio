@@ -116,7 +116,7 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
         team_number = team_number,
     )
 
-def robot_jvm_binary(name, team_number, **kwargs):
+def robot_java_binary(name, team_number, **kwargs):
     native.java_binary(
         name = name,
         **kwargs

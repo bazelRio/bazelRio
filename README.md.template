@@ -86,7 +86,7 @@ Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 #### Java / Kotlin
 
 ```bazel
-robot_jvm_binary(
+robot_java_binary(
     name = "hello",
     main_class = "frc.robot.Main",
     team_number = 1337,
