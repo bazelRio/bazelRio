@@ -1,3 +1,4 @@
+
 load("//dependencies/ni/2020_9_2:deps.bzl", "setup_ni_2020_9_2_dependencies")
 load("//dependencies/ni/2022_2_2:deps.bzl", "setup_ni_2022_2_2_dependencies")
 

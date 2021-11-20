@@ -1,3 +1,4 @@
+
 load("//dependencies/navx/4_0_425:deps.bzl", "setup_navx_4_0_425_dependencies")
 
 def setup_navx_dependencies(version):
