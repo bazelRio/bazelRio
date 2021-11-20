@@ -1,8 +1,12 @@
-def executable_tool_launcher(name, base_repo_name):
+def executable_tool_launcher(name, base_repo_name, macos_app = None):
+    macos_subpath = "osx/x86-64"
+    if macos_app != None:
+        macos_subpath += "/" + macos_app + "/Contents/MacOS"
+
     subpath = select({
         "@bazel_tools//src/conditions:windows": ["windows/x86-64"],
-        "@bazel_tools//src/conditions:linux_x86_64": [],
-        "@bazel_tools//src/conditions:darwin": [],
+        "@bazel_tools//src/conditions:linux_x86_64": ["linux/x86-64"],
+        "@bazel_tools//src/conditions:darwin": [macos_subpath],
     })
 
     exe_name = select({
