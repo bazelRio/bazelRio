@@ -1,4 +1,4 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
@@ -29,3 +29,26 @@ def setup_{{maven_dependency.name}}_{{maven_dependency.underscore_version}}_depe
     )
     {%- endfor %}
 
+
+    {%- for tool_dep in maven_dependency._java_native_tools %}
+    {%- for resource in tool_dep.resources %}
+    maybe(
+        http_jar,
+        name = "{{tool_dep.get_archive_name(resource)}}",
+        url = "{{tool_dep.get_url(resource)}}",
+        sha256 = "{{tool_dep.get_sha256(resource)}}",
+    )
+    {%- endfor %}
+    {%- endfor %}
+
+    {%- for tool_dep in maven_dependency._executable_tools %}
+    {%- for resource in tool_dep.resources %}
+    maybe(
+        http_archive,
+        name = "{{tool_dep.get_archive_name(resource)}}",
+        url = "{{tool_dep.get_url(resource)}}",
+        sha256 = "{{tool_dep.get_sha256(resource)}}",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    {%- endfor %}
+    {%- endfor %}

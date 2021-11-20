@@ -19,8 +19,11 @@ maybe(
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
+load("@bazelrio//toolchains/jdk:toolchain_config.bzl", "configure_java_toolchain")
 
 setup_bazelrio_dependencies()
+
+configure_java_toolchain()
 
 register_toolchains("@bazelrio//toolchains/roborio")
 

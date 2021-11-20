@@ -84,17 +84,23 @@ class BaseDependency:
         return url
 
 
-class CppDependency(BaseDependency):
-    def __init__(self, resources, suffix="", **kwargs):
+class MultiResourceDependency(BaseDependency):
+    def __init__(self, file_extension, resources, suffix="", **kwargs):
         BaseDependency.__init__(self, **kwargs)
         self.resources = resources
         self.suffix = suffix
+        self.file_extension = file_extension
 
     def get_url(self, resource):
-        return self._get_url(".zip", resource)
+        return self._get_url(self.file_extension, resource)
 
     def get_sha256(self, resource):
         return _get_hash(self.get_url(resource), self.fail_on_hash_miss)
+
+
+class CppDependency(MultiResourceDependency):
+    def __init__(self, **kwargs):
+        MultiResourceDependency.__init__(self, file_extension = ".zip", **kwargs)
 
     def get_build_file_content(self, resource):
         if resource == "headers":
@@ -104,6 +110,14 @@ class CppDependency(BaseDependency):
         else:
             return "cc_library_static"
 
+
+class JavaNativeToolDependency(MultiResourceDependency):
+    def __init__(self, **kwargs):
+        MultiResourceDependency.__init__(self, file_extension = ".jar", **kwargs)
+
+class ExecutableToolDependency(MultiResourceDependency):
+    def __init__(self, **kwargs):
+        MultiResourceDependency.__init__(self, file_extension = ".zip", **kwargs)
 
 class JavaDependency(BaseDependency):
     def get_url(self):
@@ -120,6 +134,8 @@ class MavenDependencyGroup:
         self.maven_url = maven_url
         self._cpp_deps = []
         self._java_deps = []
+        self._java_native_tools = []
+        self._executable_tools = []
         self.fail_on_hash_miss = fail_on_hash_miss
 
         self.underscore_version = version.replace(".", "_").replace("-", "_")
@@ -141,6 +157,30 @@ class MavenDependencyGroup:
             JavaDependency(
                 group_id=group_id,
                 artifact_name=artifact_name,
+                maven_url=self.maven_url,
+                version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
+            )
+        )
+
+    def add_java_native_tool(self, group_id, artifact_name, resources):
+        self._java_native_tools.append(
+            JavaNativeToolDependency(
+                group_id=group_id,
+                artifact_name=artifact_name,
+                resources=resources,
+                maven_url=self.maven_url,
+                version=self.version,
+                fail_on_hash_miss=self.fail_on_hash_miss,
+            )
+        )
+
+    def add_executable_tool(self, group_id, artifact_name, resources):
+        self._executable_tools.append(
+            ExecutableToolDependency(
+                group_id=group_id,
+                artifact_name=artifact_name,
+                resources=resources,
                 maven_url=self.maven_url,
                 version=self.version,
                 fail_on_hash_miss=self.fail_on_hash_miss,

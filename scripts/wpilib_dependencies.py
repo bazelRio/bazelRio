@@ -25,6 +25,22 @@ def _halsim_dependency(maven_dep, artifact_name):
     )
 
 
+def _java_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", native_platforms=["linux64", "mac64", "win64"]):
+    if native_platforms:
+        maven_dep.add_java_native_tool(artifact_name=artifact_name, group_id=group_id, resources=native_platforms)
+    else:
+        pass
+
+def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools"):
+    native_platforms = default_native_shared_platforms()
+
+    maven_dep.add_executable_tool(
+        artifact_name=artifact_name,
+        group_id=group_id,
+        resources=native_platforms,
+    )
+
+
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
@@ -67,5 +83,19 @@ def get_wpilib_dependencies():
 
         for artifact in halsim_deps:
             _halsim_dependency(maven_dep, artifact)
+
+        _executable_tool(maven_dep, "Glass")
+        _java_tool(maven_dep, "SmartDashboard")
+        _java_tool(maven_dep, "PathWeaver")
+        _java_tool(maven_dep, "RobotBuilder", native_platforms=[""])
+        _java_tool(maven_dep, "shuffleboard", group_id="edu.wpi.first.shuffleboard")
+
+        if "2021" in version:
+            _java_tool(maven_dep, "OutlineViewer")
+        elif "2022" in version:
+            _executable_tool(maven_dep, "OutlineViewer")
+            _executable_tool(maven_dep, "SysId")
+        else:
+            raise Exception(f"Unknown year {version}")
 
     return dependencies
