@@ -3,7 +3,7 @@
     <br />
     BazelRIO
     <br />
-    <img src="https://img.shields.io/badge/semver-0.1.2-blue">
+    <img src="https://img.shields.io/badge/semver-0.2.0-blue">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
     <img src="https://github.com/bazelRio/bazelRio/actions/workflows/build-example.yaml/badge.svg">
@@ -21,9 +21,9 @@ You can include BazelRIO in your project like so:
 ```bazel
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.1.2.zip",
-    sha256 = "9ca149f8c6eaab637ff712bca6aa7b2d6e12bb3d259ea4672f0a6238767b8d92",
-    strip_prefix = "bazelRio-0.1.2/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.2.0.zip",
+    sha256 = "23d39c48957dbe16d8b50b6e75e434d3b0f077fe0e9feaecb2f60ce8792aedef",
+    strip_prefix = "bazelRio-0.2.0/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
@@ -83,7 +83,7 @@ Attempting to deploy bazel-out/darwin-fastbuild/bin/hello...
 Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 ```
 
-#### Java
+#### Java / Kotlin
 
 ```bazel
 robot_java_binary(
@@ -96,7 +96,7 @@ robot_java_binary(
 )
 ```
 
-BazelRIO will create a `java_binary` target named `hello`, as well as a special target named `hello.deploy` that can be used to deploy your binary.
+BazelRIO will create a `java_binary` target named `hello`, as well as a special target named `hello.deploy` that can be used to deploy your binary. If you are using Kotlin, you *must* build your code as a `kt_jvm_library` and add it to `runtime_deps`, rather than adding Kotlin files directly to `srcs`.
 
 ### Libraries
 BazelRIO containts library targets for WPILib and some vendor libraries:
