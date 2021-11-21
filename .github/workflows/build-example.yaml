@@ -13,12 +13,18 @@ jobs:
             - name: Build Native (cpp)
               run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/cpp_example
-            - name: Build Roborio (java))
+            - name: Build Roborio (java)
               run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
               working-directory: examples/java_example
             - name: Build Native (java)
               run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/java_example
+            - name: Build Roborio (kotlin)
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              working-directory: examples/kotlin_example
+            - name: Build Native (kotlin)
+              run: bazel build //...:* --experimental_use_sandboxfs
+              working-directory: examples/kotlin_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
               working-directory: examples/java_example
@@ -40,6 +46,12 @@ jobs:
             - name: Build Native (java)
               run: bazel build //...:* --experimental_use_sandboxfs
               working-directory: examples/java_example
+            - name: Build Roborio (kotlin)
+              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              working-directory: examples/kotlin_example
+            - name: Build Native (kotlin)
+              run: bazel build //...:* --experimental_use_sandboxfs
+              working-directory: examples/kotlin_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
               working-directory: examples/java_example
@@ -59,6 +71,12 @@ jobs:
             - name: Build Native (java)
               run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
               working-directory: examples/java_example
+            - name: Build Roborio (kotlin)
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
+              working-directory: examples/kotlin_example
+            - name: Build Native (kotlin)
+              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
+              working-directory: examples/kotlin_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
               working-directory: examples/java_example

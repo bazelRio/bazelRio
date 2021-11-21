@@ -83,7 +83,7 @@ Attempting to deploy bazel-out/darwin-fastbuild/bin/hello...
 Deployed bazel-out/darwin-fastbuild/bin/hello. Exiting.
 ```
 
-#### Java
+#### Java / Kotlin
 
 ```bazel
 robot_java_binary(
@@ -96,7 +96,7 @@ robot_java_binary(
 )
 ```
 
-BazelRIO will create a `java_binary` target named `hello`, as well as a special target named `hello.deploy` that can be used to deploy your binary.
+BazelRIO will create a `java_binary` target named `hello`, as well as a special target named `hello.deploy` that can be used to deploy your binary. If you are using Kotlin, you *must* build your code as a `kt_jvm_library` and add it to `runtime_deps`, rather than adding Kotlin files directly to `srcs`.
 
 ### Libraries
 BazelRIO containts library targets for WPILib and some vendor libraries:
