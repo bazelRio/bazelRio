@@ -48,6 +48,14 @@ pip_install(
 You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or [Java](./examples/java_example) example into your project workspace and update your `BUILD` and `WORKSPACE` files in the same fashion.
 
 ## Features
+### Support matrix
+| Language | Compilation | Simulation | Deployment |
+| --- | --- | --- | --- |
+| C++ | 🟢 | 🟢 | 🟢 |
+| Java | 🟢 | 🔴 | 🟢 |
+| Kotlin | 🟢 | 🔴 | 🟡\* |
+| Python | 🔴 | 🔴 | 🔴 |
+
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
 
