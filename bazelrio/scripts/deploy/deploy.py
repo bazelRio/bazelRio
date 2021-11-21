@@ -9,6 +9,7 @@ from shlex import quote
 from alive_progress import alive_bar
 from blessed import Terminal
 from paramiko.client import MissingHostKeyPolicy, SSHClient
+from rules_python.python.runfiles import runfiles
 
 DEPLOYED_FILE_PERMS = 0o755
 DYLIB_DIR = "/usr/local/frc/third-party/lib/"
@@ -124,7 +125,7 @@ def get_progress_bar(total):
 
 def deploy(argv):
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
-    parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
+    parser.add_argument("--robot_binary", type=str, required=True)
     parser.add_argument("--robot_command", type=str, default="{}")
     parser.add_argument("--team_number", type=int, required=True)
     parser.add_argument("--verbose", action="store_true", default=False)
@@ -132,10 +133,12 @@ def deploy(argv):
     args = parser.parse_args(argv)
 
     with get_progress_bar(len(args.dynamic_libraries) + 1) as progress_bar:
+        r = runfiles.Create()
+
         client = establish_connection(args.team_number, args.verbose)
         sftp_client = client.open_sftp()
 
-        binary_name = basename(args.robot_binary.name)
+        binary_name = basename(args.robot_binary)
         destination_path = f"/home/lvuser/{binary_name}"
         quoted_destination_path = quote(destination_path)
 
@@ -154,7 +157,8 @@ def deploy(argv):
 
         # copy new robot binary
         progress_bar.text(binary_name)
-        transfer_file(client, sftp_client,args.robot_binary, destination_path, args.verbose)
+        with open(r.Rlocation(os.path.join(__name__, args.robot_binary)), "rb") as robot_binary_fo:
+            transfer_file(client, sftp_client, robot_binary_fo, destination_path, args.verbose)
         sftp_client.chmod(destination_path, DEPLOYED_FILE_PERMS)
         sftp_client.chown(destination_path, LVUSER_UID, LVUSER_GID)
         client.exec_command(f"setcap cap_sys_nice+eip {quoted_destination_path}")
@@ -182,7 +186,7 @@ def deploy(argv):
         for dylib_path in args.dynamic_libraries:
             dylib_name = basename(dylib_path)
             progress_bar.text(dylib_name)
-            with open(dylib_path, "rb") as dylib_fo:
+            with open(r.Rlocation(os.path.join(__name__, dylib_path)), "rb") as dylib_fo:
                 transfer_file(client, sftp_client, dylib_fo, f"{DYLIB_DIR}{dylib_name}", args.verbose)
             progress_bar()
 

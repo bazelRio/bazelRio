@@ -9,5 +9,6 @@ py_binary(
         requirement("alive-progress"),
         requirement("blessed"),
         requirement("paramiko"),
+        "@rules_python//python/runfiles",
     ],
 )
