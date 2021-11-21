@@ -133,7 +133,7 @@ def deploy(argv):
     args = parser.parse_args(argv)
 
     with get_progress_bar(len(args.dynamic_libraries) + 1) as progress_bar:
-        r = runfiles.Create()
+        r = runfiles.CreateManifestBased("MANIFEST")
 
         client = establish_connection(args.team_number, args.verbose)
         sftp_client = client.open_sftp()
@@ -157,7 +157,7 @@ def deploy(argv):
 
         # copy new robot binary
         progress_bar.text(binary_name)
-        with open(r.Rlocation(os.path.join("__main__", args.robot_binary)), "rb") as robot_binary_fo:
+        with open(r.Rlocation(args.robot_binary), "rb") as robot_binary_fo:
             transfer_file(client, sftp_client, robot_binary_fo, destination_path, args.verbose)
         sftp_client.chmod(destination_path, DEPLOYED_FILE_PERMS)
         sftp_client.chown(destination_path, LVUSER_UID, LVUSER_GID)
@@ -186,7 +186,7 @@ def deploy(argv):
         for dylib_path in args.dynamic_libraries:
             dylib_name = basename(dylib_path)
             progress_bar.text(dylib_name)
-            with open(r.Rlocation(os.path.join("__main__", dylib_path)), "rb") as dylib_fo:
+            with open(r.Rlocation(dylib_path), "rb") as dylib_fo:
                 transfer_file(client, sftp_client, dylib_fo, f"{DYLIB_DIR}{dylib_name}", args.verbose)
             progress_bar()
 

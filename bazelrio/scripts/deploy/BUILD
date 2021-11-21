@@ -12,3 +12,5 @@ py_binary(
         "@rules_python//python/runfiles",
     ],
 )
+
+exports_files(["deploy.bat", "deploy.sh"])

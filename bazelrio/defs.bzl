@@ -25,20 +25,20 @@ def _roborio_deploy_impl(ctx):
     executable = ctx.actions.declare_file(ctx.label.name + ".bat")
     dynamic_libraries = _get_dynamic_dependencies(ctx.attr.lib)
 
-    deploy_command = "{} --robot_binary {} --team_number {} --robot_command '{}' --dynamic_libraries {}".format(
-        ctx.executable.deploy_tool.short_path,
-        ctx.executable.src.short_path,
-        ctx.attr.team_number,
-        ctx.attr.robot_command,
-        " ".join([dylib.short_path for dylib in dynamic_libraries]),
-    )
-    if ctx.host_configuration.host_path_separator == ";":
-        # TODO: find a better way to detect if we're on windows
-        deploy_command = "@echo off\r\n" + deploy_command.replace("/", "\\") + " %*"
-    else:
-        deploy_command = deploy_command + " $@"
+    # TODO: find a better way to detect if we're on windows
+    is_windows = ctx.host_configuration.host_path_separator == ";"
 
-    ctx.actions.write(executable, deploy_command, is_executable = True)
+    ctx.actions.expand_template(
+        template = ctx.file._windows_template if is_windows else ctx.file._bash_template,
+        output = executable,
+        substitutions = {
+            "{DEPLOY_TOOL}": "__main__/external" + ctx.executable.deploy_tool.short_path[2:],
+            "{ROBOT_BINARY}": "__main__/" + ctx.executable.src.short_path,
+            "{TEAM_NUMBER}": str(ctx.attr.team_number),
+            "{ROBOT_COMMAND}": ctx.attr.robot_command,
+            "{DYNAMIC_LIBRARIES}": " ".join(["__main__/" + dylib.short_path for dylib in dynamic_libraries]),
+        },
+    )
 
     return [
         DefaultInfo(
@@ -53,6 +53,14 @@ def _roborio_deploy_impl(ctx):
 
 _roborio_deploy = rule(
     attrs = {
+        "_bash_template": attr.label(
+            allow_single_file = True,
+            default = Label("@bazelrio//scripts/deploy:deploy.sh"),
+        ),
+        "_windows_template": attr.label(
+            allow_single_file = True,
+            default = Label("@bazelrio//scripts/deploy:deploy.bat"),
+        ),
         "deploy_tool": attr.label(
             cfg = "exec",
             default = Label("@bazelrio//scripts/deploy"),
