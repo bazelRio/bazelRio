@@ -3,6 +3,7 @@ load(":toolchain_config.bzl", "cc_toolchain_config")
 cc_toolchain_config(
     name = "roborio_toolchain_config",
     host_os = select({
+        # assuming x86/ARM Macs use the same x86 WPILib toolchain
         "@bazel_tools//src/conditions:darwin": "macos",
         "@bazel_tools//src/conditions:linux_x86_64": "linux",
         "@bazel_tools//src/conditions:windows": "windows",
@@ -18,6 +19,7 @@ cc_toolchain_config(
 filegroup(
     name = "toolchains_files",
     srcs = select({
+        # assuming x86/ARM Macs use the same x86 WPILib toolchain
         "@bazel_tools//src/conditions:darwin": [
             "@__bazelrio_roborio_toolchain_macos//:all",
         ] + glob(["shims/macos/**"]),
