@@ -133,7 +133,11 @@ def deploy(argv):
     args = parser.parse_args(argv)
 
     with get_progress_bar(len(args.dynamic_libraries) + 1) as progress_bar:
-        r = runfiles.CreateManifestBased("MANIFEST")
+        # TODO: remove all deploy runfiles machinery when https://github.com/bazelbuild/rules_kotlin/issues/629 is fixed.
+        if os.name != "nt":
+            r = runfiles.Create()
+        else:
+            r = runfiles.CreateManifestBased("MANIFEST")
 
         client = establish_connection(args.team_number, args.verbose)
         sftp_client = client.open_sftp()
