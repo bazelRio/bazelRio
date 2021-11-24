@@ -5,6 +5,7 @@ load("//dependencies/wpilib:deps.bzl", "setup_wpilib_dependencies")
 load("//dependencies/ni:deps.bzl", "setup_ni_dependencies")
 load("//dependencies/sparkmax:deps.bzl", "setup_sparkmax_dependencies")
 load("//dependencies/colorsensor:deps.bzl", "setup_colorsensor_dependencies")
+load("//dependencies/revlib:deps.bzl", "setup_revlib_dependencies")
 load("//dependencies/phoenix:deps.bzl", "setup_phoenix_dependencies")
 load("//dependencies/navx:deps.bzl", "setup_navx_dependencies")
 load("//dependencies/opencv:deps.bzl", "setup_opencv_dependencies")
@@ -16,6 +17,7 @@ def setup_bazelrio_dependencies(
         opencv_version = "3.4.7-5",
         sparkmax_version = "1.5.4",
         colorsensor_version = "1.2.0",
+        revlib_version = "2022.0.0",
         phoenix_version = "5.19.4",
         navx_version = "4.0.425"):
     # Other bazel rules
@@ -31,6 +33,7 @@ def setup_bazelrio_dependencies(
     setup_ni_dependencies(version = ni_version)
     setup_sparkmax_dependencies(version = sparkmax_version)
     setup_colorsensor_dependencies(version = colorsensor_version)
+    setup_revlib_dependencies(version = revlib_version)
     setup_phoenix_dependencies(version = phoenix_version)
     setup_navx_dependencies(version = navx_version)
     setup_opencv_dependencies(version = opencv_version)
