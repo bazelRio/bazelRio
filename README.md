@@ -3,7 +3,7 @@
     <br />
     BazelRIO
     <br />
-    <img src="https://img.shields.io/badge/semver-0.2.0-blue">
+    <img src="https://img.shields.io/badge/semver-0.2.1-blue">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
     <img src="https://github.com/bazelRio/bazelRio/actions/workflows/build-example.yaml/badge.svg">
@@ -21,9 +21,9 @@ You can include BazelRIO in your project like so:
 ```bazel
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.2.0.zip",
-    sha256 = "23d39c48957dbe16d8b50b6e75e434d3b0f077fe0e9feaecb2f60ce8792aedef",
-    strip_prefix = "bazelRio-0.2.0/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.2.1.zip",
+    sha256 = "7c33b1f3be4a697aca1ce49b6a88ec3f2d829e8d1e259ef18976dc6edcb6ae39",
+    strip_prefix = "bazelRio-0.2.1/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
@@ -48,6 +48,14 @@ pip_install(
 You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or [Java](./examples/java_example) example into your project workspace and update your `BUILD` and `WORKSPACE` files in the same fashion.
 
 ## Features
+### Support matrix
+| Language | Compilation | Simulation | Deployment |
+| --- | --- | --- | --- |
+| C++ | 🟢 | 🟢 | 🟢 |
+| Java | 🟢 | 🔴 | 🟢 |
+| Kotlin | 🟢 | 🔴 | 🟡\* |
+| Python | 🔴 | 🔴 | 🔴 |
+
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
 
