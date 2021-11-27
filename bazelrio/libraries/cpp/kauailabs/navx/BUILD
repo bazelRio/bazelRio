@@ -8,7 +8,7 @@ cc_library(
     ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_com_kauailabs_navx_frc_navx-cpp_windowsx86-64static//:static_libs"],
         "@bazel_tools//src/conditions:linux_x86_64": ["@__bazelrio_com_kauailabs_navx_frc_navx-cpp_linuxx86-64static//:static_libs"],
-        "@bazel_tools//src/conditions:darwin": ["@__bazelrio_com_kauailabs_navx_frc_navx-cpp_osxx86-64static//:static_libs"],
+        "@bazel_tools//src/conditions:darwin": [],
         "//constraints/is_roborio:roborio": ["@__bazelrio_com_kauailabs_navx_frc_navx-cpp_linuxathenastatic//:static_libs"],
     }),
 )
