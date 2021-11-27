@@ -3,7 +3,6 @@ try-import user.bazelrc
 build --incompatible_enable_cc_toolchain_resolution
 build --enable_platform_specific_config
 # build --enable_runfiles  # Needed explicitly on Windows
-build --java_runtime_version=roboriojdk_11
 
 # Uncomment me on macOS and Linux. See https://github.com/bazelbuild/sandboxfs/blob/master/INSTALL.md.
 # build --experimental_use_sandboxfs

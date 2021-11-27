@@ -1,3 +1,5 @@
+load("@rules_python//python:pip.bzl", "pip_install")
+
 def __prepare_halsim(halsim_deps):
     extension_names = []
     for dep in halsim_deps:
@@ -130,4 +132,20 @@ def robot_java_binary(name, team_number, **kwargs):
         lib = name,
         robot_command = "/usr/local/frc/JRE/bin/java -XX:+UseConcMarkSweepGC -Djava.library.path=/usr/local/frc/third-party/lib -Djava.lang.invoke.stringConcat=BC_SB -jar {}",
         team_number = team_number,
+    )
+
+def setup_bazelrio():
+    pip_install(
+        name = "__bazelrio_deploy_pip_deps",
+        requirements = "@bazelrio//scripts/deploy:requirements.txt",
+    )
+
+    pip_install(
+        name = "__bazelrio_wpiformat_pip_deps",
+        requirements = "@bazelrio//scripts/wpiformat:requirements.txt",
+    )
+
+    native.register_toolchains(
+        "@bazelrio//toolchains/roborio",
+        "@bazelrio//toolchains/jdk",
     )
