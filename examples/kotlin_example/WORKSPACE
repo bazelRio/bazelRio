@@ -4,35 +4,18 @@ local_repository(
 )
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-RULES_JVM_EXTERNAL_TAG = "3.3"
-
-RULES_JVM_EXTERNAL_SHA = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab"
-
-maybe(
-    http_archive,
-    name = "rules_jvm_external",
-    sha256 = RULES_JVM_EXTERNAL_SHA,
-    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
-)
+# BazelRIO
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
-load("@bazelrio//toolchains/jdk:toolchain_config.bzl", "configure_java_toolchain")
 
 setup_bazelrio_dependencies()
 
-configure_java_toolchain()
+load("@bazelrio//:defs.bzl", "setup_bazelrio")
 
-register_toolchains("@bazelrio//toolchains/roborio")
+setup_bazelrio()
 
-load("@rules_python//python:pip.bzl", "pip_install")
-
-pip_install(
-    name = "__bazelrio_deploy_pip_deps",
-    requirements = "@bazelrio//scripts/deploy:requirements.txt",
-)
+# Kotlin
 
 rules_kotlin_version = "v1.5.0-beta-4"
 
