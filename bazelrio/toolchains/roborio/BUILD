@@ -19,21 +19,21 @@ cc_toolchain_config(
 filegroup(
     name = "toolchains_files_macos",
     srcs = [
-         "@__bazelrio_roborio_toolchain_macos//:all",
+        "@__bazelrio_roborio_toolchain_macos//:all",
     ] + glob(["shims/macos/**"]),
 )
 
 filegroup(
     name = "toolchains_files_linux",
     srcs = [
-         "@__bazelrio_roborio_toolchain_linux//:all",
+        "@__bazelrio_roborio_toolchain_linux//:all",
     ] + glob(["shims/linux/**"]),
 )
 
 filegroup(
     name = "toolchains_files_windows",
     srcs = [
-         "@__bazelrio_roborio_toolchain_windows//:all",
+        "@__bazelrio_roborio_toolchain_windows//:all",
     ] + glob(["shims/windows/**"]),
 )
 
