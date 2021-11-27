@@ -146,7 +146,9 @@ def setup_bazelrio():
     )
 
     native.register_toolchains(
-        "@bazelrio//toolchains/roborio",
+        "@bazelrio//toolchains/roborio:macos",
+        "@bazelrio//toolchains/roborio:linux",
+        "@bazelrio//toolchains/roborio:windows",
         "@bazelrio//toolchains/jdk:macos",
         "@bazelrio//toolchains/jdk:linux",
         "@bazelrio//toolchains/jdk:windows",
