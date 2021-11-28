@@ -5,25 +5,23 @@ jobs:
         runs-on: macos-latest
         steps:
             - uses: actions/checkout@v2
-            - run: brew install osxfuse
-            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-macos.pkg -o sandboxfs.pkg && sudo installer -pkg sandboxfs.pkg -target /
             - name: Build Roborio (cpp)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/cpp_example
             - name: Build Native (cpp)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/cpp_example
             - name: Build Roborio (java)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/java_example
             - name: Build Native (java)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/java_example
             - name: Build Roborio (kotlin)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/kotlin_example
             - name: Build Native (kotlin)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/kotlin_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...
@@ -32,25 +30,23 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - run: sudo apt-get install libfuse-dev
-            - run: curl -sSL https://github.com/bazelbuild/sandboxfs/releases/download/sandboxfs-0.2.0/sandboxfs-0.2.0-20200420-linux-x86_64.tgz | sudo tar zxv -C /usr/local -f -
             - name: Build Roborio (cpp)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/cpp_example
             - name: Build Native (cpp)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/cpp_example
             - name: Build Roborio (java)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/java_example
             - name: Build Native (java)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/java_example
             - name: Build Roborio (kotlin)
-              run: bazel build //...:* --config=for-roborio --experimental_use_sandboxfs
+              run: bazel build //...:* --config=for-roborio
               working-directory: examples/kotlin_example
             - name: Build Native (kotlin)
-              run: bazel build //...:* --experimental_use_sandboxfs
+              run: bazel build //...:*
               working-directory: examples/kotlin_example
             - name: Build tools
               run: bazel build @bazelrio//libraries/tools/...

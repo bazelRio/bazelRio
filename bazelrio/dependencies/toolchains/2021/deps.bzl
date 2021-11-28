@@ -10,6 +10,10 @@ def setup_toolchains_2021_dependencies():
         url = "https://github.com/wpilibsuite/roborio-toolchain/releases/download/v2021-2/FRC-2021-Mac-Toolchain-7.3.0.tar.gz",
         sha256 = "0822ff945ff422b176571cebe7b2dfdc0ef6bf685d3b6f6833db8dc218d992ae",
         build_file_content = filegroup_all,
+        patches = [
+            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+        ],
     )
     maybe(
         http_archive,
@@ -17,6 +21,10 @@ def setup_toolchains_2021_dependencies():
         url = "https://github.com/wpilibsuite/roborio-toolchain/releases/download/v2021-2/FRC-2021-Linux-Toolchain-7.3.0.tar.gz",
         sha256 = "00cc58bf0607d71e725919d28e22714ce1920692c4864bc86353fc8139cbf7b7",
         build_file_content = filegroup_all,
+        patches = [
+            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+        ],
     )
     maybe(
         http_archive,
