@@ -30,19 +30,9 @@ load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
 
 setup_bazelrio_dependencies()
 
-register_toolchains("@bazelrio//toolchains/roborio")
+load("@bazelrio//:defs.bzl", "setup_bazelrio")
 
-load("@rules_python//python:pip.bzl", "pip_install")
-
-pip_install(
-    name = "__bazelrio_deploy_pip_deps",
-    requirements = "@bazelrio//scripts/deploy:requirements.txt",
-)
-
-pip_install(
-    name = "__bazelrio_wpiformat_pip_deps",
-    requirements = "@bazelrio//scripts/wpiformat:requirements.txt",
-)
+setup_bazelrio()
 ```
 
 You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or [Java](./examples/java_example) example into your project workspace and update your `BUILD` and `WORKSPACE` files in the same fashion.
@@ -55,6 +45,8 @@ You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or 
 | Java | 🟢 | 🔴 | 🟢 |
 | Kotlin | 🟢 | 🔴 | 🟡\* |
 | Python | 🔴 | 🔴 | 🔴 |
+
+\* Currently unsupported on Windows
 
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
