@@ -11,3 +11,6 @@ py_binary(
         requirement("paramiko"),
     ],
 )
+
+# Necessary for use in defs.bzl _deploy_command
+exports_files(["deploy.py"])

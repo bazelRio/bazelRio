@@ -123,6 +123,7 @@ def get_progress_bar(total):
 
 
 def deploy(argv):
+    print(os.getcwd())
     parser = argparse.ArgumentParser(description="Deploy code to a roboRIO")
     parser.add_argument("--robot_binary", type=argparse.FileType(mode="rb"), required=True)
     parser.add_argument("--robot_command", type=str, default="{}")
