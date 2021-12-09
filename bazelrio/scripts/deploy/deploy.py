@@ -168,8 +168,7 @@ def deploy(argv):
             # wrapped in a bash command that sets -x before execing into the formatted string.
             # this is done as a convenience so that the user can see exactly what is running in FRC_UserProgram.log.
             inner_robot_command = args.robot_command.format(quoted_destination_path)
-            bash_command = f"set -euxo pipefail; exec {inner_robot_command}"
-            fo.write(f"bash -c {quote(bash_command)}\n")
+            fo.write(f"{quote(inner_robot_command)}\n")
         sftp_client.chmod(ROBOT_COMMAND_PATH, DEPLOYED_FILE_PERMS)
         sftp_client.chown(ROBOT_COMMAND_PATH, LVUSER_UID, LVUSER_GID)
 
