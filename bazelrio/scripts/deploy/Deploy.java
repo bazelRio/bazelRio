@@ -2,9 +2,12 @@ package org.bazelrio.deploy;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.devtools.build.runfiles.Runfiles;
 
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
@@ -43,7 +46,7 @@ class Deploy {
         ArgumentParser parser = ArgumentParsers.newFor("deploy").build()
             .description("Deploy code to a roboRIO");
         parser.addArgument("--robot_binary")
-            .type(Arguments.fileType())
+            .type(String.class)
             .required(true);
         parser.addArgument("--robot_command")
             .type(String.class)
@@ -55,22 +58,24 @@ class Deploy {
             .action(Arguments.storeTrue())
             .setDefault(false);
         parser.addArgument("--dynamic_libraries")
-            .type(Arguments.fileType())
+            .type(String.class)
             .nargs("*")
             .setDefault();
 
         Namespace parsedArgs = parser.parseArgsOrFail(args);
 
-        File robotBinary = parsedArgs.get("robot_binary");
+        Runfiles runfiles = Runfiles.create();
+
+        File robotBinary = runfile(runfiles, parsedArgs.get("robot_binary"));
         String robotCommand = parsedArgs.get("robot_command");
-        ArrayList<File> dynamicLibraries = parsedArgs.get("dynamic_libraries");
+        ArrayList<String> dynamicLibraryPaths = parsedArgs.get("dynamic_libraries");
         boolean verbose = parsedArgs.get("verbose");
 
         String robotBinaryDestination = String.format("/home/lvuser/%s", robotBinary.getName());
 
         ProgressBar progressBar = new ProgressBarBuilder()
             .setTaskName("Deploying")
-            .setInitialMax(dynamicLibraries.size() + 1)
+            .setInitialMax(dynamicLibraryPaths.size() + 1)
             .setStyle(ProgressBarStyle.ASCII)
             .setUpdateIntervalMillis(100)
             .build();
@@ -101,7 +106,8 @@ class Deploy {
         runCommand(client, "chown lvuser:ni /home/lvuser/robotCommand", verbose);
 
         // Copy dynamic libraries
-        for (File dynamicLibrary : dynamicLibraries) {
+        for (String dynamicLibraryPath : dynamicLibraryPaths) {
+            File dynamicLibrary = runfile(runfiles, dynamicLibraryPath);
             progressBar.setExtraMessage(dynamicLibrary.getName());
             String dynamicLibraryDestination = String.format("/usr/local/frc/third-party/lib/%s", dynamicLibrary.getName());
             scp.copy(new FileSystemFile(dynamicLibrary), dynamicLibraryDestination);
@@ -112,7 +118,13 @@ class Deploy {
         runCommand(client, "sync", verbose);
         runCommand(client, "ldconfig", verbose);
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", verbose);
+    }
 
+    static File runfile(Runfiles runfiles, String location) {
+        Path runfilePath = Path.of("__main__").resolve(location).normalize();
+        ArrayList<String> pathParts = new ArrayList<>();
+        runfilePath.iterator().forEachRemaining(part -> pathParts.add(part.toString()));
+        return new File(runfiles.rlocation(String.join("/", pathParts)));
     }
 
     static void runCommand(SSHClient client, String commandString, boolean verbose) throws IOException {

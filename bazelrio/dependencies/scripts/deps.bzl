@@ -2,11 +2,6 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_python//python:pip.bzl", "pip_install")
 
 def setup_scripts_dependencies():
-    pip_install(
-        name = "__bazelrio_deploy_pip_deps",
-        requirements = "@bazelrio//scripts/deploy:requirements.txt",
-    )
-
     maven_install(
         artifacts = [
             "com.hierynomus:sshj:0.32.0",
