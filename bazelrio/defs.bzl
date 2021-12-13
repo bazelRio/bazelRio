@@ -1,4 +1,4 @@
-load("@rules_python//python:pip.bzl", "pip_install")
+load("//dependencies/scripts:deps.bzl", "setup_scripts_dependencies")
 
 def __prepare_halsim(halsim_deps):
     extension_names = []
@@ -39,12 +39,10 @@ def _deploy_command(name, bin_name, lib_name, team_number, robot_command):
         target = lib_name,
     )
 
-    native.py_binary(
+    native.java_binary(
         name = name,
-        # Seems like all of srcs, deps, and main are required to use a py_binary recursively like this
-        srcs = ["@bazelrio//scripts/deploy"],
-        deps = ["@bazelrio//scripts/deploy"],
-        main = "@bazelrio//scripts/deploy:deploy.py",
+        runtime_deps = ["@bazelrio//scripts/deploy"],
+        main_class = "org.bazelrio.deploy.Deploy",
         args = [
             "--robot_binary", "$(location {})".format(bin_name),
             "--robot_command", "'{}'".format(robot_command),
@@ -110,15 +108,7 @@ def robot_java_binary(name, team_number, **kwargs):
     )
 
 def setup_bazelrio():
-    pip_install(
-        name = "__bazelrio_deploy_pip_deps",
-        requirements = "@bazelrio//scripts/deploy:requirements.txt",
-    )
-
-    pip_install(
-        name = "__bazelrio_wpiformat_pip_deps",
-        requirements = "@bazelrio//scripts/wpiformat:requirements.txt",
-    )
+    setup_scripts_dependencies()
 
     native.register_toolchains(
         "@bazelrio//toolchains/roborio:macos",
