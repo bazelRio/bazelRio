@@ -6,7 +6,7 @@ constraint_setting(
 constraint_value(
     name = "true",
     constraint_setting = ":is_roborio",
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
 )
 
 constraint_value(

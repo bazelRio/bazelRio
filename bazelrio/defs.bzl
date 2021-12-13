@@ -50,7 +50,10 @@ def _deploy_command(name, bin_name, lib_name, team_number, robot_command):
             "--dynamic_libraries", "$(locations {})".format(discover_dynamic_deps_task_name),
         ],
         # Under Java, lib_name also needs to be included in the runfiles for native libraries to be readable
-        data = [bin_name, lib_name, discover_dynamic_deps_task_name]
+        data = [bin_name, lib_name, discover_dynamic_deps_task_name],
+        target_compatible_with = [
+            "@bazelrio//constraints/is_roborio:true",
+        ],
     )
 
 def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_configs = None, **kwargs):
