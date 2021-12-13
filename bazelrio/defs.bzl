@@ -44,10 +44,14 @@ def _deploy_command(name, bin_name, lib_name, team_number, robot_command):
         runtime_deps = ["@bazelrio//scripts/deploy"],
         main_class = "org.bazelrio.deploy.Deploy",
         args = [
-            "--robot_binary", "$(location {})".format(bin_name),
-            "--robot_command", "'{}'".format(robot_command),
-            "--team_number", str(team_number),
-            "--dynamic_libraries", "$(locations {})".format(discover_dynamic_deps_task_name),
+            "--robot_binary",
+            "$(location {})".format(bin_name),
+            "--robot_command",
+            "'{}'".format(robot_command),
+            "--team_number",
+            str(team_number),
+            "--dynamic_libraries",
+            "$(locations {})".format(discover_dynamic_deps_task_name),
         ],
         # Under Java, lib_name also needs to be included in the runfiles for native libraries to be readable
         data = [bin_name, lib_name, discover_dynamic_deps_task_name],

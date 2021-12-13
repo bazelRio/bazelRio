@@ -1,6 +1,7 @@
 java_library(
     name = "deploy",
     srcs = ["Deploy.java"],
+    visibility = ["//visibility:public"],
     deps = [
         "@bazel_tools//tools/java/runfiles",
         "@maven//:com_hierynomus_sshj",
@@ -8,5 +9,4 @@ java_library(
         "@maven//:net_sourceforge_argparse4j_argparse4j",
         "@maven//:org_slf4j_slf4j_nop",
     ],
-    visibility = ["//visibility:public"],
 )
