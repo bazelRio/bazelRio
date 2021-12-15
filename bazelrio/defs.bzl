@@ -1,4 +1,4 @@
-load("@rules_python//python:pip.bzl", "pip_install")
+load("//dependencies/scripts:deps.bzl", "setup_scripts_dependencies")
 
 def __prepare_halsim(halsim_deps):
     extension_names = []
@@ -8,77 +8,57 @@ def __prepare_halsim(halsim_deps):
 
     return extension_names
 
-def _get_dynamic_dependencies(target):
+def _get_dynamic_dependencies_impl(ctx):
     shared_lib_native_deps = []
 
-    if CcInfo in target:
-        for linker_input in target[CcInfo].linking_context.linker_inputs.to_list():
+    if CcInfo in ctx.attr.target:
+        for linker_input in ctx.attr.target[CcInfo].linking_context.linker_inputs.to_list():
             for library in linker_input.libraries:
                 if library.dynamic_library and not library.static_library:
                     shared_lib_native_deps.append(library.dynamic_library)
-    if JavaInfo in target:
-        for library in target[JavaInfo].transitive_native_libraries.to_list():
+    if JavaInfo in ctx.attr.target:
+        for library in ctx.attr.target[JavaInfo].transitive_native_libraries.to_list():
             if library.dynamic_library and not library.static_library:
                 shared_lib_native_deps.append(library.dynamic_library)
 
-    return shared_lib_native_deps
+    return [DefaultInfo(files = depset(shared_lib_native_deps))]
 
-def _roborio_deploy_impl(ctx):
-    executable = ctx.actions.declare_file(ctx.label.name + ".bat")
-    dynamic_libraries = _get_dynamic_dependencies(ctx.attr.lib)
-
-    deploy_command = "{} --robot_binary {} --team_number {} --robot_command '{}' --dynamic_libraries {}".format(
-        ctx.executable.deploy_tool.short_path,
-        ctx.executable.src.short_path,
-        ctx.attr.team_number,
-        ctx.attr.robot_command,
-        " ".join([dylib.short_path for dylib in dynamic_libraries]),
-    )
-    if ctx.host_configuration.host_path_separator == ";":
-        # TODO: find a better way to detect if we're on windows
-        deploy_command = "@echo off\r\n" + deploy_command.replace("/", "\\") + " %*"
-    else:
-        deploy_command = deploy_command + " $@"
-
-    ctx.actions.write(executable, deploy_command, is_executable = True)
-
-    return [
-        DefaultInfo(
-            executable = executable,
-            runfiles = ctx.attr.deploy_tool[DefaultInfo].default_runfiles.merge(
-                ctx.runfiles(
-                    files = [ctx.executable.src] + dynamic_libraries,
-                ),
-            ),
-        ),
-    ]
-
-_roborio_deploy = rule(
+_get_dynamic_dependencies = rule(
     attrs = {
-        "deploy_tool": attr.label(
-            cfg = "exec",
-            default = Label("@bazelrio//scripts/deploy"),
-            executable = True,
-        ),
-        "lib": attr.label(
-            mandatory = True,
-        ),
-        "robot_command": attr.string(
-            mandatory = True,
-        ),
-        "src": attr.label(
-            allow_single_file = True,
-            cfg = "target",
-            executable = True,
-            mandatory = True,
-        ),
-        "team_number": attr.int(
+        "target": attr.label(
             mandatory = True,
         ),
     },
-    executable = True,
-    implementation = _roborio_deploy_impl,
+    implementation = _get_dynamic_dependencies_impl,
 )
+
+def _deploy_command(name, bin_name, lib_name, team_number, robot_command):
+    discover_dynamic_deps_task_name = lib_name + ".discover_dynamic_deps"
+    _get_dynamic_dependencies(
+        name = discover_dynamic_deps_task_name,
+        target = lib_name,
+    )
+
+    native.java_binary(
+        name = name,
+        runtime_deps = ["@bazelrio//scripts/deploy"],
+        main_class = "org.bazelrio.deploy.Deploy",
+        args = [
+            "--robot_binary",
+            "$(location {})".format(bin_name),
+            "--robot_command",
+            "'{}'".format(robot_command),
+            "--team_number",
+            str(team_number),
+            "--dynamic_libraries",
+            "$(locations {})".format(discover_dynamic_deps_task_name),
+        ],
+        # Under Java, lib_name also needs to be included in the runfiles for native libraries to be readable
+        data = [bin_name, lib_name, discover_dynamic_deps_task_name],
+        target_compatible_with = [
+            "@bazelrio//constraints/is_roborio:true",
+        ],
+    )
 
 def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_configs = None, **kwargs):
     native.cc_library(
@@ -110,12 +90,12 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
                 **kwargs
             )
 
-    _roborio_deploy(
+    _deploy_command(
         name = name + ".deploy",
-        src = name,
-        lib = name + ".lib",
-        robot_command = "{}",
+        bin_name = name,
+        lib_name = name + ".lib",
         team_number = team_number,
+        robot_command = "{}",
     )
 
 def robot_java_binary(name, team_number, **kwargs):
@@ -126,24 +106,16 @@ def robot_java_binary(name, team_number, **kwargs):
 
     # TODO: add simulation
 
-    _roborio_deploy(
+    _deploy_command(
         name = name + ".deploy",
-        src = name + "_deploy.jar",
-        lib = name,
-        robot_command = "/usr/local/frc/JRE/bin/java -XX:+UseConcMarkSweepGC -Djava.library.path=/usr/local/frc/third-party/lib -Djava.lang.invoke.stringConcat=BC_SB -jar {}",
+        bin_name = name + "_deploy.jar",
+        lib_name = name,
         team_number = team_number,
+        robot_command = "/usr/local/frc/JRE/bin/java -XX:+UseConcMarkSweepGC -Djava.library.path=/usr/local/frc/third-party/lib -Djava.lang.invoke.stringConcat=BC_SB -jar {}",
     )
 
 def setup_bazelrio():
-    pip_install(
-        name = "__bazelrio_deploy_pip_deps",
-        requirements = "@bazelrio//scripts/deploy:requirements.txt",
-    )
-
-    pip_install(
-        name = "__bazelrio_wpiformat_pip_deps",
-        requirements = "@bazelrio//scripts/wpiformat:requirements.txt",
-    )
+    setup_scripts_dependencies()
 
     native.register_toolchains(
         "@bazelrio//toolchains/roborio:macos",

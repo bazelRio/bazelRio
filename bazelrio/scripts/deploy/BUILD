@@ -1,13 +1,12 @@
-load("@rules_python//python:defs.bzl", "py_binary")
-load("@__bazelrio_deploy_pip_deps//:requirements.bzl", "requirement")
-
-py_binary(
+java_library(
     name = "deploy",
-    srcs = ["deploy.py"],
+    srcs = ["Deploy.java"],
     visibility = ["//visibility:public"],
     deps = [
-        requirement("alive-progress"),
-        requirement("blessed"),
-        requirement("paramiko"),
+        "@bazel_tools//tools/java/runfiles",
+        "@maven//:com_hierynomus_sshj",
+        "@maven//:me_tongfei_progressbar",
+        "@maven//:net_sourceforge_argparse4j_argparse4j",
+        "@maven//:org_slf4j_slf4j_nop",
     ],
 )

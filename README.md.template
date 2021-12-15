@@ -43,10 +43,8 @@ You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or 
 | --- | --- | --- | --- |
 | C++ | 🟢 | 🟢 | 🟢 |
 | Java | 🟢 | 🔴 | 🟢 |
-| Kotlin | 🟢 | 🔴 | 🟡\* |
+| Kotlin | 🟢 | 🔴 | 🟢 |
 | Python | 🔴 | 🔴 | 🔴 |
-
-\* Currently unsupported on Windows
 
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
