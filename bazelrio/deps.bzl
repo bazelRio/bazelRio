@@ -10,6 +10,9 @@ load("//dependencies/phoenix:deps.bzl", "setup_phoenix_dependencies")
 load("//dependencies/navx:deps.bzl", "setup_navx_dependencies")
 load("//dependencies/opencv:deps.bzl", "setup_opencv_dependencies")
 
+RULES_JVM_EXTERNAL_TAG = "4.2"
+RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
+
 def setup_bazelrio_dependencies(
         toolchain_versions = "2021",
         wpilib_version = "2021.3.1",
@@ -23,9 +26,16 @@ def setup_bazelrio_dependencies(
     # Other bazel rules
     maybe(
         http_archive,
-        "rules_python",
+        name = "rules_python",
         url = "https://github.com/bazelbuild/rules_python/releases/download/0.5.0/rules_python-0.5.0.tar.gz",
         sha256 = "cd6730ed53a002c56ce4e2f396ba3b3be262fd7cb68339f0377a45e8227fe332",
+    )
+    maybe(
+        http_archive,
+        name = "rules_jvm_external",
+        url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+        sha256 = RULES_JVM_EXTERNAL_SHA,
+        strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
     )
 
     setup_toolchains_dependencies(version = toolchain_versions)
