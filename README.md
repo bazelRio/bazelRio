@@ -3,7 +3,7 @@
     <br />
     BazelRIO
     <br />
-    <img src="https://img.shields.io/badge/semver-0.3.0-blue">
+    <img src="https://img.shields.io/badge/semver-0.4.0-blue">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
     <img src="https://github.com/bazelRio/bazelRio/actions/workflows/build-example.yaml/badge.svg">
@@ -21,9 +21,9 @@ You can include BazelRIO in your project like so:
 ```bazel
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.3.0.zip",
-    sha256 = "f48dd081ccbca0f63d7577e68399d30ecbf85e935cad08dfa24f56691f4e8c85",
-    strip_prefix = "bazelRio-0.3.0/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.4.0.zip",
+    sha256 = "b8a7b24243427e9de40754256b28778c2ac53ec5302e667ae04f05d0fca5e386",
+    strip_prefix = "bazelRio-0.4.0/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
@@ -43,10 +43,8 @@ You **must** copy the `.bazelrc` file from the [C++](./examples/cpp_example) or 
 | --- | --- | --- | --- |
 | C++ | 🟢 | 🟢 | 🟢 |
 | Java | 🟢 | 🔴 | 🟢 |
-| Kotlin | 🟢 | 🔴 | 🟡\* |
+| Kotlin | 🟢 | 🔴 | 🟢 |
 | Python | 🔴 | 🔴 | 🔴 |
-
-\* Currently unsupported on Windows
 
 ### Cross compilation
 BazelRIO provides a RoboRIO target for easy cross-compilation.
