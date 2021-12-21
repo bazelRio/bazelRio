@@ -12,6 +12,7 @@ constraint_value(
 constraint_value(
     name = "false",
     constraint_setting = ":is_roborio",
+    visibility = ["//visibility:public"],
 )
 
 config_setting(

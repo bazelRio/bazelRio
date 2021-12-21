@@ -8,18 +8,23 @@ def __prepare_halsim(halsim_deps):
 
     return extension_names
 
-def _get_dynamic_dependencies_impl(ctx):
+def _get_dynamic_deps(target):
     shared_lib_native_deps = []
 
-    if CcInfo in ctx.attr.target:
-        for linker_input in ctx.attr.target[CcInfo].linking_context.linker_inputs.to_list():
+    if CcInfo in target:
+        for linker_input in target[CcInfo].linking_context.linker_inputs.to_list():
             for library in linker_input.libraries:
                 if library.dynamic_library and not library.static_library:
                     shared_lib_native_deps.append(library.dynamic_library)
-    if JavaInfo in ctx.attr.target:
-        for library in ctx.attr.target[JavaInfo].transitive_native_libraries.to_list():
+    if JavaInfo in target:
+        for library in target[JavaInfo].transitive_native_libraries.to_list():
             if library.dynamic_library and not library.static_library:
                 shared_lib_native_deps.append(library.dynamic_library)
+
+    return shared_lib_native_deps
+
+def _get_dynamic_dependencies_impl(ctx):
+    shared_lib_native_deps = _get_dynamic_deps(ctx.attr.target)
 
     return [DefaultInfo(files = depset(shared_lib_native_deps))]
 
@@ -30,6 +35,27 @@ _get_dynamic_dependencies = rule(
         ),
     },
     implementation = _get_dynamic_dependencies_impl,
+)
+
+def _symlink_java_native_libraries_impl(ctx):
+    shared_lib_native_deps = []
+    for dep in ctx.attr.deps:
+        shared_lib_native_deps += _get_dynamic_deps(dep)
+
+    symlinks = []
+    for lib in shared_lib_native_deps:
+        out = ctx.actions.declare_file(ctx.attr.output_directory + "/" + lib.basename)
+        ctx.actions.symlink(output = out, target_file = lib)
+        symlinks.append(out)
+
+    return [DefaultInfo(files = depset(symlinks), runfiles = ctx.runfiles(files = symlinks))]
+
+_symlink_java_native_libraries = rule(
+    attrs = {
+        "deps": attr.label_list(mandatory = True),
+        "output_directory": attr.string(mandatory = True),
+    },
+    implementation = _symlink_java_native_libraries_impl,
 )
 
 def _deploy_command(name, bin_name, lib_name, team_number, robot_command):
@@ -98,13 +124,38 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
         robot_command = "{}",
     )
 
-def robot_java_binary(name, team_number, **kwargs):
-    native.java_binary(
-        name = name,
-        **kwargs
+def robot_java_binary(name, team_number, deps = [], runtime_deps = [], data = [], halsim_deps = [], **kwargs):
+    # We must have the shared libraries live next to the binary
+    native_shared_libraries_symlink = name + ".symlink_native"
+    _symlink_java_native_libraries(
+        name = native_shared_libraries_symlink,
+        deps = deps + runtime_deps + halsim_deps,
+        output_directory = select({
+            "@bazel_tools//src/conditions:windows": name + ".exe.runfiles",
+            "//conditions:default": name + ".runfiles/__main__",
+        }),
     )
 
-    # TODO: add simulation
+    extension_names = __prepare_halsim(halsim_deps)
+    env = select({
+        "@bazel_tools//src/conditions:windows": {"HALSIM_EXTENSIONS": ";".join(extension_names)},
+        "//conditions:default": {"HALSIM_EXTENSIONS": ":".join(extension_names), "LD_LIBRARY_PATH": "."},
+    })
+
+    native.java_binary(
+        name = name,
+        deps = deps,
+        runtime_deps = runtime_deps,
+        data = data + select({
+            "@bazelrio//constraints/is_roborio:roborio": [],
+            "//conditions:default": [native_shared_libraries_symlink],
+        }),
+        env = env,
+        jvm_flags = [
+            "-Djava.library.path=.",
+        ],
+        **kwargs
+    )
 
     _deploy_command(
         name = name + ".deploy",
