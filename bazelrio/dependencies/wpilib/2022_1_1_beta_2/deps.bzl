@@ -1,4 +1,4 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
@@ -724,4 +724,127 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
         artifact = "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:2022.1.1-beta-2",
         artifact_sha256 = "ffb1ac8cc04be8d26687d67846be13b8b7d36d1be3ea052e50401654d203f2a4",
         server_urls = ["https://frcmaven.wpi.edu/release"],
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2022.1.1-beta-2/SmartDashboard-2022.1.1-beta-2-linux64.jar",
+        sha256 = "cca1519980bca86cf7541bc136919678a631c7a90748517292846bee8a068b07",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2022.1.1-beta-2/SmartDashboard-2022.1.1-beta-2-mac64.jar",
+        sha256 = "4697aa2f25c38727dd98ccdd9ae09bc56cb194170c9691b2b131964687815f4b",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2022.1.1-beta-2/SmartDashboard-2022.1.1-beta-2-win64.jar",
+        sha256 = "422d4050cefaa2e0b5d674c229e0ed30a7e82673432dd91d207bb0b53f1c3e70",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2022.1.1-beta-2/PathWeaver-2022.1.1-beta-2-linux64.jar",
+        sha256 = "34a53aa721a2863897f9e313a0be21f854a1535e5a2e5aabe76306753e89cd60",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2022.1.1-beta-2/PathWeaver-2022.1.1-beta-2-mac64.jar",
+        sha256 = "f8f211793952077adaafe0fa37551fd95e0e530842b23ce7f298777c27060052",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2022.1.1-beta-2/PathWeaver-2022.1.1-beta-2-win64.jar",
+        sha256 = "8e8cb1dcfb0380f9079ff5f1e125992621842e08822632047cbe5c403f5936cb",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_robotbuilder",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/RobotBuilder/2022.1.1-beta-2/RobotBuilder-2022.1.1-beta-2.jar",
+        sha256 = "374d14ebbbc94110c3f7be26696d5e3ebcb75e9b937de95100dc59a59936f993",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_linux64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2022.1.1-beta-2/shuffleboard-2022.1.1-beta-2-linux64.jar",
+        sha256 = "7d74d8ca98ff4442ce9fc0a2f21e6b9111b07be1d02c95df7b65e937c763b48e",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_mac64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2022.1.1-beta-2/shuffleboard-2022.1.1-beta-2-mac64.jar",
+        sha256 = "99699e6ff59a61126c29455714d14a40ad6f6c1a55558bda0c2fbd3c17c97b97",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_shuffleboard_shuffleboard_win64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/shuffleboard/shuffleboard/2022.1.1-beta-2/shuffleboard-2022.1.1-beta-2-win64.jar",
+        sha256 = "1fd9c31093a988b60c4e76c978dde9e092e7b96980311365525a9d87b3500b9c",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_windowsx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2022.1.1-beta-2/Glass-2022.1.1-beta-2-windowsx86-64.zip",
+        sha256 = "ce791cf38100204a7441bd5dfce7ff206a2acfb87dd19c67063429b2a83432fd",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_linuxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2022.1.1-beta-2/Glass-2022.1.1-beta-2-linuxx86-64.zip",
+        sha256 = "4603fa1c43f99aa2a80474167c685841adbc7768eb5c896db09fcbcb444225ab",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_glass_osxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Glass/2022.1.1-beta-2/Glass-2022.1.1-beta-2-osxx86-64.zip",
+        sha256 = "9f66a3eae56ede60580fe138e8a5bfc2639dda4e5df53913e7a49820bb57d601",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_windowsx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2022.1.1-beta-2/OutlineViewer-2022.1.1-beta-2-windowsx86-64.zip",
+        sha256 = "d9782c3f1d51000c55ef31e30115cad9961ed247ca675964c9b46bb3195cc75b",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_linuxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2022.1.1-beta-2/OutlineViewer-2022.1.1-beta-2-linuxx86-64.zip",
+        sha256 = "0489b5a898e815f3a0748d56067a5a333d61b141df1b4ce822b24b03986c53ec",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_outlineviewer_osxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/OutlineViewer/2022.1.1-beta-2/OutlineViewer-2022.1.1-beta-2-osxx86-64.zip",
+        sha256 = "b24c37cb16a6f5a7b6329ee9a204ec7a2ea5c21bc4d153e48f9cb220f87728c5",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_sysid_windowsx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SysId/2022.1.1-beta-2/SysId-2022.1.1-beta-2-windowsx86-64.zip",
+        sha256 = "77e5f9eea1c2f437cf4833f5eded4b4b5054ad0b7da781270fd69630db77d582",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_sysid_linuxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SysId/2022.1.1-beta-2/SysId-2022.1.1-beta-2-linuxx86-64.zip",
+        sha256 = "f3fa63fc54876a04373f49a0a62bb73cb508908593611b8bcf579d305f91e87a",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
+    )
+    maybe(
+        http_archive,
+        name = "__bazelrio_edu_wpi_first_tools_sysid_osxx86-64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SysId/2022.1.1-beta-2/SysId-2022.1.1-beta-2-osxx86-64.zip",
+        sha256 = "635f6a6ba6e61f3dfdbb863f0ec2bf22764f6c3b3021a7eb8341388b7eceaa37",
+        build_file_content = "filegroup(name='all', srcs=glob(['**']), visibility=['//visibility:public'])",
     )
