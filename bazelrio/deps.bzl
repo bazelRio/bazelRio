@@ -14,14 +14,14 @@ RULES_JVM_EXTERNAL_TAG = "4.2"
 RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
 
 def setup_bazelrio_dependencies(
-        toolchain_versions = "2021",
-        wpilib_version = "2021.3.1",
-        ni_version = "2020.9.2",
-        opencv_version = "3.4.7-5",
+        toolchain_versions = "2022-1",
+        wpilib_version = "2022.1.1",
+        ni_version = "2022.3.2",
+        opencv_version = "4.5.2-1",
         sparkmax_version = "1.5.4",
         colorsensor_version = "1.2.0",
-        revlib_version = "2022.0.0",
-        phoenix_version = "5.19.4",
+        revlib_version = "2022.1.0",
+        phoenix_version = "5.20.2",
         navx_version = "4.0.425"):
     # Other bazel rules
     maybe(
