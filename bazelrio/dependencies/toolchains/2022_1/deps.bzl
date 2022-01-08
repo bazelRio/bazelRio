@@ -11,8 +11,8 @@ def setup_toolchains_2022_1_dependencies():
         sha256 = "47d29989d2618c0fc439b72e8d3d734b93952da4136dd05a7648af19662700b7",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2022_1/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2022_1/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
@@ -22,8 +22,8 @@ def setup_toolchains_2022_1_dependencies():
         sha256 = "b27cde302e46d11524aedf664129bc3ac7df02a78d0f9e4ab3f1feb40d667ab4",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2022_1/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2022_1/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
