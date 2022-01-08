@@ -33,7 +33,7 @@ def _impl(ctx):
         ctx = ctx,
         toolchain_identifier = "roborio_toolchain",
         host_system_name = "local",
-        target_system_name = "arm-frc2021-linux-gnueabi",
+        target_system_name = "arm-frc2022-linux-gnueabi",
         target_cpu = "armv7",
         target_libc = "glibc-2.24",
         cc_target_os = "linux",
@@ -41,7 +41,7 @@ def _impl(ctx):
         abi_version = "gcc-7.3.0",
         abi_libc_version = "glibc-2.24",
         tool_paths = tool_paths,
-        builtin_sysroot = "external/__bazelrio_roborio_toolchain_{}/frc2021/roborio/arm-frc2021-linux-gnueabi".format(
+        builtin_sysroot = "external/__bazelrio_roborio_toolchain_{}/frc2022/roborio/arm-frc2022-linux-gnueabi".format(
             ctx.attr.host_os,
         ),
         features = [

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <frc/Encoder.h>
-#include <frc/PWMVictorSPX.h>
+#include <frc/motorcontrol/PWMVictorSPX.h>
 #include <frc/controller/PIDController.h>
 #include <frc/simulation/EncoderSim.h>
 #include <frc/simulation/FlywheelSim.h>
