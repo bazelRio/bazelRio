@@ -22,7 +22,7 @@ def setup_bazelrio_dependencies(
         colorsensor_version = "1.2.0",
         revlib_version = "2022.1.0",
         phoenix_version = "5.20.2",
-        navx_version = "4.0.425"):
+        navx_version = "4.0.442"):
     # Other bazel rules
     maybe(
         http_archive,
