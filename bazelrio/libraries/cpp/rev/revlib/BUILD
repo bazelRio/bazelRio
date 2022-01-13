@@ -25,7 +25,6 @@ cc_library(
     }),
 )
 
-
 cc_library(
     name = "jni",
     visibility = ["//visibility:public"],
