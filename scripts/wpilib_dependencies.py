@@ -7,7 +7,7 @@ def _cpp_dependency(maven_dep, artifact_name):
     maven_dep.add_cpp_dep(
         artifact_name=artifact_name + "-cpp",
         group_id=group_id,
-        resources=default_all_platforms() + ["headers"],
+        resources=default_all_platforms() + ["headers", "sources"],
     )
 
 

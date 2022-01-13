@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
+load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_sources", "cc_library_static")
 
 def setup_wpilib_2022_1_1_beta_2_dependencies():
     maybe(
@@ -69,6 +69,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpilibc_wpilibc-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibc/wpilibc-cpp/2022.1.1-beta-2/wpilibc-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "48db17403c13f7e6e25d389bf7509f8fb90eab453cab35db42ebdbb8c3f5a65b",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_hal_hal-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2022.1.1-beta-2/hal-cpp-2022.1.1-beta-2-linuxathena.zip",
         sha256 = "97bc9d45eb42c4e0046c63cd1106d0c04d243c16387210f8753bfc4f877c7c80",
@@ -129,6 +136,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2022.1.1-beta-2/hal-cpp-2022.1.1-beta-2-headers.zip",
         sha256 = "8c7cb75a7dbbe85fd160379237f05eeaba481a953b24455bd34288e08c2135a3",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_hal_hal-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2022.1.1-beta-2/hal-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "5c0576b9fe09f4b25df7c9dfa5335b4c1fcba7ff61bb92f0d861ec4334ed13c6",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -195,6 +209,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpiutil_wpiutil-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpiutil/wpiutil-cpp/2022.1.1-beta-2/wpiutil-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "26cc4ec3b6846426548a8069bc8fb8047bd1a03450fe076b387adaa3b56d1a27",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_ntcore_ntcore-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2022.1.1-beta-2/ntcore-cpp-2022.1.1-beta-2-linuxathena.zip",
         sha256 = "6fd6f700ae9d94d546c1f731d5823f22fbc8de05973383997beaccdc15dc9f3b",
@@ -255,6 +276,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2022.1.1-beta-2/ntcore-cpp-2022.1.1-beta-2-headers.zip",
         sha256 = "d91ee0e81421a4b40cd2983cda4b4bf430448413284ab5b088b2bab0de846ed1",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_ntcore_ntcore-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2022.1.1-beta-2/ntcore-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "68bda76f06efac28bc0858afdd063987d9adb7d502ace491cdce7a8867cac738",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -321,6 +349,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpimath_wpimath-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpimath/wpimath-cpp/2022.1.1-beta-2/wpimath-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "2d5d87ee83cbe6f699eaf3c3a00614a0532e06e0d9736af17023190a8aaee729",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_cameraserver_cameraserver-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2022.1.1-beta-2/cameraserver-cpp-2022.1.1-beta-2-linuxathena.zip",
         sha256 = "76d739ed2190285f4a3b977371f766f7640cce4c8e92435535dbf7c679004358",
@@ -381,6 +416,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2022.1.1-beta-2/cameraserver-cpp-2022.1.1-beta-2-headers.zip",
         sha256 = "feababdd10581c2b517fed56e55c8df6d8a4f977ee1849f22247befeccce9a3a",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_cameraserver_cameraserver-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2022.1.1-beta-2/cameraserver-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "679ffd0da3701e0c75d99b88fcc552159179cc1c08853f9565671b0349316d2d",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -447,6 +489,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_cscore_cscore-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cscore/cscore-cpp/2022.1.1-beta-2/cscore-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "d0a8bf9d6f31b86841d18191efa2fc4c5d48197f1420a9ba451d03e5595c0c3e",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-2/wpilibOldCommands-cpp-2022.1.1-beta-2-linuxathena.zip",
         sha256 = "a16e2994b61f1793471083457b19d8067dfb65d9d1ab62efc3bcb7800166cb39",
@@ -510,6 +559,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2022.1.1-beta-2/wpilibOldCommands-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "320da177b7438845f28ebe12e44a2914ceed54fd7b09ea1ea1eb803cb4e5b4ae",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2022.1.1-beta-2/wpilibNewCommands-cpp-2022.1.1-beta-2-linuxathena.zip",
         sha256 = "8b7a916a72210092d89e61f6242199df5fd74c40f7c063d286315ccb1804d3cc",
@@ -570,6 +626,13 @@ def setup_wpilib_2022_1_1_beta_2_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2022.1.1-beta-2/wpilibNewCommands-cpp-2022.1.1-beta-2-headers.zip",
         sha256 = "b1c4ce4d637cf521be55e96c90f2166ffc462009074e6761d8b2ecd0612c0cb2",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2022.1.1-beta-2/wpilibNewCommands-cpp-2022.1.1-beta-2-sources.zip",
+        sha256 = "f66ba765b0522381bf96eda08bf6e101ee8cd18ae1ef84c330d529d151c37c3c",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,

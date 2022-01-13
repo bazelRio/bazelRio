@@ -45,16 +45,20 @@ def vendordep_dependency(vendor_file):
             vendor_name, maven_url, version, fail_on_hash_miss=False
         )
 
+        # Add all the headers and sources first
         for cpp_dep in sorted(
             vendor_dep["cppDependencies"], key=lambda x: x["artifactId"]
         ):
-            resources = ["headers"]
+            resources = [cpp_dep['headerClassifier']]
+            if 'sourcesClassifier' in cpp_dep:
+                resources.append(cpp_dep['sourcesClassifier'])
             maven_dep.add_cpp_dep(
                 resources=resources,
                 group_id=cpp_dep["groupId"],
                 artifact_name=cpp_dep["artifactId"],
             )
 
+        # Then grab the native libraries
         for cpp_dep in sorted(
             vendor_dep["cppDependencies"], key=lambda x: x["artifactId"]
         ):
