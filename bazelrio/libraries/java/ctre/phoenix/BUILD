@@ -6,7 +6,7 @@ java_import(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//libraries/cpp/ctre/phoenix",
+        "//libraries/cpp/ctre/phoenix:jni",
         "//libraries/java/wpilib/wpilibj",
     ],
 )
