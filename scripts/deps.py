@@ -105,6 +105,8 @@ class CppDependency(MultiResourceDependency):
     def get_build_file_content(self, resource):
         if resource == "headers":
             return "cc_library_headers"
+        elif resource == "sources":
+            return "cc_library_sources"
         elif "static" not in resource:
             return "cc_library_shared"
         else:
