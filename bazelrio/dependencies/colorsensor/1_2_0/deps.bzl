@@ -13,6 +13,13 @@ def setup_colorsensor_1_2_0_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_source",
+        url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-source.zip",
+        sha256 = "dc9c1d446a3832c0852e11cfd6aec604eedc28ba75a686c68fd66045221627b2",
+        build_file_content = cc_library_shared,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_com_revrobotics_frc_colorsensorv3-cpp_windowsx86-64",
         url = "http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/com/revrobotics/frc/ColorSensorV3-cpp/1.2.0/ColorSensorV3-cpp-1.2.0-windowsx86-64.zip",
         sha256 = "27c8a3b83c200fcf429b0f7f3466c59ab33db59a7dcaf2321f6a5a7a43914a74",
