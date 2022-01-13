@@ -3,7 +3,7 @@ java_import(
     jars = ["@__bazelrio_com_revrobotics_frc_sparkmax-java//jar:file"],
     visibility = ["//visibility:public"],
     deps = [
-        "//libraries/cpp/rev/sparkmax",
+        "//libraries/cpp/rev/sparkmax:jni",
         "//libraries/java/wpilib/wpilibj",
     ],
 )

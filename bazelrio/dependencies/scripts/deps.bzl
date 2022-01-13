@@ -3,6 +3,7 @@ load("@rules_python//python:pip.bzl", "pip_install")
 
 def setup_scripts_dependencies():
     maven_install(
+        name = "__bazelrio_maven_deps",
         artifacts = [
             "com.hierynomus:sshj:0.32.0",
             "me.tongfei:progressbar:0.9.2",

@@ -24,3 +24,29 @@ cc_library(
         ],
     }),
 )
+
+cc_library(
+    name = "jni",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@bazel_tools//src/conditions:windows": [
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_windowsx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_windowsx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_windowsx86-64//:shared_jni_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_windowsx86-64//:shared_jni_libs",
+        ],
+        "@bazel_tools//src/conditions:linux_x86_64": [
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_linuxx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_linuxx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_linuxx86-64//:shared_jni_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_linuxx86-64//:shared_jni_libs",
+        ],
+        "@bazel_tools//src/conditions:darwin": [
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_osxx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_osxx86-64//:shared_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-cpp_osxx86-64//:shared_jni_libs",
+            "@__bazelrio_com_revrobotics_frc_sparkmax-driver_osxx86-64//:shared_jni_libs",
+        ],
+        "//constraints/is_roborio:roborio": [],
+    }),
+)
