@@ -61,6 +61,9 @@ class Deploy {
             .type(String.class)
             .nargs("*")
             .setDefault();
+        parser.addArgument("--fast_unsafe_deploy")
+            .action(Arguments.storeTrue())
+            .setDefault(false);
 
         Namespace parsedArgs = parser.parseArgsOrFail(args);
 
@@ -71,11 +74,15 @@ class Deploy {
         ArrayList<String> dynamicLibraryPaths = parsedArgs.get("dynamic_libraries");
         boolean verbose = parsedArgs.get("verbose");
 
+        if (parsedArgs.get("fast_unsafe_deploy")) {
+            dynamicLibraryPaths = new ArrayList<>();
+        }
+
         String robotBinaryDestination = String.format("/home/lvuser/%s", robotBinary.getName());
 
         ProgressBar progressBar = new ProgressBarBuilder()
             .setTaskName("Deploying")
-            .setInitialMax(dynamicLibraryPaths.size() + 1)
+            .setInitialMax(dynamicLibraryPaths.size() + 2)
             .setStyle(ProgressBarStyle.ASCII)
             .setUpdateIntervalMillis(100)
             .build();
@@ -85,15 +92,22 @@ class Deploy {
         client.addHostKeyVerifier(new NoopKeyVerifier());
         client.useCompression();
 
-        establishSession(client, parsedArgs.get("team_number"), verbose);
+        if (!establishSession(client, parsedArgs.get("team_number"), verbose)) {
+            System.err.println("Couldn't find a roboRIO");
+        }
+
         SCPUploadClient scp = client.newSCPFileTransfer().newSCPUploadClient();
 
         // Stop and remove existing robot binary
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t", verbose);
         runCommand(client, String.format("rm -f %s", robotBinaryDestination), verbose);
 
+        // Fix some files (required only once after roboRIO format)
+        runCommand(client, "sed -i -e 's/\\\"exec /\\\"/' /usr/local/frc/bin/frcRunRobot.sh", verbose);
+        runCommand(client, "sed -i -e 's/^StartupDLLs/;StartupDLLs/' /etc/natinst/share/ni-rt.ini", verbose);
+
         // Copy new robot binary
-        progressBar.setExtraMessage(robotBinary.getName());
+        progressBar.setExtraMessage("Deploying " + robotBinary.getName());
         scp.copy(new FileSystemFile(robotBinary), robotBinaryDestination);
         runCommand(client, String.format("chmod +x %s", robotBinaryDestination), verbose);
         runCommand(client, String.format("chown lvuser:ni %s", robotBinaryDestination), verbose);
@@ -108,16 +122,19 @@ class Deploy {
         // Copy dynamic libraries
         for (String dynamicLibraryPath : dynamicLibraryPaths) {
             File dynamicLibrary = runfile(runfiles, dynamicLibraryPath);
-            progressBar.setExtraMessage(dynamicLibrary.getName());
+            progressBar.setExtraMessage("Deploying " + dynamicLibrary.getName());
             String dynamicLibraryDestination = String.format("/usr/local/frc/third-party/lib/%s", dynamicLibrary.getName());
             scp.copy(new FileSystemFile(dynamicLibrary), dynamicLibraryDestination);
             progressBar.step();
         }
 
         // Restart robot code
+        progressBar.setExtraMessage("Restarting robot code");
         runCommand(client, "sync", verbose);
         runCommand(client, "ldconfig", verbose);
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", verbose);
+        progressBar.step();
+        System.out.println("Deploy completed!");
     }
 
     static File runfile(Runfiles runfiles, String location) {
@@ -139,7 +156,7 @@ class Deploy {
         }
     }
 
-    static void establishSession(SSHClient client, int teamNumber, boolean verbose) {
+    static boolean establishSession(SSHClient client, int teamNumber, boolean verbose) {
         String[] addresses = {
             String.format("roborio-%d-frc.local", teamNumber),
             String.format("10.%d.%d.2", teamNumber / 100, teamNumber % 100),
@@ -148,20 +165,32 @@ class Deploy {
             String.format("roborio-%d-frc.lan", teamNumber),
             String.format("roborio-%d-frc.frc-field.local", teamNumber),
         };
+        
+        ProgressBar progressBar = new ProgressBarBuilder()
+            .setTaskName("roboRIO Search")
+            .setInitialMax(addresses.length)
+            .setStyle(ProgressBarStyle.ASCII)
+            .setUpdateIntervalMillis(100)
+            .build();
+        progressBar.stepTo(0);
+
         for (String address : addresses) {
             try {
+                progressBar.setExtraMessage("Connecting to " + address);
                 if (verbose) {
                     System.out.println(String.format("Attempting to connect to %s", address));
                 }
                 client.connect(address);
                 client.authPassword("admin", "");
-                return;
+                return true;
             } catch (IOException e) {
                 if (verbose) {
                     System.err.println(String.format("Error connecting to %s: %s", address, e));
                 }
+                progressBar.step();
             }
         }
-        // TODO: throw
+        
+        return false;
     }
 }
