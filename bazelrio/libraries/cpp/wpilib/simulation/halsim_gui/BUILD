@@ -2,7 +2,12 @@ cc_library(
     name = "halsim_gui",
     linkstatic = 1,
     visibility = ["//visibility:public"],
-    deps = select({
+    deps = [
+        "//libraries/cpp/wpilib/hal",
+        "//libraries/cpp/wpilib/ntcore",
+        "//libraries/cpp/wpilib/wpimath",
+        "//libraries/cpp/wpilib/wpiutil",
+    ] + select({
         "@bazel_tools//src/conditions:windows": ["@__bazelrio_edu_wpi_first_halsim_halsim_gui_windowsx86-64//:shared_libs"],
         "@bazel_tools//src/conditions:linux_x86_64": ["@__bazelrio_edu_wpi_first_halsim_halsim_gui_linuxx86-64//:shared_libs"],
         "@bazel_tools//src/conditions:darwin": ["@__bazelrio_edu_wpi_first_halsim_halsim_gui_osxx86-64//:shared_libs"],
