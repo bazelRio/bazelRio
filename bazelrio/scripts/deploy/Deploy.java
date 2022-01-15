@@ -93,7 +93,7 @@ class Deploy {
         client.useCompression();
 
         if (!establishSession(client, parsedArgs.get("team_number"), verbose)) {
-            System.err.println("Couldn't find a roboRIO");
+            System.err.println("\rCouldn't find a roboRIO");
         }
 
         SCPUploadClient scp = client.newSCPFileTransfer().newSCPUploadClient();
@@ -107,7 +107,7 @@ class Deploy {
         runCommand(client, "sed -i -e 's/^StartupDLLs/;StartupDLLs/' /etc/natinst/share/ni-rt.ini", verbose);
 
         // Copy new robot binary
-        progressBar.setExtraMessage("Deploying " + robotBinary.getName());
+        progressBar.setExtraMessage(robotBinary.getName());
         scp.copy(new FileSystemFile(robotBinary), robotBinaryDestination);
         runCommand(client, String.format("chmod +x %s", robotBinaryDestination), verbose);
         runCommand(client, String.format("chown lvuser:ni %s", robotBinaryDestination), verbose);
@@ -127,13 +127,13 @@ class Deploy {
             scp.copy(new FileSystemFile(dynamicLibrary), dynamicLibraryDestination);
             progressBar.step();
         }
+	progressBar.close();
 
         // Restart robot code
-        progressBar.setExtraMessage("Restarting robot code");
+	System.out.println("\nRestarting robot code");
         runCommand(client, "sync", verbose);
         runCommand(client, "ldconfig", verbose);
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", verbose);
-        progressBar.step();
         System.out.println("Deploy completed!");
     }
 
@@ -177,20 +177,22 @@ class Deploy {
         for (String address : addresses) {
             try {
                 progressBar.setExtraMessage("Connecting to " + address);
+		progressBar.step();
                 if (verbose) {
                     System.out.println(String.format("Attempting to connect to %s", address));
                 }
                 client.connect(address);
                 client.authPassword("admin", "");
+		progressBar.close();
                 return true;
             } catch (IOException e) {
                 if (verbose) {
                     System.err.println(String.format("Error connecting to %s: %s", address, e));
                 }
-                progressBar.step();
             }
         }
-        
+       	
+	progressBar.close();
         return false;
     }
 }
