@@ -84,7 +84,7 @@ class Deploy {
 
         ProgressBar progressBar = new ProgressBarBuilder()
             .setTaskName("Deploying")
-            .setInitialMax(dynamicLibraryPaths.size() + 2)
+            .setInitialMax(dynamicLibraryPaths.size() + 1)
             .setStyle(ProgressBarStyle.ASCII)
             .setUpdateIntervalMillis(100)
             .build();
@@ -137,7 +137,7 @@ class Deploy {
         runCommand(client, "ldconfig", verbose);
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", verbose);
         System.out.println("Done.");
-        System.out.println("Deploy completed!");
+        System.out.print("Deploy completed!");
     }
 
     static File runfile(Runfiles runfiles, String location) {
