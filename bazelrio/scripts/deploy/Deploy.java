@@ -43,6 +43,8 @@ class CommandFailedException extends IOException {
 
 class Deploy {
     public static void main(String[] args) throws IOException {
+        System.out.println("Starting deploy");
+        
         ArgumentParser parser = ArgumentParsers.newFor("deploy").build()
             .description("Deploy code to a roboRIO");
         parser.addArgument("--robot_binary")
@@ -93,7 +95,7 @@ class Deploy {
         client.useCompression();
 
         if (!establishSession(client, parsedArgs.get("team_number"), verbose)) {
-            System.err.println("\rCouldn't find a roboRIO");
+            System.err.println("Couldn't find a roboRIO");
         }
 
         SCPUploadClient scp = client.newSCPFileTransfer().newSCPUploadClient();
@@ -127,13 +129,14 @@ class Deploy {
             scp.copy(new FileSystemFile(dynamicLibrary), dynamicLibraryDestination);
             progressBar.step();
         }
-	progressBar.close();
+	    progressBar.close();
 
         // Restart robot code
-	System.out.println("\nRestarting robot code");
+	    System.out.print("Restarting robot code... ");
         runCommand(client, "sync", verbose);
         runCommand(client, "ldconfig", verbose);
         runCommand(client, ". /etc/profile.d/natinst-path.sh; /usr/local/frc/bin/frcKillRobot.sh -t -r", verbose);
+        System.out.println("Done.");
         System.out.println("Deploy completed!");
     }
 
@@ -176,14 +179,16 @@ class Deploy {
 
         for (String address : addresses) {
             try {
-                progressBar.setExtraMessage("Connecting to " + address);
-		progressBar.step();
+                progressBar.setExtraMessage(address);
+		        progressBar.step();
                 if (verbose) {
                     System.out.println(String.format("Attempting to connect to %s", address));
                 }
                 client.connect(address);
                 client.authPassword("admin", "");
-		progressBar.close();
+
+                progressBar.stepTo(addresses.length);
+		        progressBar.close();
                 return true;
             } catch (IOException e) {
                 if (verbose) {
@@ -192,7 +197,7 @@ class Deploy {
             }
         }
        	
-	progressBar.close();
+	    progressBar.close();
         return false;
     }
 }
