@@ -75,7 +75,7 @@ cc_library(
             "@__bazelrio_com_ctre_phoenix_sim_simcancoder_osxx86-64//:shared_libs",
         ],
         "//constraints/is_roborio:roborio": [
-            "@__bazelrio_com_ctre_phoenix_cci_osxx86-64//:shared_libs",
+            "@__bazelrio_com_ctre_phoenix_cci_linuxathena//:shared_libs",
         ],
     }),
 )
