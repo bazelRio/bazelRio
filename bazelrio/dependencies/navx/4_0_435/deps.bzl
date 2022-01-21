@@ -34,13 +34,6 @@ def setup_navx_4_0_435_dependencies():
     )
     maybe(
         http_archive,
-        "__bazelrio_com_kauailabs_navx_frc_navx-cpp_sources",
-        sha256 = "194a2a7ff2313c53700698eb1f092111fa4cf21f151a9c3538dd224f09ce814c",
-        url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.435/navx-cpp-4.0.435-sources.zip",
-        build_file_content = navx_source_build,
-    )
-    maybe(
-        http_archive,
         "__bazelrio_com_kauailabs_navx_frc_navx-cpp_windowsx86-64",
         url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.435/navx-cpp-4.0.435-windowsx86-64.zip",
         sha256 = "2fc07613a22e07b05162cd545d448b512f639ebfea367ac1ecdd64d6e94ed374",
