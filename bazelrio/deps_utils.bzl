@@ -13,6 +13,13 @@ cc_library_headers = """cc_library(
 )
 """
 
+cc_library_sources = """filegroup(
+     name = "sources",
+     srcs = glob(["**"]),
+     visibility = ["//visibility:public"],
+ )
+ """
+
 cc_library_static = """
 
 cc_library(

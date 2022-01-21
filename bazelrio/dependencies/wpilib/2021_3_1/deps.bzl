@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
+load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_sources", "cc_library_static")
 
 def setup_wpilib_2021_3_1_dependencies():
     maybe(
@@ -69,6 +69,13 @@ def setup_wpilib_2021_3_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpilibc_wpilibc-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibc/wpilibc-cpp/2021.3.1/wpilibc-cpp-2021.3.1-sources.zip",
+        sha256 = "30a6d05425c25244c2a318d4ed5f5a007498970abd1d53778b42d1827112d24a",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_hal_hal-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2021.3.1/hal-cpp-2021.3.1-linuxathena.zip",
         sha256 = "e9de32abe3739697a3a92963c9eca4bf8755edfb0f11ac95e22d0190a3185f56",
@@ -129,6 +136,13 @@ def setup_wpilib_2021_3_1_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2021.3.1/hal-cpp-2021.3.1-headers.zip",
         sha256 = "81b4d98d7ae4f92b2887180aea29ef1e780c5570e3fdbe08e02183e54952bd62",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_hal_hal-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/hal/hal-cpp/2021.3.1/hal-cpp-2021.3.1-sources.zip",
+        sha256 = "d9e14d607060a39207996c75a07ef7db16308fdda1e9b2cb3a6982cefb2c075a",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -195,6 +209,13 @@ def setup_wpilib_2021_3_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpiutil_wpiutil-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpiutil/wpiutil-cpp/2021.3.1/wpiutil-cpp-2021.3.1-sources.zip",
+        sha256 = "9fe30f412d89a902bdaffcfd51ab32e302ce99a86007e26597cd5cd2951340f4",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_ntcore_ntcore-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2021.3.1/ntcore-cpp-2021.3.1-linuxathena.zip",
         sha256 = "dabb3d971cf0aee46d4b104d38abd47cc36219b025b299bfb9fea82e53deacc7",
@@ -255,6 +276,13 @@ def setup_wpilib_2021_3_1_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2021.3.1/ntcore-cpp-2021.3.1-headers.zip",
         sha256 = "2451d44dc2a3d16ee315738336b792642a7b8dd8c4aef0f6b7b0fb80c0a527d2",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_ntcore_ntcore-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/ntcore/ntcore-cpp/2021.3.1/ntcore-cpp-2021.3.1-sources.zip",
+        sha256 = "0afa1229a3732fe08dcec145435c94eb2d2c5740d7008587cea8997837270098",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -321,6 +349,13 @@ def setup_wpilib_2021_3_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpimath_wpimath-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpimath/wpimath-cpp/2021.3.1/wpimath-cpp-2021.3.1-sources.zip",
+        sha256 = "5f2811062835fafb566f33c5fb08a3771b0bac9ad1d3601c89c435327e761b44",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_cameraserver_cameraserver-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2021.3.1/cameraserver-cpp-2021.3.1-linuxathena.zip",
         sha256 = "d12ec6b78a3453c5e3cab275827abb1be2142e077532fc7dc32d03f36d04b3e8",
@@ -381,6 +416,13 @@ def setup_wpilib_2021_3_1_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2021.3.1/cameraserver-cpp-2021.3.1-headers.zip",
         sha256 = "20822383b8a56d781f46a60023f2c49b3e80014af504b74a6793fc034cb1c13c",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_cameraserver_cameraserver-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cameraserver/cameraserver-cpp/2021.3.1/cameraserver-cpp-2021.3.1-sources.zip",
+        sha256 = "31d9f6efe66288d658d3a08b6105e74e2c03d580989518e32922d1296f2f11d8",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
@@ -447,6 +489,13 @@ def setup_wpilib_2021_3_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_cscore_cscore-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/cscore/cscore-cpp/2021.3.1/cscore-cpp-2021.3.1-sources.zip",
+        sha256 = "3de03d13598fde4c17b0684d446ffae5de77104850676b8310b37b369caf9a6b",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2021.3.1/wpilibOldCommands-cpp-2021.3.1-linuxathena.zip",
         sha256 = "e2ae71a3c8a9b4d144c193fcb8096561a5a92f459b01526bdaaba9116bfb9c6a",
@@ -510,6 +559,13 @@ def setup_wpilib_2021_3_1_dependencies():
     )
     maybe(
         http_archive,
+        "__bazelrio_edu_wpi_first_wpiliboldcommands_wpiliboldcommands-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibOldCommands/wpilibOldCommands-cpp/2021.3.1/wpilibOldCommands-cpp-2021.3.1-sources.zip",
+        sha256 = "e00e43e0f6c4d3b8b89cbb0ebfdf668860866611552f4387bc809a6f8fd69518",
+        build_file_content = cc_library_sources,
+    )
+    maybe(
+        http_archive,
         "__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_linuxathena",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2021.3.1/wpilibNewCommands-cpp-2021.3.1-linuxathena.zip",
         sha256 = "5e3311ef761b4c79ebf67f78aed423d1650f3477120d4c483925e6b4c9d2eec6",
@@ -570,6 +626,13 @@ def setup_wpilib_2021_3_1_dependencies():
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2021.3.1/wpilibNewCommands-cpp-2021.3.1-headers.zip",
         sha256 = "c919969657ce44a5a20cc84140997149082dbfda5cda7f170b68d2e94744921e",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_edu_wpi_first_wpilibnewcommands_wpilibnewcommands-cpp_sources",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/wpilibNewCommands/wpilibNewCommands-cpp/2021.3.1/wpilibNewCommands-cpp-2021.3.1-sources.zip",
+        sha256 = "275b94707db95629c53bd4afe3bba53ce996ea96e97816a232afb0c15a527720",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,

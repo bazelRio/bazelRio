@@ -7,7 +7,7 @@ def _cpp_dependency(maven_dep, artifact_name):
     maven_dep.add_cpp_dep(
         artifact_name=artifact_name + "-cpp",
         group_id=group_id,
-        resources=default_all_platforms() + ["headers"],
+        resources=default_all_platforms() + ["headers", "sources"],
     )
 
 
@@ -44,7 +44,7 @@ def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools"):
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2021.3.1", "2022.1.1-beta-1", "2022.1.1-beta-2"]
+    VERSIONS = ["2021.3.1", "2022.1.1-beta-1", "2022.1.1-beta-2", "2022.1.1"]
     DEP_NAME = "wpilib"
 
     dependencies = {DEP_NAME: []}

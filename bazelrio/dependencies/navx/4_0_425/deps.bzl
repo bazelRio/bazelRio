@@ -1,8 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@bazelrio//dependencies/navx:deps_util.bzl", "navx_source_build")
-load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_static")
+load("@bazelrio//:deps_utils.bzl", "cc_library_headers", "cc_library_shared", "cc_library_sources", "cc_library_static")
 
 def setup_navx_4_0_425_dependencies():
     maybe(
@@ -11,6 +10,13 @@ def setup_navx_4_0_425_dependencies():
         url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.425/navx-cpp-4.0.425-headers.zip",
         sha256 = "6482edc027dff06570e81747ff87aa8369b302122c38530b0cab0d2c11e83f80",
         build_file_content = cc_library_headers,
+    )
+    maybe(
+        http_archive,
+        "__bazelrio_com_kauailabs_navx_frc_navx-cpp_sources",
+        url = "https://repo1.maven.org/maven2/com/kauailabs/navx/frc/navx-cpp/4.0.425/navx-cpp-4.0.425-sources.zip",
+        sha256 = "3becd28b6385184c574cd343aad73e70c2188292a242cac4610bc2f6c3c48ab2",
+        build_file_content = cc_library_sources,
     )
     maybe(
         http_archive,
