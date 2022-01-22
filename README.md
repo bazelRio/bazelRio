@@ -3,7 +3,7 @@
     <br />
     BazelRIO
     <br />
-    <img src="https://img.shields.io/badge/semver-0.5.0-blue">
+    <img src="https://img.shields.io/badge/semver-0.6.0-blue">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
     <img src="https://github.com/bazelRio/bazelRio/actions/workflows/build-example.yaml/badge.svg">
@@ -21,9 +21,9 @@ You can include BazelRIO in your project like so:
 ```bazel
 http_archive(
     name = "bazelrio",
-    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.5.0.zip",
-    sha256 = "63840300af45a0a4f89e9d3e6728858d103765bda44e3d0ea83e35fb5317cdc7",
-    strip_prefix = "bazelRio-0.5.0/bazelrio",
+    url = "https://github.com/bazelRio/bazelRio/archive/refs/tags/0.6.0.zip",
+    sha256 = "eb71b5fcba374f27a0ce2634bd4e8518ad6ae56fb56decfcbdad619bef06e0ad",
+    strip_prefix = "bazelRio-0.6.0/bazelrio",
 )
 
 load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
