@@ -9,8 +9,8 @@ cc_library(
         "//libraries/cpp/wpilib/wpilibc",
     ] + select({
         "@bazel_tools//src/conditions:windows": [
-            "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_api-cpp_windowsx86-64//:shared_libs",
+            "@__bazelrio_com_ctre_phoenix_wpiapi-cpp-sim_windowsx86-64//:shared_libs",
+            "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_windowsx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_cci-sim_windowsx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_windowsx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_windowsx86-64//:shared_libs",
@@ -19,8 +19,8 @@ cc_library(
             "@__bazelrio_com_ctre_phoenix_sim_simcancoder_windowsx86-64//:shared_libs",
         ],
         "@bazel_tools//src/conditions:linux_x86_64": [
-            "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_api-cpp_linuxx86-64//:shared_libs",
+            "@__bazelrio_com_ctre_phoenix_wpiapi-cpp-sim_linuxx86-64//:shared_libs",
+            "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_linuxx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_cci-sim_linuxx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_linuxx86-64//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_linuxx86-64//:shared_libs",
