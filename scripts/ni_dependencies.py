@@ -14,7 +14,7 @@ def _cpp_dependency(maven_dep, artifact_name):
 def get_ni_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2020.9.2", "2022.2.2", "2022.2.3"]
+    VERSIONS = ["2020.9.2", "2022.2.2", "2022.2.3", "2022.4.0"]
     DEP_NAME = "ni"
 
     dependencies = {DEP_NAME: []}

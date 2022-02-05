@@ -16,7 +16,7 @@ RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea1
 def setup_bazelrio_dependencies(
         toolchain_versions = "2022-1",
         wpilib_version = "2022.3.1",
-        ni_version = "2022.2.3",
+        ni_version = "2022.4.0",
         opencv_version = "4.5.2-1",
         sparkmax_version = "1.5.4",
         colorsensor_version = "1.2.0",
