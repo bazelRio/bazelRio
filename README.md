@@ -103,6 +103,7 @@ BazelRIO containts library targets for WPILib and some vendor libraries:
 - `@bazelrio//libraries/java/wpilib/wpilibj`
 - `@bazelrio//libraries/cpp/ctre/phoenix`
 - `@bazelrio//libraries/cpp/rev/sparkmax`
+- `@bazelrio//libraries/cpp/rev/revlib`
 - `@bazelrio//libraries/cpp/rev/colorsensor`
 - `@bazelrio//libraries/cpp/kauailabs/navx`
 
