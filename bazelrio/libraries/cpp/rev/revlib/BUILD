@@ -1,6 +1,7 @@
 cc_library(
     name = "revlib",
     linkstatic = 1,
+    linkopts = ['-ldl'],
     visibility = ["//visibility:public"],
     deps = [
         "@__bazelrio_com_revrobotics_frc_revlib-cpp_headers//:headers",
