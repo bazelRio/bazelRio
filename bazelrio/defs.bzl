@@ -114,14 +114,24 @@ def robot_java_binary(name, team_number, **kwargs):
         robot_command = "/usr/local/frc/JRE/bin/java -XX:+UseConcMarkSweepGC -Djava.library.path=/usr/local/frc/third-party/lib -Djava.lang.invoke.stringConcat=BC_SB -jar {}",
     )
 
-def setup_bazelrio():
+def setup_bazelrio(use_opensdk = False):
     setup_scripts_dependencies()
 
-    native.register_toolchains(
-        "@bazelrio//toolchains/roborio:macos",
-        "@bazelrio//toolchains/roborio:linux",
-        "@bazelrio//toolchains/roborio:windows",
-        "@bazelrio//toolchains/jdk:macos",
-        "@bazelrio//toolchains/jdk:linux",
-        "@bazelrio//toolchains/jdk:windows",
-    )
+    if use_opensdk:
+        native.register_toolchains(
+            "@bazelrio//toolchains/opensdk_roborio:macos",
+            "@bazelrio//toolchains/opensdk_roborio:linux",
+            "@bazelrio//toolchains/opensdk_roborio:windows",
+            "@bazelrio//toolchains/jdk:macos",
+            "@bazelrio//toolchains/jdk:linux",
+            "@bazelrio//toolchains/jdk:windows",
+        )
+    else:
+        native.register_toolchains(
+            "@bazelrio//toolchains/roborio:macos",
+            "@bazelrio//toolchains/roborio:linux",
+            "@bazelrio//toolchains/roborio:windows",
+            "@bazelrio//toolchains/jdk:macos",
+            "@bazelrio//toolchains/jdk:linux",
+            "@bazelrio//toolchains/jdk:windows",
+        )
