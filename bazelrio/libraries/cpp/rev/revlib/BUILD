@@ -1,5 +1,6 @@
 cc_library(
     name = "revlib",
+    linkopts = ["-ldl"],
     linkstatic = 1,
     visibility = ["//visibility:public"],
     deps = [
