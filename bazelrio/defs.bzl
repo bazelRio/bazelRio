@@ -67,7 +67,6 @@ def _complete_binary(name, incomplete_name, dynamic_deps_name):
         executable = True,
     )
 
-
 def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_configs = None, **kwargs):
     lib_name = name + ".lib"
     native.cc_library(
@@ -98,7 +97,7 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
             native.cc_library(
                 name = sim_lib_name,
                 deps = [lib_name] + halsim_deps,
-                **kwargs,
+                **kwargs
             )
 
             sim_dynamic_deps_name = sim_base_name + ".dynamic_deps"
@@ -126,7 +125,6 @@ def robot_cc_binary(name, team_number, srcs = [], hdrs = [], deps = [], halsim_c
                 srcs = [sim_complete_name],
                 env = env,
             )
-
 
     dynamic_deps_name = name + ".dynamic_deps"
     _get_dynamic_dependencies(
