@@ -58,7 +58,7 @@ def _complete_binary(name, incomplete_name, dynamic_deps_name):
     base_cmd = "cp $(location {}) $@".format(incomplete_name)
     native.genrule(
         name = name,
-        srcs = [":{}".format(incomplete_name), dynamic_deps_name],
+        srcs = [incomplete_name, dynamic_deps_name],
         outs = [name],
         cmd = select({
             "@bazel_tools//src/conditions:darwin": base_cmd + " && for DYLIB in $(locations {}); do install_name_tool -change $$(basename $$DYLIB) @rpath/$$(basename $$DYLIB) $@; done".format(dynamic_deps_name),
