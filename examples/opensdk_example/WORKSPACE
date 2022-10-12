@@ -1,0 +1,12 @@
+local_repository(
+    name = "bazelrio",
+    path = "../../bazelrio",
+)
+
+load("@bazelrio//:deps.bzl", "setup_bazelrio_dependencies")
+
+setup_bazelrio_dependencies()
+
+load("@bazelrio//:defs.bzl", "setup_bazelrio")
+
+setup_bazelrio(use_opensdk = True)

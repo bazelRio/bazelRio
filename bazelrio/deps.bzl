@@ -1,6 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//dependencies/toolchains:deps.bzl", "setup_toolchains_dependencies")
+load("//dependencies/opensdk:deps.bzl", "setup_opensdk_dependencies")
 load("//dependencies/wpilib:deps.bzl", "setup_wpilib_dependencies")
 load("//dependencies/ni:deps.bzl", "setup_ni_dependencies")
 load("//dependencies/sparkmax:deps.bzl", "setup_sparkmax_dependencies")
@@ -15,6 +16,7 @@ RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea1
 
 def setup_bazelrio_dependencies(
         toolchain_versions = "2022-1",
+        opensdk_version = "e257e75",
         wpilib_version = "2022.4.1",
         ni_version = "2022.4.0",
         opencv_version = "4.5.2-1",
@@ -47,3 +49,4 @@ def setup_bazelrio_dependencies(
     setup_phoenix_dependencies(version = phoenix_version)
     setup_navx_dependencies(version = navx_version)
     setup_opencv_dependencies(version = opencv_version)
+    setup_opensdk_dependencies(version = opensdk_version)

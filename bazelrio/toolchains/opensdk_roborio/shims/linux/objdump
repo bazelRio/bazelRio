@@ -1,0 +1,1 @@
+exec ./external/__bazelrio_opensdk_roborio_toolchain_linux/roborio/bin/arm-frc2022-linux-gnueabi-$(basename $0) $@
