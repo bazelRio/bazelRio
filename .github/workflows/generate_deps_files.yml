@@ -1,0 +1,57 @@
+name: Generate Deps
+on: [pull_request, push]
+
+jobs:
+  update-readme:
+    name: Update Generated Deps Files
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup Cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          /tmp/bazelrio_cache/*.sha256
+        key: ${{ runner.os }}-${{ hashFiles('scripts/**') }}
+        restore-keys: |
+          ${{ runner.os }}-
+          ${{ runner.os }}
+        
+    - name: Setup python
+      uses: actions/setup-python@v4 
+      with:
+        python-version: 'pypy3.9'
+        
+    - name: Install jinja
+      run: python -m pip install jinja2
+
+    - name: Download dependencies 
+      run: python scripts/generate_dependencies.py
+
+    - name: Set up Go 1.15.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15.x
+      id: go
+
+    - name: Install Buildifier
+      run: |
+        cd $(mktemp -d)
+        GO111MODULE=on go get github.com/bazelbuild/buildtools/buildifier@4.0.1
+
+    - name: Run buildifier
+      run: buildifier --lint=fix -r .
+
+    - name: Check Output
+      run: git --no-pager diff HEAD
+
+    - name: Generate diff
+      run: git diff HEAD > generate-bazelrio-deps.patch
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: generate bazelrio deps
+        path: generate-bazelrio-deps.patch
+

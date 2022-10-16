@@ -3,14 +3,11 @@ load("//dependencies/{{maven_dependencies[0].name}}/{{maven_dependency.underscor
 {%- endfor %}
 
 def setup_{{maven_dependencies[0].name}}_dependencies(version):
+    if version == None:
+        print("Not setting up dependencies for {{maven_dependencies[0].name}}")
     {%- for maven_dependency in maven_dependencies %}
-    {%- if loop.first %}
-    if version == "{{maven_dependency.version}}":
-        setup_{{maven_dependencies[0].name}}_{{maven_dependency.underscore_version}}_dependencies()
-    {%- else %}
     elif version == "{{maven_dependency.version}}":
         setup_{{maven_dependencies[0].name}}_{{maven_dependency.underscore_version}}_dependencies()
-    {%- endif %}
     {%- endfor %}
     else:
         fail("Unsupported version '{}'".format(version))

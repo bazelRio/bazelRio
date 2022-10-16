@@ -4,7 +4,9 @@ load("//dependencies/navx/4_0_442:deps.bzl", "setup_navx_4_0_442_dependencies")
 load("//dependencies/navx/4_0_447:deps.bzl", "setup_navx_4_0_447_dependencies")
 
 def setup_navx_dependencies(version):
-    if version == "4.0.425":
+    if version == None:
+        print("Not setting up dependencies for navx")
+    elif version == "4.0.425":
         setup_navx_4_0_425_dependencies()
     elif version == "4.0.435":
         setup_navx_4_0_435_dependencies()

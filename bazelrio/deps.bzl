@@ -9,6 +9,8 @@ load("//dependencies/revlib:deps.bzl", "setup_revlib_dependencies")
 load("//dependencies/phoenix:deps.bzl", "setup_phoenix_dependencies")
 load("//dependencies/navx:deps.bzl", "setup_navx_dependencies")
 load("//dependencies/opencv:deps.bzl", "setup_opencv_dependencies")
+load("//dependencies/imgui:deps.bzl", "setup_imgui_dependencies")
+load("//dependencies/libssh:deps.bzl", "setup_libssh_dependencies")
 
 RULES_JVM_EXTERNAL_TAG = "4.2"
 RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
@@ -22,7 +24,9 @@ def setup_bazelrio_dependencies(
         colorsensor_version = "1.2.0",
         revlib_version = "2022.1.1",
         phoenix_version = "5.21.2",
-        navx_version = "4.0.442"):
+        navx_version = "4.0.442",
+        imgui_version = "1.86-1",
+        libssh_version = "0.95-3"):
     # Other bazel rules
     maybe(
         http_archive,
@@ -47,3 +51,5 @@ def setup_bazelrio_dependencies(
     setup_phoenix_dependencies(version = phoenix_version)
     setup_navx_dependencies(version = navx_version)
     setup_opencv_dependencies(version = opencv_version)
+    setup_imgui_dependencies(version = imgui_version)
+    setup_libssh_dependencies(version = libssh_version)
