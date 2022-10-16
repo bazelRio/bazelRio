@@ -44,7 +44,7 @@ def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools"):
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2021.3.1", "2022.1.1-beta-1", "2022.1.1-beta-2", "2022.1.1", "2022.2.1", "2022.3.1", "2022.4.1"]
+    VERSIONS = ["2022.1.1", "2022.2.1", "2022.3.1", "2022.4.1"]
     DEP_NAME = "wpilib"
 
     dependencies = {DEP_NAME: []}
@@ -85,16 +85,15 @@ def get_wpilib_dependencies():
             _halsim_dependency(maven_dep, artifact)
 
         _executable_tool(maven_dep, "Glass")
+        _executable_tool(maven_dep, "OutlineViewer")
+        _executable_tool(maven_dep, "SysId")
         _java_tool(maven_dep, "SmartDashboard")
         _java_tool(maven_dep, "PathWeaver")
         _java_tool(maven_dep, "RobotBuilder", native_platforms=[""])
         _java_tool(maven_dep, "shuffleboard", group_id="edu.wpi.first.shuffleboard")
 
-        if "2021" in version:
-            _java_tool(maven_dep, "OutlineViewer")
-        elif "2022" in version:
-            _executable_tool(maven_dep, "OutlineViewer")
-            _executable_tool(maven_dep, "SysId")
+        if "2022" in version:
+            pass
         else:
             raise Exception(f"Unknown year {version}")
 

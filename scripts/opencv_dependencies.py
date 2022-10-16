@@ -4,7 +4,7 @@ from platforms import default_all_platforms
 
 def opencv_dependencies():
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = [("frc2021", "3.4.7-5"), ("frc2022", "4.5.2-1"), ("frc2023", "4.6.0-2")]
+    VERSIONS = [("frc2022", "4.5.2-1"), ("frc2023", "4.6.0-2")]
     DEP_NAME = "opencv"
 
     dependencies = {DEP_NAME: []}
