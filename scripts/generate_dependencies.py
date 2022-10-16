@@ -62,12 +62,16 @@ def generate_dependencies():
     from wpilib_dependencies import get_wpilib_dependencies
     from vendordep_dependency import vendordep_dependencies
     from opencv_dependencies import opencv_dependencies
+    from libssh_dependencies import libssh_dependencies
+    from imgui_dependencies import imgui_dependencies
 
     dependencies = {}
     dependencies.update(get_wpilib_dependencies())
     dependencies.update(get_ni_dependencies())
     dependencies.update(opencv_dependencies())
     dependencies.update(vendordep_dependencies(os.path.join(SCRIPT_DIR, "vendordeps")))
+    dependencies.update(libssh_dependencies())
+    dependencies.update(imgui_dependencies())
 
     for maven_dependencies in dependencies.values():
         generate_toplevel_dependency(maven_dependencies)

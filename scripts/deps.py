@@ -35,8 +35,11 @@ def _download_and_cache(cached_file, url, fail_on_miss):
     else:
         sha256 = hashlib.sha256(data).hexdigest()
 
-    with open(cached_file, "wb") as f:
-        f.write(data)
+    with open(cached_file + ".raw", "wb") as f:
+        f.write(data or "None")
+
+    with open(cached_file, "w") as f:
+        f.write(sha256)
 
     return sha256
 
@@ -46,10 +49,9 @@ def _get_hash(url, fail_on_miss):
     if not os.path.exists(cached_file):
         return _download_and_cache(cached_file, url, fail_on_miss)
 
-    with open(cached_file, "rb") as f:
+    with open(cached_file, "r") as f:
         data = f.read()
-    if data:
-        return hashlib.sha256(data).hexdigest()
+        return data
 
 
 class BaseDependency:

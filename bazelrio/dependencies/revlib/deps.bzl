@@ -3,7 +3,9 @@ load("//dependencies/revlib/2022_1_0:deps.bzl", "setup_revlib_2022_1_0_dependenc
 load("//dependencies/revlib/2022_1_1:deps.bzl", "setup_revlib_2022_1_1_dependencies")
 
 def setup_revlib_dependencies(version):
-    if version == "2022.0.0":
+    if version == None:
+        print("Not setting up dependencies for revlib")
+    elif version == "2022.0.0":
         setup_revlib_2022_0_0_dependencies()
     elif version == "2022.1.0":
         setup_revlib_2022_1_0_dependencies()

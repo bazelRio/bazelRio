@@ -10,7 +10,7 @@ def vendordep_dependencies(vendor_folder):
     dependencies = collections.defaultdict(list)
 
     for root, _, files in os.walk(vendor_folder):
-        for f in files:
+        for f in sorted(files):
 
             if f in FILE_BLACKLIST:
                 continue
