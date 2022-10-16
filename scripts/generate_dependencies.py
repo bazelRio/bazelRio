@@ -1,16 +1,31 @@
 import os
+import shutil
 from jinja2 import Template
 
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_DIRECTORY_BASE = os.path.join(SCRIPT_DIR, "..")
-
-
-def get_dependency_folder(maven_dependency):
-    folder = os.path.join(
+DEPENDENCIES_BASE = os.path.join(
         OUTPUT_DIRECTORY_BASE,
         "bazelrio",
         "dependencies",
+    )
+
+def clean_old_files():
+    dependency_folders = []
+    dependency_folders = [f for f in os.listdir(DEPENDENCIES_BASE) if os.path.isdir(os.path.join(DEPENDENCIES_BASE, f))]
+
+    # These are not auto-generated
+    dependency_folders.remove("toolchains")
+    dependency_folders.remove("scripts")
+    
+    for d in dependency_folders:
+        print(d)
+        shutil.rmtree(os.path.join(DEPENDENCIES_BASE, d))
+
+def get_dependency_folder(maven_dependency):
+    folder = os.path.join(
+        DEPENDENCIES_BASE,
         maven_dependency.name,
     )
 
@@ -72,6 +87,9 @@ def generate_dependencies():
     dependencies.update(vendordep_dependencies(os.path.join(SCRIPT_DIR, "vendordeps")))
     dependencies.update(libssh_dependencies())
     dependencies.update(imgui_dependencies())
+
+    # Start fresh by deleting all of the auto generated dependencies
+    clean_old_files()
 
     for maven_dependencies in dependencies.values():
         generate_toplevel_dependency(maven_dependencies)
