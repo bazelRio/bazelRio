@@ -11,8 +11,8 @@ def setup_toolchains_2021_2_dependencies():
         sha256 = "0822ff945ff422b176571cebe7b2dfdc0ef6bf685d3b6f6833db8dc218d992ae",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021_2/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021_2/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/2021_2/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/2021_2/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
@@ -22,8 +22,8 @@ def setup_toolchains_2021_2_dependencies():
         sha256 = "00cc58bf0607d71e725919d28e22714ce1920692c4864bc86353fc8139cbf7b7",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021_2/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021_2/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/2021_2/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021/2021_2/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
@@ -41,7 +41,7 @@ def setup_toolchains_2021_2_dependencies():
         build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
         urls = ["https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.12+7/OpenJDK11U-jdk_x64_mac_hotspot_11.0.12_7.tar.gz"],
         sha256 = "13d056ee9a57bf2d5b3af4504c8f8cf7a246c4dff78f96b70dd05dad98075855",
-        strip_prefix = "jdk-11.0.12+7",
+        strip_prefix = "jdk-11.0.12+7/Contents/Home",
     )
     maybe(
         http_archive,

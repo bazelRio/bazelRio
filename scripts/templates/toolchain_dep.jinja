@@ -13,8 +13,8 @@ def setup_toolchains_{{config.release_version_underscore}}_dependencies():
         build_file_content = filegroup_all,
         {%- if platform_config.patch_roborio %}
         patches = [
-            "@bazelrio//dependencies/toolchains/{{config.release_version_underscore}}/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/{{config.release_version_underscore}}/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libpthread_no_sandboxfs.patch",
         ],
         {%- endif %}
     )
@@ -28,6 +28,10 @@ def setup_toolchains_{{config.release_version_underscore}}_dependencies():
         build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
         urls = ["{{config.get_java_url(platform_config)}}"],
         sha256 = {{config.get_java_sha256(platform_config)}},
+    {%- if platform_config.os == "mac" %}
+        strip_prefix = "jdk-{{config.jdk_version}}/Contents/Home",
+    {%- else %}
         strip_prefix = "jdk-{{config.jdk_version}}",
+    {%- endif %}
     )
     {%- endfor %}

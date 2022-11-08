@@ -6,22 +6,28 @@ from jinja2 import Template
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_DIRECTORY_BASE = os.path.join(SCRIPT_DIR, "..")
 DEPENDENCIES_BASE = os.path.join(
-        OUTPUT_DIRECTORY_BASE,
-        "bazelrio",
-        "dependencies",
-    )
+    OUTPUT_DIRECTORY_BASE,
+    "bazelrio",
+    "dependencies",
+)
+
 
 def clean_old_files():
     dependency_folders = []
-    dependency_folders = [f for f in os.listdir(DEPENDENCIES_BASE) if os.path.isdir(os.path.join(DEPENDENCIES_BASE, f))]
+    dependency_folders = [
+        f
+        for f in os.listdir(DEPENDENCIES_BASE)
+        if os.path.isdir(os.path.join(DEPENDENCIES_BASE, f))
+    ]
 
     # These are not auto-generated
     dependency_folders.remove("toolchains")
     dependency_folders.remove("scripts")
-    
+
     for d in dependency_folders:
         print(d)
         shutil.rmtree(os.path.join(DEPENDENCIES_BASE, d))
+
 
 def get_dependency_folder(maven_dependency):
     folder = os.path.join(
@@ -99,7 +105,9 @@ def generate_dependencies():
             generate_single_version_dependency(maven_dependency)
 
     # Generate toolchains
-    generate_toolchain_dependencies(DEPENDENCIES_BASE, os.path.join(SCRIPT_DIR, "templates"))
+    generate_toolchain_dependencies(
+        DEPENDENCIES_BASE, os.path.join(SCRIPT_DIR, "templates")
+    )
 
 
 if __name__ == "__main__":

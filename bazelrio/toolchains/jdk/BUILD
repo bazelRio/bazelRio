@@ -4,7 +4,7 @@ toolchain(
         # assuming x86/ARM Macs use the same x86 WPILib toolchain
         "@platforms//os:osx",
     ],
-    toolchain = "@__bazelrio_roborio_jdk_macos//:jdk",
+    toolchain = "@__bazelrio_roborio_jdk_mac//:jdk",
     toolchain_type = "@bazel_tools//tools/jdk:runtime_toolchain_type",
 )
 
