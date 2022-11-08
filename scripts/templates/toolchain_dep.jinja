@@ -1,0 +1,37 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("@bazelrio//:deps_utils.bzl", "filegroup_all")
+
+def setup_toolchains_{{config.release_version_underscore}}_dependencies():
+    # C++
+    {%- for platform_config in config.cpp_platform_configs %}
+    maybe(
+        http_archive,
+        "__bazelrio_roborio_toolchain_{{platform_config.os}}",
+        url = "{{config.get_cpp_url(platform_config)}}",
+        sha256 = {{config.get_cpp_sha256(platform_config)}},
+        build_file_content = filegroup_all,
+        {%- if platform_config.patch_roborio %}
+        patches = [
+            "@bazelrio//dependencies/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/{{config.year}}/{{config.release_version_underscore}}/patches:libpthread_no_sandboxfs.patch",
+        ],
+        {%- endif %}
+    )
+    {%- endfor %}
+
+    # Java
+    {%- for platform_config in config.java_platform_configs %}
+    maybe(
+        http_archive,
+        name = "__bazelrio_roborio_jdk_{{platform_config.os}}",
+        build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
+        urls = ["{{config.get_java_url(platform_config)}}"],
+        sha256 = {{config.get_java_sha256(platform_config)}},
+    {%- if platform_config.os == "mac" %}
+        strip_prefix = "jdk-{{config.jdk_version}}/Contents/Home",
+    {%- else %}
+        strip_prefix = "jdk-{{config.jdk_version}}",
+    {%- endif %}
+    )
+    {%- endfor %}

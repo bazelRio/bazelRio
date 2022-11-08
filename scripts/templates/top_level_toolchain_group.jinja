@@ -1,0 +1,14 @@
+{%- for config in configs %}
+load("//dependencies/toolchains/{{config.year}}/{{config.release_version_underscore}}:deps.bzl", "setup_toolchains_{{config.release_version_underscore}}_dependencies")
+{%- endfor %}
+
+def setup_toolchains_dependencies(version):
+    if version == None:
+        print("not setting up toolchains")
+{%- for config in configs %}
+    elif version == "{{config.release_version.replace('_', '-')}}":
+        setup_toolchains_{{config.release_version_underscore}}_dependencies()
+{%- endfor %}
+    else:
+        fail("Unsupported version '{}'".format(version))
+
