@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
 
-  private final SpeedController m_leftMotor;
-  private final SpeedController m_rightMotor;
+  private final MotorController m_leftMotor;
+  private final MotorController m_rightMotor;
 
   private final DifferentialDrive m_drive;
 
@@ -42,11 +42,11 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     m_leftMotor =
-            new SpeedControllerGroup(
+            new MotorControllerGroup(
                     new PWMVictorSPX(PortMap.kDrivetrainMotorLeftAPort),
                     new PWMVictorSPX(PortMap.kDrivetrainMotorLeftBPort));
     m_rightMotor =
-            new SpeedControllerGroup(
+            new MotorControllerGroup(
                     new PWMVictorSPX(PortMap.kDrivetrainMotorRightAPort),
                     new PWMVictorSPX(PortMap.kDrivetrainMotorRightBPort));
     m_drive = new DifferentialDrive(m_leftMotor, m_rightMotor);
@@ -70,7 +70,7 @@ public class DriveTrain extends SubsystemBase {
       m_drivetrainSimulator = DifferentialDrivetrainSim.createKitbotSim(
               DifferentialDrivetrainSim.KitbotMotor.kDualCIMPerSide,
               DifferentialDrivetrainSim.KitbotGearing.k12p75,
-              DifferentialDrivetrainSim.KitbotWheelSize.SixInch,
+              DifferentialDrivetrainSim.KitbotWheelSize.kSixInch,
               null);
     }
   }
