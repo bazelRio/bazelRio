@@ -3,7 +3,7 @@
 #include <frc/ADXRS450_Gyro.h>
 #include <frc/Encoder.h>
 #include <frc/motorcontrol/PWMVictorSPX.h>
-#include <frc/SpeedControllerGroup.h>
+#include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/kinematics/DifferentialDriveOdometry.h>
 #include <frc/simulation/ADXRS450_GyroSim.h>
@@ -38,11 +38,11 @@ class DriveTrain : public frc2::SubsystemBase {
 
   frc::PWMVictorSPX m_leftMotorA{kDrivetrainMotorLeftAPort};
   frc::PWMVictorSPX m_leftMotorB{kDrivetrainMotorLeftBPort};
-  frc::SpeedControllerGroup m_left{m_leftMotorA, m_leftMotorB};
+  frc::MotorControllerGroup m_left{m_leftMotorA, m_leftMotorB};
 
   frc::PWMVictorSPX m_rightMotorA{kDrivetrainMotorRightAPort};
   frc::PWMVictorSPX m_rightMotorB{kDrivetrainMotorRightBPort};
-  frc::SpeedControllerGroup m_right{m_rightMotorA, m_rightMotorB};
+  frc::MotorControllerGroup m_right{m_rightMotorA, m_rightMotorB};
 
   frc::DifferentialDrive m_robotDrive{m_left, m_right};
 

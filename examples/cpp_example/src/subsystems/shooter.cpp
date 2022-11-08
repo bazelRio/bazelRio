@@ -28,7 +28,7 @@ double Shooter::GetRpm() { return m_encoder.GetRate(); }
 void Shooter::Periodic() { Log(); }
 
 void Shooter::SimulationPeriodic() {
-  m_flywheelSim.SetInput(frc::MakeMatrix<1, 1>(
+  m_flywheelSim.SetInput(Eigen::Vector<double, 1>(
       m_motor.Get() * frc::RobotController::GetInputVoltage()));
 
   m_flywheelSim.Update(20_ms);

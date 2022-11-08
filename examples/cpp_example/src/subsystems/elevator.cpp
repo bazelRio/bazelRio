@@ -53,7 +53,7 @@ void Elevator::UseOutput(double output, double setpoint) {
 void Elevator::Periodic() { Log(); }
 
 void Elevator::SimulationPeriodic() {
-  m_elevatorSim.SetInput(frc::MakeMatrix<1, 1>(
+  m_elevatorSim.SetInput(Eigen::Vector<double, 1>(
       m_motor.Get() * frc::RobotController::GetInputVoltage()));
   m_elevatorSim.Update(20_ms);
   m_encoderSim.SetDistance(m_elevatorSim.GetPosition().to<double>());

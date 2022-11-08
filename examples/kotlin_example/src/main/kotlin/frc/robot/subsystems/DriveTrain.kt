@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
@@ -22,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 class DriveTrain : SubsystemBase() {
 
-  private val m_leftMotor = SpeedControllerGroup(
+  private val m_leftMotor = MotorControllerGroup(
       PWMVictorSPX(PortMap.kDrivetrainMotorLeftAPort),
       PWMVictorSPX(PortMap.kDrivetrainMotorLeftBPort));
-  private val m_rightMotor = SpeedControllerGroup(
+  private val m_rightMotor = MotorControllerGroup(
       PWMVictorSPX(PortMap.kDrivetrainMotorRightAPort),
       PWMVictorSPX(PortMap.kDrivetrainMotorRightBPort));
 
@@ -61,7 +61,7 @@ class DriveTrain : SubsystemBase() {
       m_drivetrainSimulator = DifferentialDrivetrainSim.createKitbotSim(
               DifferentialDrivetrainSim.KitbotMotor.kDualCIMPerSide,
               DifferentialDrivetrainSim.KitbotGearing.k12p75,
-              DifferentialDrivetrainSim.KitbotWheelSize.SixInch,
+              DifferentialDrivetrainSim.KitbotWheelSize.kSixInch,
               null);
     }
   }

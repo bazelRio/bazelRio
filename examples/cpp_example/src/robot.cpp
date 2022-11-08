@@ -10,7 +10,7 @@
 #include "src/commands/shooter_rpm_command.hpp"
 
 void Robot::RobotInit() {
-  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  frc::CameraServer::StartAutomaticCapture();
 
   m_drivetrain.SetDefaultCommand(
       JoystickDriveCommand{m_joystick, m_drivetrain});
