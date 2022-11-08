@@ -79,6 +79,7 @@ def generate_dependencies():
     from opencv_dependencies import opencv_dependencies
     from libssh_dependencies import libssh_dependencies
     from imgui_dependencies import imgui_dependencies
+    from toolchain_dependencies import generate_toolchain_dependencies
 
     dependencies = {}
     dependencies.update(get_wpilib_dependencies())
@@ -96,6 +97,9 @@ def generate_dependencies():
 
         for maven_dependency in maven_dependencies:
             generate_single_version_dependency(maven_dependency)
+
+    # Generate toolchains
+    generate_toolchain_dependencies(DEPENDENCIES_BASE, os.path.join(SCRIPT_DIR, "templates"))
 
 
 if __name__ == "__main__":

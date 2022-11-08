@@ -11,8 +11,8 @@ def setup_toolchains_2021_2_dependencies():
         sha256 = "0822ff945ff422b176571cebe7b2dfdc0ef6bf685d3b6f6833db8dc218d992ae",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021_2/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021_2/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
@@ -22,8 +22,8 @@ def setup_toolchains_2021_2_dependencies():
         sha256 = "00cc58bf0607d71e725919d28e22714ce1920692c4864bc86353fc8139cbf7b7",
         build_file_content = filegroup_all,
         patches = [
-            "@bazelrio//dependencies/toolchains/2021/patches:libc_no_sandboxfs.patch",
-            "@bazelrio//dependencies/toolchains/2021/patches:libpthread_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021_2/patches:libc_no_sandboxfs.patch",
+            "@bazelrio//dependencies/toolchains/2021_2/patches:libpthread_no_sandboxfs.patch",
         ],
     )
     maybe(
@@ -35,34 +35,27 @@ def setup_toolchains_2021_2_dependencies():
     )
 
     # Java
-    # Based on the wpilib downloader
-    # https://github.com/wpilibsuite/WPILibInstaller-Avalonia/blob/8a0bee9841ba645108a32ec818b7d1a7a3afe014/scripts/jdk.gradle
-    VERSION = "11.0.12+7"
-    URL = "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-" + VERSION + "/OpenJDK11U-jdk_{}_hotspot_" + VERSION.replace("+", "_") + ".{}"
-
     maybe(
         http_archive,
-        name = "__bazelrio_roborio_jdk_windows",
+        name = "__bazelrio_roborio_jdk_mac",
         build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
-        urls = [URL.format("x64_windows", "zip")],
-        sha256 = "c54123dd4b0d6473221539e7003b8ca1c1757c5588c46465565b03bf8781f807",
-        strip_prefix = "jdk-" + VERSION,
+        urls = ["https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.12+7/OpenJDK11U-jdk_x64_mac_hotspot_11.0.12_7.tar.gz"],
+        sha256 = "13d056ee9a57bf2d5b3af4504c8f8cf7a246c4dff78f96b70dd05dad98075855",
+        strip_prefix = "jdk-11.0.12+7",
     )
-
     maybe(
         http_archive,
         name = "__bazelrio_roborio_jdk_linux",
         build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
-        urls = [URL.format("x64_linux", "tar.gz")],
+        urls = ["https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.12+7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.12_7.tar.gz"],
         sha256 = "8770f600fc3b89bf331213c7aa21f8eedd9ca5d96036d1cd48cb2748a3dbefd2",
-        strip_prefix = "jdk-" + VERSION,
+        strip_prefix = "jdk-11.0.12+7",
     )
-
     maybe(
         http_archive,
-        name = "__bazelrio_roborio_jdk_macos",
+        name = "__bazelrio_roborio_jdk_windows",
         build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
-        urls = [URL.format("x64_mac", "tar.gz")],
-        sha256 = "13d056ee9a57bf2d5b3af4504c8f8cf7a246c4dff78f96b70dd05dad98075855",
-        strip_prefix = "jdk-" + VERSION + "/Contents/Home",
+        urls = ["https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.12+7/OpenJDK11U-jdk_x64_windows_hotspot_11.0.12_7.zip"],
+        sha256 = "c54123dd4b0d6473221539e7003b8ca1c1757c5588c46465565b03bf8781f807",
+        strip_prefix = "jdk-11.0.12+7",
     )
