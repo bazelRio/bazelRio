@@ -1098,9 +1098,63 @@ def setup_wpilib_2023_1_1_dependencies():
     )
     maybe(
         http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_linuxx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2023.1.1/SmartDashboard-2023.1.1-linuxx64.jar",
+        sha256 = "31049852abd7c05ce03e5c1e2b7b2b64fdbe3ea049b2c3b68e656e0cab2f9407",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_macx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2023.1.1/SmartDashboard-2023.1.1-macx64.jar",
+        sha256 = "c2ae3d6055bcbb0305ee72cc4d961f4198bd097c3a639c8383dbe08dda7acc11",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_smartdashboard_winx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/SmartDashboard/2023.1.1/SmartDashboard-2023.1.1-winx64.jar",
+        sha256 = "714ddacd7dae737321131f53b64d73b064dc46127185e829e14f74fee5c525c7",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_linuxx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2023.1.1/PathWeaver-2023.1.1-linuxx64.jar",
+        sha256 = "2b2b713c4f631841d16a8752f4b4f5e644844ec651b813709655bd872df7658d",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_macx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2023.1.1/PathWeaver-2023.1.1-macx64.jar",
+        sha256 = "1dec045da16f2046e99d229c61d346bd72238c200ccfb99dc9f1dabbd4dfbd4b",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_pathweaver_winx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/PathWeaver/2023.1.1/PathWeaver-2023.1.1-winx64.jar",
+        sha256 = "8c6e6726ecc5f41deb4b4dbced13d8e166c8ccfd7b1ac7b817f7dc0969c1fda6",
+    )
+    maybe(
+        http_jar,
         name = "__bazelrio_edu_wpi_first_tools_robotbuilder",
         url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/RobotBuilder/2023.1.1/RobotBuilder-2023.1.1.jar",
         sha256 = "c3709ecab75ae7e4bddfb0c4c3400598732f582e3f67f5940670be1c09d94ceb",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_shuffleboard_linuxx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Shuffleboard/2023.1.1/Shuffleboard-2023.1.1-linuxx64.jar",
+        sha256 = "c9c6b6acccdde806f0e4b3445b5422ff9c771705f974d8e3811bef559b4dd9bb",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_shuffleboard_macx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Shuffleboard/2023.1.1/Shuffleboard-2023.1.1-macx64.jar",
+        sha256 = "8514fe3115ad50a351e49acd7e3d766cd17a586bf7d6821ef48f95bb0a7df98e",
+    )
+    maybe(
+        http_jar,
+        name = "__bazelrio_edu_wpi_first_tools_shuffleboard_winx64",
+        url = "https://frcmaven.wpi.edu/release/edu/wpi/first/tools/Shuffleboard/2023.1.1/Shuffleboard-2023.1.1-winx64.jar",
+        sha256 = "07c5dec55797de68a3e03659e2e369cb8c15ec16011e9db42e90ad7b3a489dbc",
     )
     maybe(
         http_archive,

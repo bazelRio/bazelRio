@@ -26,6 +26,9 @@ def _halsim_dependency(maven_dep, artifact_name):
 
 
 def _java_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", native_platforms=None):
+    if native_platforms is None:
+        native_platforms = ["linuxx64", "macx64", "winx64"]
+
     if native_platforms:
         maven_dep.add_java_native_tool(artifact_name=artifact_name, group_id=group_id, resources=native_platforms)
     else:
@@ -91,7 +94,7 @@ def get_wpilib_dependencies():
         _java_tool(maven_dep, "SmartDashboard")
         _java_tool(maven_dep, "PathWeaver")
         _java_tool(maven_dep, "RobotBuilder", native_platforms=[""])
-        _java_tool(maven_dep, "shuffleboard")
+        _java_tool(maven_dep, "Shuffleboard")
 
         if "2023" in version:
             pass
