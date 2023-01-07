@@ -6,6 +6,7 @@ cc_library(
         "//libraries/cpp/wpilib/hal",
         "//libraries/cpp/wpilib/ntcore",
         "//libraries/cpp/wpilib/wpimath",
+        "//libraries/cpp/wpilib/wpinet",
         "//libraries/cpp/wpilib/wpiutil",
         "//libraries/cpp/wpilib/cscore",
         "@__bazelrio_edu_wpi_first_wpilibc_wpilibc-cpp_headers//:headers",
