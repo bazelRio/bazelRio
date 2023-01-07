@@ -1,5 +1,5 @@
 {%- for maven_dependency in maven_dependencies %}
-load("//dependencies/{{maven_dependencies[0].name}}/{{maven_dependency.underscore_version}}:deps.bzl", "setup_{{maven_dependencies[0].name}}_{{maven_dependency.underscore_version_underscore}}_dependencies")
+load("//dependencies/{{maven_dependencies[0].name}}/{{maven_dependency.underscore_version}}:deps.bzl", "setup_{{maven_dependencies[0].name}}_{{maven_dependencies[0].underscore_version}}_dependencies")
 {%- endfor %}
 
 def setup_{{maven_dependencies[0].name}}_dependencies(version):

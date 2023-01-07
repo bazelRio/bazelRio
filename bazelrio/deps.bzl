@@ -9,20 +9,22 @@ load("//dependencies/navx:deps.bzl", "setup_navx_dependencies")
 load("//dependencies/opencv:deps.bzl", "setup_opencv_dependencies")
 load("//dependencies/imgui:deps.bzl", "setup_imgui_dependencies")
 load("//dependencies/libssh:deps.bzl", "setup_libssh_dependencies")
+load("//dependencies/apriltaglib:deps.bzl", "setup_apriltaglib_dependencies")
 
 RULES_JVM_EXTERNAL_TAG = "4.2"
 RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
 
 def setup_bazelrio_dependencies(
-        toolchain_versions = "2022-1",
-        wpilib_version = "2022.4.1",
-        ni_version = "2022.4.0",
-        opencv_version = "4.5.2-1",
-        revlib_version = "2022.1.1",
-        phoenix_version = "5.21.2",
-        navx_version = "4.0.442",
-        imgui_version = "1.86-1",
-        libssh_version = "0.95-3"):
+        toolchain_versions = "2023-7",
+        wpilib_version = "2023.1.1",
+        ni_version = "2023.3.0",
+        opencv_version = "4.6.0-3",
+        revlib_version = "2023.1.1",
+        phoenix_version = "5.30.2",
+        navx_version = "2023.0.0",
+        imgui_version = "1.89.1-1",
+        libssh_version = "0.95-6",
+        apriltaglib_version = "3.2.0-3"):
     # Other bazel rules
     maybe(
         http_archive,
@@ -47,3 +49,4 @@ def setup_bazelrio_dependencies(
     setup_opencv_dependencies(version = opencv_version)
     setup_imgui_dependencies(version = imgui_version)
     setup_libssh_dependencies(version = libssh_version)
+    setup_apriltaglib_dependencies(version = apriltaglib_version)

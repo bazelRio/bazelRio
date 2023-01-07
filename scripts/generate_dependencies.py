@@ -89,13 +89,13 @@ def generate_dependencies():
     from toolchain_dependencies import generate_toolchain_dependencies
 
     dependencies = {}
-    dependencies.update(apriltag_dependencies())
     dependencies.update(get_wpilib_dependencies())
     dependencies.update(get_ni_dependencies())
     dependencies.update(opencv_dependencies())
     dependencies.update(vendordep_dependencies(os.path.join(SCRIPT_DIR, "vendordeps")))
     dependencies.update(libssh_dependencies())
     dependencies.update(imgui_dependencies())
+    dependencies.update(apriltag_dependencies())
 
     # Start fresh by deleting all of the auto generated dependencies
     clean_old_files()

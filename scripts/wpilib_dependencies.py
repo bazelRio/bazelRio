@@ -53,6 +53,7 @@ def get_wpilib_dependencies():
     dual_language = [
         "hal",
         "wpiutil",
+        "wpinet",
         "ntcore",
         "wpimath",
         "cameraserver",
