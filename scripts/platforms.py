@@ -1,10 +1,12 @@
 def default_native_shared_platforms():
-    return ["windowsx86-64", "linuxx86-64", "osxx86-64"]
+    return ["linuxarm32", "linuxarm64", "linuxx86-64", "osxuniversal", "windowsx86-64"]
 
 
 def default_native_static_platforms():
-    return ["windowsx86-64static", "linuxx86-64static", "osxx86-64static"]
+    return ["linuxarm32static", "linuxarm64static", "linuxx86-64static", "osxuniversalstatic", "windowsx86-64static"]
 
+def default_tools_platforms():
+    return ["linuxx64", "macx64", "winx64"]
 
 def default_all_platforms():
     return (

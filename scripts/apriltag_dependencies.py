@@ -2,10 +2,10 @@ from deps import MavenDependencyGroup
 from platforms import default_native_static_platforms
 
 
-def imgui_dependencies():
+def apriltag_dependencies():
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = [("frc2023", "1.89.1-1")]
-    DEP_NAME = "imgui"
+    VERSIONS = [("frc2023", "3.2.0-3")]
+    DEP_NAME = "apriltaglib"
 
     dependencies = {DEP_NAME: []}
 
@@ -16,7 +16,7 @@ def imgui_dependencies():
         maven_dep.add_cpp_dep(
             resources=default_native_static_platforms() + ["headers"],
             group_id=f"edu.wpi.first.thirdparty.{subpackage}",
-            artifact_name="imgui",
+            artifact_name="apriltaglib",
         )
         
     return dependencies

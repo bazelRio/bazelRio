@@ -85,9 +85,11 @@ def generate_dependencies():
     from opencv_dependencies import opencv_dependencies
     from libssh_dependencies import libssh_dependencies
     from imgui_dependencies import imgui_dependencies
+    from apriltag_dependencies import apriltag_dependencies
     from toolchain_dependencies import generate_toolchain_dependencies
 
     dependencies = {}
+    dependencies.update(apriltag_dependencies())
     dependencies.update(get_wpilib_dependencies())
     dependencies.update(get_ni_dependencies())
     dependencies.update(opencv_dependencies())

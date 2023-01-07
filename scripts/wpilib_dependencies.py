@@ -1,5 +1,5 @@
 from deps import MavenDependencyGroup
-from platforms import default_all_platforms, default_native_shared_platforms
+from platforms import default_all_platforms, default_native_shared_platforms, default_tools_platforms
 
 
 def _cpp_dependency(maven_dep, artifact_name):
@@ -25,14 +25,15 @@ def _halsim_dependency(maven_dep, artifact_name):
     )
 
 
-def _java_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", native_platforms=["linux64", "mac64", "win64"]):
+def _java_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", native_platforms=None):
     if native_platforms:
         maven_dep.add_java_native_tool(artifact_name=artifact_name, group_id=group_id, resources=native_platforms)
     else:
         pass
 
-def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools"):
-    native_platforms = default_native_shared_platforms()
+def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", native_platforms=None):
+    if native_platforms is None:
+        native_platforms = default_tools_platforms()
 
     maven_dep.add_executable_tool(
         artifact_name=artifact_name,
@@ -44,7 +45,7 @@ def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools"):
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2022.1.1", "2022.2.1", "2022.3.1", "2022.4.1"]
+    VERSIONS = ["2023.1.1"]
     DEP_NAME = "wpilib"
 
     dependencies = {DEP_NAME: []}
@@ -56,7 +57,6 @@ def get_wpilib_dependencies():
         "wpimath",
         "cameraserver",
         "cscore",
-        "wpilibOldCommands",
         "wpilibNewCommands",
     ]
     halsim_deps = [
@@ -84,15 +84,15 @@ def get_wpilib_dependencies():
         for artifact in halsim_deps:
             _halsim_dependency(maven_dep, artifact)
 
-        _executable_tool(maven_dep, "Glass")
-        _executable_tool(maven_dep, "OutlineViewer")
-        _executable_tool(maven_dep, "SysId")
+        _executable_tool(maven_dep, "Glass", native_platforms=["linuxarm32", "linuxarm64", "linuxx86-64", "osxuniversal", "windowsx86-64"])
+        _executable_tool(maven_dep, "OutlineViewer", native_platforms=["linuxarm32", "linuxarm64", "linuxx86-64", "osxuniversal", "windowsx86-64"])
+        _executable_tool(maven_dep, "SysId", native_platforms=["linuxx86-64", "osxuniversal", "windowsx86-64"])
         _java_tool(maven_dep, "SmartDashboard")
         _java_tool(maven_dep, "PathWeaver")
         _java_tool(maven_dep, "RobotBuilder", native_platforms=[""])
-        _java_tool(maven_dep, "shuffleboard", group_id="edu.wpi.first.shuffleboard")
+        _java_tool(maven_dep, "shuffleboard")
 
-        if "2022" in version:
+        if "2023" in version:
             pass
         else:
             raise Exception(f"Unknown year {version}")
