@@ -5,7 +5,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <units/length.h>
 
-#include <wpi/numbers>
+#include <numbers>
 
 DriveTrain::DriveTrain()
     : m_gyro(frc::SPI::Port::kMXP),
@@ -15,9 +15,9 @@ DriveTrain::DriveTrain()
               12.0, 6_in)) {
   // Circumference = diameter * pi. 360 tick simulated encoders.
   m_leftEncoder.SetDistancePerPulse(units::foot_t{4_in}.to<double>() *
-                                    wpi::numbers::pi / 360.0);
+                                    std::numbers::pi / 360.0);
   m_rightEncoder.SetDistancePerPulse(units::foot_t{4_in}.to<double>() *
-                                    wpi::numbers::pi / 360.0);
+                                    std::numbers::pi / 360.0);
 
   frc::SmartDashboard::PutData("Field", &m_field);
 

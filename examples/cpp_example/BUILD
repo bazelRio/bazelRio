@@ -27,5 +27,8 @@ robot_cc_binary(
         "//src/commands",
         "//src/subsystems",
         "@bazelrio//libraries/cpp/wpilib/cameraserver",
+        # "@bazelrio//libraries/cpp/ctre/phoenix",
+        # "@bazelrio//libraries/cpp/kauailabs/navx",
+        # "@bazelrio//libraries/cpp/rev/revlib",
     ],
 )

@@ -52,7 +52,7 @@ class DriveTrain : public frc2::SubsystemBase {
                               kDrivetrainEncoderRightPortB};
   frc::ADXRS450_Gyro m_gyro;
 
-  frc::DifferentialDriveOdometry m_odometry{m_gyro.GetRotation2d()};
+  frc::DifferentialDriveOdometry m_odometry{m_gyro.GetRotation2d(), 0_m, 0_m};
   frc::Field2d m_field;
 
   // Simulation
