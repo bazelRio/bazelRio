@@ -39,7 +39,7 @@ class DriveTrain : SubsystemBase() {
       PortMap.kDrivetrainEncoderRightPortB);
   private val m_gyro = ADXRS450_Gyro();
 
-  private val m_odometry = DifferentialDriveOdometry(m_gyro.getRotation2d());
+  private val m_odometry = DifferentialDriveOdometry(m_gyro.getRotation2d(), 0.0, 0.0);
   private val m_field = Field2d();
 
   // Sim

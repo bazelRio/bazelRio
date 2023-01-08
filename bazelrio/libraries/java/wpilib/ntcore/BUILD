@@ -4,6 +4,7 @@ java_import(
     visibility = ["//visibility:public"],
     deps = [
         "//libraries/cpp/wpilib/ntcore:jni",
+        "//libraries/java/wpilib/wpinet",
         "//libraries/java/wpilib/wpiutil",
     ],
 )

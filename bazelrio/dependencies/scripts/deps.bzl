@@ -9,6 +9,9 @@ def setup_scripts_dependencies():
             "me.tongfei:progressbar:0.9.2",
             "net.sourceforge.argparse4j:argparse4j:0.9.0",
             "org.slf4j:slf4j-nop:1.7.32",
+            "com.fasterxml.jackson.core:jackson-annotations:2.12.4",
+            "com.fasterxml.jackson.core:jackson-core:2.12.4",
+            "com.fasterxml.jackson.core:jackson-databind:2.12.4",
         ],
         repositories = [
             "https://repo1.maven.org/maven2",

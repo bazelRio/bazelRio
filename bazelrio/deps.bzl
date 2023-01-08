@@ -5,6 +5,7 @@ load("//dependencies/wpilib:deps.bzl", "setup_wpilib_dependencies")
 load("//dependencies/ni:deps.bzl", "setup_ni_dependencies")
 load("//dependencies/revlib:deps.bzl", "setup_revlib_dependencies")
 load("//dependencies/phoenix:deps.bzl", "setup_phoenix_dependencies")
+load("//dependencies/phoenixpro:deps.bzl", "setup_phoenixpro_dependencies")
 load("//dependencies/navx:deps.bzl", "setup_navx_dependencies")
 load("//dependencies/opencv:deps.bzl", "setup_opencv_dependencies")
 load("//dependencies/imgui:deps.bzl", "setup_imgui_dependencies")
@@ -21,6 +22,7 @@ def setup_bazelrio_dependencies(
         opencv_version = "4.6.0-3",
         revlib_version = "2023.1.1",
         phoenix_version = "5.30.2",
+        phoenixpro_version = "23.0.1",
         navx_version = "2023.0.0",
         imgui_version = "1.89.1-1",
         libssh_version = "0.95-6",
@@ -45,6 +47,7 @@ def setup_bazelrio_dependencies(
     setup_ni_dependencies(version = ni_version)
     setup_revlib_dependencies(version = revlib_version)
     setup_phoenix_dependencies(version = phoenix_version)
+    setup_phoenixpro_dependencies(version = phoenixpro_version)
     setup_navx_dependencies(version = navx_version)
     setup_opencv_dependencies(version = opencv_version)
     setup_imgui_dependencies(version = imgui_version)
