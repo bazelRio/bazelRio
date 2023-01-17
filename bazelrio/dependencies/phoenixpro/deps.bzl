@@ -1,5 +1,5 @@
 load("//dependencies/phoenixpro/23_0_1:deps.bzl", "setup_phoenixpro_23_0_1_dependencies")
-load("//dependencies/phoenixpro/23_0_4:deps.bzl", "setup_phoenixpro_23_0_1_dependencies")
+load("//dependencies/phoenixpro/23_0_4:deps.bzl", "setup_phoenixpro_23_0_4_dependencies")
 
 def setup_phoenixpro_dependencies(version):
     if version == None:

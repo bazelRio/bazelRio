@@ -1,5 +1,5 @@
 load("//dependencies/revlib/2023_1_1:deps.bzl", "setup_revlib_2023_1_1_dependencies")
-load("//dependencies/revlib/2023_1_2:deps.bzl", "setup_revlib_2023_1_1_dependencies")
+load("//dependencies/revlib/2023_1_2:deps.bzl", "setup_revlib_2023_1_2_dependencies")
 
 def setup_revlib_dependencies(version):
     if version == None:
