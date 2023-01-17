@@ -40,6 +40,7 @@ def vendordep_dependency(vendor_file):
         if maven_url.endswith("/"):
             maven_url = maven_url[:-1]
         version = vendor_dep["version"]
+        version = version.replace("+", "_")
 
         maven_dep = MavenDependencyGroup(
             vendor_name, maven_url, version, fail_on_hash_miss=False
@@ -56,6 +57,7 @@ def vendordep_dependency(vendor_file):
                 resources=resources,
                 group_id=cpp_dep["groupId"],
                 artifact_name=cpp_dep["artifactId"],
+                version=cpp_dep["version"],
             )
 
         # Then grab the native libraries
@@ -72,13 +74,14 @@ def vendordep_dependency(vendor_file):
                 resources=resources,
                 group_id=cpp_dep["groupId"],
                 artifact_name=cpp_dep["artifactId"],
+                version=cpp_dep["version"]
             )
 
         for java_dep in sorted(
             vendor_dep["javaDependencies"], key=lambda x: x["artifactId"]
         ):
             maven_dep.add_java_dep(
-                group_id=java_dep["groupId"], artifact_name=java_dep["artifactId"]
+                group_id=java_dep["groupId"], artifact_name=java_dep["artifactId"], version=java_dep["version"]
             )
 
         return vendor_name, maven_dep

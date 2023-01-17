@@ -48,7 +48,7 @@ def _executable_tool(maven_dep, artifact_name, group_id="edu.wpi.first.tools", n
 def get_wpilib_dependencies():
 
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = ["2023.1.1"]
+    VERSIONS = ["2023.1.1", "2023.2.1"]
     DEP_NAME = "wpilib"
 
     dependencies = {DEP_NAME: []}
