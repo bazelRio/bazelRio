@@ -1,3 +1,14 @@
+CC_NATIVE_LIBS = [
+    "@__bazelrio_com_ctre_phoenix_sim_wpiapi-cpp-sim_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenix_sim_cci-sim_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simtalonsrx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simvictorspx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simtalonfx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simpigeonimu_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simcancoder_{}//:shared_libs",
+]
+
 cc_library(
     name = "phoenix",
     linkstatic = 1,
@@ -8,36 +19,9 @@ cc_library(
         "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_headers//:headers",
         "//libraries/cpp/wpilib/wpilibc",
     ] + select({
-        "@bazel_tools//src/conditions:windows": [
-            "@__bazelrio_com_ctre_phoenix_sim_wpiapi-cpp-sim_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_windowsx86-64//:shared_libs",
-        ],
-        "@bazel_tools//src/conditions:linux_x86_64": [
-            "@__bazelrio_com_ctre_phoenix_sim_wpiapi-cpp-sim_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_linuxx86-64//:shared_libs",
-        ],
-        "@bazel_tools//src/conditions:darwin": [
-            "@__bazelrio_com_ctre_phoenix_sim_wpiapi-cpp-sim_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_api-cpp-sim_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_osxx86-64//:shared_libs",
-        ],
+        "@bazel_tools//src/conditions:windows": [lib.format("windowsx86-64") for lib in CC_NATIVE_LIBS],
+        "@bazel_tools//src/conditions:linux_x86_64": [lib.format("linuxx86-64") for lib in CC_NATIVE_LIBS],
+        "@bazel_tools//src/conditions:darwin": [lib.format("osxuniversal") for lib in CC_NATIVE_LIBS],
         "//constraints/is_roborio:roborio": [
             "@__bazelrio_com_ctre_phoenix_wpiapi-cpp_linuxathena//:shared_libs",
             "@__bazelrio_com_ctre_phoenix_cci_linuxathena//:shared_libs",
@@ -46,34 +30,22 @@ cc_library(
     }),
 )
 
+JNI_NATIVE_LIBS = [
+    "@__bazelrio_com_ctre_phoenix_sim_cci-sim_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simtalonsrx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simtalonfx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simvictorspx_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simpigeonimu_{}//:shared_libs",
+    "@__bazelrio_com_ctre_phoenixpro_sim_simcancoder_{}//:shared_libs",
+]
+
 cc_library(
     name = "jni",
     visibility = ["//visibility:public"],
     deps = select({
-        "@bazel_tools//src/conditions:windows": [
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_windowsx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_windowsx86-64//:shared_libs",
-        ],
-        "@bazel_tools//src/conditions:linux_x86_64": [
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_linuxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_linuxx86-64//:shared_libs",
-        ],
-        "@bazel_tools//src/conditions:darwin": [
-            "@__bazelrio_com_ctre_phoenix_sim_cci-sim_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonsrx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simtalonfx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simvictorspx_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simpigeonimu_osxx86-64//:shared_libs",
-            "@__bazelrio_com_ctre_phoenix_sim_simcancoder_osxx86-64//:shared_libs",
-        ],
+        "@bazel_tools//src/conditions:windows": [lib.format("windowsx86-64") for lib in JNI_NATIVE_LIBS],
+        "@bazel_tools//src/conditions:linux_x86_64": [lib.format("linuxx86-64") for lib in JNI_NATIVE_LIBS],
+        "@bazel_tools//src/conditions:darwin": [lib.format("osxuniversal") for lib in JNI_NATIVE_LIBS],
         "//constraints/is_roborio:roborio": [
             "@__bazelrio_com_ctre_phoenix_cci_linuxathena//:shared_libs",
         ],

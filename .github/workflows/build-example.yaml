@@ -1,78 +1,42 @@
 name: Build example project
 on: [pull_request, push]
 jobs:
-    build-macos:
-        runs-on: macos-latest
+    build-matrix:
+        strategy:
+          fail-fast: false
+          matrix:
+            include:
+            - { os: windows-latest, bazel_options: "--output_user_root=C:\\bazelroot", native_config: "--config=for-windows" }
+            - { os: macos-latest, bazel_options: "", native_config: "" }
+            - { os: ubuntu-latest, bazel_options: "", native_config: "" }
+        runs-on: ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v2
-            - name: Build Roborio (cpp)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/cpp_example
-            - name: Build Native (cpp)
-              run: bazel build //...:*
-              working-directory: examples/cpp_example
-            - name: Build Roborio (java)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/java_example
-            - name: Build Native (java)
-              run: bazel build //...:*
-              working-directory: examples/java_example
-            - name: Build Roborio (kotlin)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/kotlin_example
-            - name: Build Native (kotlin)
-              run: bazel build //...:*
-              working-directory: examples/kotlin_example
-            - name: Build tools
-              run: bazel build @bazelrio//libraries/tools/...
-              working-directory: examples/java_example
-    build-linux:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Build Roborio (cpp)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/cpp_example
-            - name: Build Native (cpp)
-              run: bazel build //...:*
-              working-directory: examples/cpp_example
-            - name: Build Roborio (java)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/java_example
-            - name: Build Native (java)
-              run: bazel build //...:*
-              working-directory: examples/java_example
-            - name: Build Roborio (kotlin)
-              run: bazel build //...:* --config=for-roborio
-              working-directory: examples/kotlin_example
-            - name: Build Native (kotlin)
-              run: bazel build //...:*
-              working-directory: examples/kotlin_example
-            - name: Build tools
-              run: bazel build @bazelrio//libraries/tools/...
-              working-directory: examples/java_example
-    build-windows:
-        runs-on: windows-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Build Roborio (cpp)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
-              working-directory: examples/cpp_example
-            - name: Build Native (cpp)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
-              working-directory: examples/cpp_example
-            - name: Build Roborio (java)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
-              working-directory: examples/java_example
-            - name: Build Native (java)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
-              working-directory: examples/java_example
-            - name: Build Roborio (kotlin)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-roborio
-              working-directory: examples/kotlin_example
-            - name: Build Native (kotlin)
-              run: bazel --output_user_root=C:\bazelroot build //...:* --config=for-windows
-              working-directory: examples/kotlin_example
-            - name: Build tools
-              run: bazel build @bazelrio//libraries/tools/...
-              working-directory: examples/java_example
+                - uses: actions/checkout@v2
+                - name: Build Roborio (cpp)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* --config=for-roborio --verbose_failures
+                  working-directory: examples/cpp_example
+                - name: Build Native (cpp)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* ${{ matrix.native_config }} --verbose_failures
+                  working-directory: examples/cpp_example
+                - name: Build Roborio (java)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* --config=for-roborio --verbose_failures
+                  working-directory: examples/java_example
+                - name: Build Native (java)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* ${{ matrix.native_config }} --verbose_failures
+                  working-directory: examples/java_example
+                - name: Build Roborio (kotlin)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* --config=for-roborio --verbose_failures
+                  working-directory: examples/kotlin_example
+                - name: Build Native (kotlin)
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build //...:* ${{ matrix.native_config }} --verbose_failures
+                  working-directory: examples/kotlin_example
+                - name: Build tools
+                  if: ${{ always() }}
+                  run: bazel ${{ matrix.bazel_options }} build @bazelrio//libraries/tools/...
+                  working-directory: examples/java_example

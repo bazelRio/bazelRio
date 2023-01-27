@@ -85,6 +85,7 @@ def generate_dependencies():
     from opencv_dependencies import opencv_dependencies
     from libssh_dependencies import libssh_dependencies
     from imgui_dependencies import imgui_dependencies
+    from apriltag_dependencies import apriltag_dependencies
     from toolchain_dependencies import generate_toolchain_dependencies
 
     dependencies = {}
@@ -94,6 +95,7 @@ def generate_dependencies():
     dependencies.update(vendordep_dependencies(os.path.join(SCRIPT_DIR, "vendordeps")))
     dependencies.update(libssh_dependencies())
     dependencies.update(imgui_dependencies())
+    dependencies.update(apriltag_dependencies())
 
     # Start fresh by deleting all of the auto generated dependencies
     clean_old_files()

@@ -144,25 +144,29 @@ class MavenDependencyGroup:
 
         self.underscore_version = version.replace(".", "_").replace("-", "_")
 
-    def add_cpp_dep(self, group_id, artifact_name, resources):
+    def add_cpp_dep(self, group_id, artifact_name, resources, version=None):
+        if version is None:
+            version = self.version
         self._cpp_deps.append(
             CppDependency(
                 resources=resources,
                 group_id=group_id,
                 artifact_name=artifact_name,
                 maven_url=self.maven_url,
-                version=self.version,
+                version=version,
                 fail_on_hash_miss=self.fail_on_hash_miss,
             )
         )
 
-    def add_java_dep(self, group_id, artifact_name):
+    def add_java_dep(self, group_id, artifact_name, version=None):
+        if version is None:
+            version = self.version
         self._java_deps.append(
             JavaDependency(
                 group_id=group_id,
                 artifact_name=artifact_name,
                 maven_url=self.maven_url,
-                version=self.version,
+                version=version,
                 fail_on_hash_miss=self.fail_on_hash_miss,
             )
         )

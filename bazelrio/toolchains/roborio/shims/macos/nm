@@ -1,1 +1,1 @@
-exec ./external/__bazelrio_roborio_toolchain_macos/frc2022/roborio/bin/arm-frc2022-linux-gnueabi-$(basename $0) $@
+exec ./external/__bazelrio_roborio_toolchain_macos/roborio-academic/bin/arm-frc2023-linux-gnueabi-$(basename $0) $@

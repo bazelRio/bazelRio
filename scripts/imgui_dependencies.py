@@ -4,7 +4,7 @@ from platforms import default_native_static_platforms
 
 def imgui_dependencies():
     MAVEN_URL = "https://frcmaven.wpi.edu/release"
-    VERSIONS = [("frc2022", "1.86-1"), ("frc2023", "1.88-5")]
+    VERSIONS = [("frc2023", "1.89.1-1")]
     DEP_NAME = "imgui"
 
     dependencies = {DEP_NAME: []}

@@ -11,16 +11,18 @@ build:windows --features=compiler_param_file
 build:windows --experimental_repository_cache C:\\bazelcache
 
 # Linux
-build:linux --copt=-std=c++17
+build:linux --copt=-std=c++20
 build:linux --linkopt=-pthread
 build:linux --experimental_repository_cache ~/.local/share/bazel
 
 # MacOS
-build:macos --copt=-std=c++17
+build:macos --copt=-std=c++20
 build:macos --experimental_repository_cache ~/.local/share/bazel
 
 # For Roborio
 build:for-roborio --platforms=@bazelrio//platforms/roborio
 
 # For Windows
-build:for-windows --copt=/std:c++17
+build:for-windows --copt=/std:c++20
+build:for-windows --copt=/Zc:preprocessor
+build:for-windows --copt=/wd5105

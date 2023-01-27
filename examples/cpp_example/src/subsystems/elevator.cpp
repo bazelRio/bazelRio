@@ -30,7 +30,7 @@ Elevator::Elevator()
     : frc2::PIDSubsystem(frc2::PIDController{kP, kI, kD}),
       m_elevatorSim(kElevatorGearbox, kElevatorGearing, kCarriageMass,
                     kElevatorDrumRadius, kMinElevatorHeight,
-                    kMaxElevatorHeight) {
+                    kMaxElevatorHeight, true) {
   m_controller.SetTolerance(0.005);
   m_encoder.SetDistancePerPulse(kArmEncoderDistPerPulse);
 

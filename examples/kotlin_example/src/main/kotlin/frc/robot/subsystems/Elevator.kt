@@ -46,7 +46,7 @@ class Elevator : PIDSubsystem(PIDController(kP, kI, kD)) {
       m_encoderSim = EncoderSim(m_encoder);
       m_elevatorSim = ElevatorSim(kElevatorGearbox, kElevatorGearing, kCarriageMass,
               kElevatorDrumRadius, kMinElevatorHeight,
-              kMaxElevatorHeight);
+              kMaxElevatorHeight, true);
     }
   }
 

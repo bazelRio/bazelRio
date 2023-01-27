@@ -1,8 +1,0 @@
---- frc2022/roborio/arm-frc2022-linux-gnueabi/usr/lib/libpthread.so	2020-10-28 21:59:18.000000000 -0700
-+++ frc2022/roborio/arm-frc2022-linux-gnueabi/usr/lib/libpthread.so	2021-11-27 15:59:55.000000000 -0800
-@@ -2,4 +2,4 @@
-    Use the shared library, but some functions are only in
-    the static library, so try that secondarily.  */
- OUTPUT_FORMAT(elf32-littlearm)
--GROUP ( /lib/libpthread.so.0 /usr/lib/libpthread_nonshared.a )
-+GROUP ( ../lib/libpthread.so.0 ../../usr/lib/libpthread_nonshared.a )

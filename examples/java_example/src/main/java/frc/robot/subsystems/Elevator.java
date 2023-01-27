@@ -50,7 +50,7 @@ public class Elevator extends PIDSubsystem {
       m_encoderSim = new EncoderSim(m_encoder);
       m_elevatorSim = new ElevatorSim(kElevatorGearbox, kElevatorGearing, kCarriageMass,
               kElevatorDrumRadius, kMinElevatorHeight,
-              kMaxElevatorHeight);
+              kMaxElevatorHeight, true);
     }
   }
 

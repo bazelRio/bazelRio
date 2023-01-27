@@ -10,7 +10,6 @@ class CppPlatformConfig:
         self.ext = ext
         self.patch_roborio = patch_roborio
 
-
 class JavaPlatformConfig:
     def __init__(self, os, ext):
         self.os = os
@@ -82,34 +81,24 @@ def get_toolchain_dependencies():
         JavaPlatformConfig("windows", ".zip"),
     ]
 
-    DEFAULT_PRE_2023_ARGS = dict(
-        toolchain_version="7.3.0",
-        jdk_version="11.0.12+7",
-        cpp_url="https://github.com/wpilibsuite/roborio-toolchain/releases/download/v{release_version_hyphen}/FRC-{year}-{platform_config.short_os}-Toolchain-7.3.0{platform_config.ext}",
-        java_url="https://github.com/adoptium/temurin11-binaries/releases/download/jdk-{jdk_version}/OpenJDK11U-jdk_x64_{platform_config.os}_hotspot_{jdk_version_underscore}{platform_config.ext}",
-        java_platform_configs=DEFAULT_JAVA_PLATFORMS,
+    DEFAULT_ARGS = dict(
+        toolchain_version = "12.1.0",
+        jdk_version = "17.0.4.1+1",
+        cpp_url = "https://github.com/wpilibsuite/opensdk/releases/download/v{release_version_hyphen}/cortexa9_vfpv3-roborio-academic-{year}-x86_64-{platform_config.short_os}-Toolchain-{toolchain_version}{platform_config.ext}",
+        java_url = "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-{jdk_version_escaped}/OpenJDK17U-jdk_x64_{platform_config.os}_hotspot_{jdk_version_underscore}{platform_config.ext}",
+        cpp_platform_configs = [
+            CppPlatformConfig("macos", "apple-darwin", ".tgz"),
+            CppPlatformConfig("linux", "linux-gnu", ".tgz"),
+            CppPlatformConfig("windows", "w64-mingw32", ".zip", patch_roborio=False),
+        ],
+        java_platform_configs = DEFAULT_JAVA_PLATFORMS
     )
 
     configs = [
         ToolchainConfig(
-            year="2021",
-            release_version="2021-2",
-            cpp_platform_configs=[
-                CppPlatformConfig("macos", "Mac", ".tar.gz"),
-                CppPlatformConfig("linux", "Linux", ".tar.gz"),
-                CppPlatformConfig("windows", "Windows", ".zip", patch_roborio=False),
-            ],
-            **DEFAULT_PRE_2023_ARGS,
-        ),
-        ToolchainConfig(
-            year="2022",
-            release_version="2022-1",
-            cpp_platform_configs=[
-                CppPlatformConfig("macos", "Mac", ".tar.gz"),
-                CppPlatformConfig("linux", "Linux", ".tar.gz"),
-                CppPlatformConfig("windows", "Windows32", ".zip", patch_roborio=False),
-            ],
-            **DEFAULT_PRE_2023_ARGS,
+            year="2023",
+            release_version="2023_7",
+            **DEFAULT_ARGS,
         ),
     ]
 
