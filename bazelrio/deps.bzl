@@ -23,7 +23,7 @@ def setup_bazelrio_dependencies(
         revlib_version = "2023.1.2",
         phoenix_version = "5.30.3_23.0.4",
         phoenixpro_version = "23.0.4",
-        navx_version = "2023.0.0",
+        navx_version = "2023.0.3",
         imgui_version = "1.89.1-1",
         libssh_version = "0.95-6",
         apriltaglib_version = "3.2.0-3"):
